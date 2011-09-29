@@ -51,6 +51,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Runtime\Current\System.Windows.Interactivity.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -83,9 +84,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Back.png" />
-    <Content Include="Views\Forward.png" />
-    <Content Include="Views\Gear.png" />
+    <Resource Include="Views\Back.png" />
+    <Resource Include="Views\Forward.png" />
+    <Resource Include="Views\Gear.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\CK.Config.xaml">

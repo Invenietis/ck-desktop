@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System;
 
 namespace CK.Windows
 {
@@ -13,7 +14,9 @@ namespace CK.Windows
     [ContentProperty( "Selectors" )]
     public class CompositeDataTemplateSelector : DataTemplateSelector
     {
-        static readonly internal Common.Logging.ILog Log = Common.Logging.LogManager.GetLogger<CompositeDataTemplateSelector>();
+        //static internal Common.Logging.ILog Log { get { return Common.Logging.LogManager.GetLogger<CompositeDataTemplateSelector>(); } }
+
+        static internal Lazy<Common.Logging.ILog> Log = new Lazy<Common.Logging.ILog>( () => Common.Logging.LogManager.GetLogger<CompositeDataTemplateSelector>(), true );
 
         public CompositeDataTemplateSelector()
         {
