@@ -43,7 +43,8 @@
     <Reference Include="Common.Logging">
       <HintPath>..\Runtime\Current\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging.Log4Net">
+    <Reference Include="Common.Logging.Log4Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Runtime\Current\Common.Logging.Log4Net.dll</HintPath>
     </Reference>
     <Reference Include="log4net">

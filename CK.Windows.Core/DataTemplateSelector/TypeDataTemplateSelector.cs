@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls;
-using System.Windows;
-using System.Windows.Markup;
 using System.ComponentModel;
-using System.Collections.ObjectModel;
-using CK.Core;
-using System.ComponentModel.Design.Serialization;
-using System.Security;
-using System.Globalization;
+using System.Windows;
 
 namespace CK.Windows
 {

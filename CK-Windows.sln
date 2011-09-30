@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Windows.Config", "CK.Win
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Windows.Demo", "CK.Windows.Demo\CK.Windows.Demo.csproj", "{258F3897-AC3A-4E7E-861A-957F3A354E67}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{820B2BE2-4ED8-4181-8813-AD5E1C5A6FE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Windows.Core.Tests", "Tests\CK.Windows.Core.Tests\CK.Windows.Core.Tests.csproj", "{2533A7E9-BF25-454D-8604-2829C78EE29C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,8 +63,21 @@ Global
 		{258F3897-AC3A-4E7E-861A-957F3A354E67}.Release|Mixed Platforms.Build.0 = Release|x86
 		{258F3897-AC3A-4E7E-861A-957F3A354E67}.Release|x86.ActiveCfg = Release|x86
 		{258F3897-AC3A-4E7E-861A-957F3A354E67}.Release|x86.Build.0 = Release|x86
+		{2533A7E9-BF25-454D-8604-2829C78EE29C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2533A7E9-BF25-454D-8604-2829C78EE29C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2533A7E9-BF25-454D-8604-2829C78EE29C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2533A7E9-BF25-454D-8604-2829C78EE29C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2533A7E9-BF25-454D-8604-2829C78EE29C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2533A7E9-BF25-454D-8604-2829C78EE29C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2533A7E9-BF25-454D-8604-2829C78EE29C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2533A7E9-BF25-454D-8604-2829C78EE29C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2533A7E9-BF25-454D-8604-2829C78EE29C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2533A7E9-BF25-454D-8604-2829C78EE29C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2533A7E9-BF25-454D-8604-2829C78EE29C} = {820B2BE2-4ED8-4181-8813-AD5E1C5A6FE4}
 	EndGlobalSection
 EndGlobal

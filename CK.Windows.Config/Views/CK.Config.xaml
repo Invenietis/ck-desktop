@@ -121,7 +121,7 @@
 
         <ck:TypeDataTemplateSelector Type="{ck:Type local:ConfigGroup}" Template="{StaticResource ConfigGroupTemplate}" />
 
-        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigItemProperty-1, TypeArgument0={ck:Type sys:Boolean}}" >
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigItemProperty(sys:Boolean)}" >
             <DataTemplate>
                 <DockPanel LastChildFill="False" Margin="3">
                     <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center" IsChecked="{Binding Value}" Margin="0 0 3 0"/>
@@ -132,7 +132,7 @@
             </DataTemplate>
         </ck:TypeDataTemplateSelector>
 
-        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigItemProperty-1, TypeArgument0={ck:Type sys:Int32}}">
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigItemProperty(sys:Int32)}">
             <DataTemplate>
                 <DockPanel LastChildFill="False" Margin="3">
                     <TextBox DockPanel.Dock="Right" Text="{Binding Path=Value, Mode=TwoWay}" Width="50" Margin="0 0 3 0"/>
@@ -186,7 +186,7 @@
         </ck:TypeDataTemplateSelector>
 
         <!-- This one is very general: any IConfigItemCurrent<> will match. -->
-        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigItemCurrent-1, TypeArgument0={ck:Type sys:Object}}" >
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigItemCurrent(sys:Object)}" >
             <DataTemplate>
                 <DockPanel>
                     <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding DisplayName}"/>

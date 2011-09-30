@@ -15,8 +15,8 @@ using System.Globalization;
 namespace CK.Windows
 {
     /// <summary>
-    /// A <see cref="DataTemplateSelector"/> with an actual <see cref="DataTemplate"/> instance.
-    /// By default, this <see cref="Template"/> is always selected, but the goal of this class
+    /// A <see cref="DataTemplateSelector"/> with an actual <see cref="DataTemplate"/> instance expressed as a XAML content property.
+    /// By default, this child <see cref="Template"/> is always selected by <see cref="SelectTemplate"/>, but the goal of this class
     /// is to be used as a base class: the virtual <see cref="Match"/> method must be overriden.
     /// </summary>
     [ContentProperty( "Template" )]

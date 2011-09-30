@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{739010D0-1211-453A-B3F3-0FF1AFC8CC14}</ProjectGuid>
+    <ProjectGuid>{2533A7E9-BF25-454D-8604-2829C78EE29C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CK.Windows.Config</RootNamespace>
-    <AssemblyName>CK.Windows.Config</AssemblyName>
+    <RootNamespace>CK.Windows.Core.Tests</RootNamespace>
+    <AssemblyName>CK.Windows.Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -32,26 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=1.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.5.9.10348, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\Caliburn.Micro.dll</HintPath>
-    </Reference>
-    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\CK.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="CK.Reflection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\CK.Reflection.dll</HintPath>
+      <HintPath>..\..\..\Env\NUnit\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
@@ -59,41 +47,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigActivableSection.cs" />
-    <Compile Include="ConfigItemCurrent.cs" />
-    <Compile Include="ConfigGroup.cs" />
-    <Compile Include="ConfigItem.cs" />
-    <Compile Include="ConfigItemAction.cs" />
-    <Compile Include="ConfigItemCollection.cs" />
-    <Compile Include="ConfigItemExtensions.cs" />
-    <Compile Include="ConfigItemLink.cs" />
-    <Compile Include="ConfigItemMillisecondProperty.cs" />
-    <Compile Include="ConfigItemProperty.cs" />
-    <Compile Include="ConfigManager.cs" />
-    <Compile Include="ConfigPage.cs" />
-    <Compile Include="IConfigActivableSection.cs" />
-    <Compile Include="IConfigItem.cs" />
-    <Compile Include="IConfigItemContainer.cs" />
-    <Compile Include="IConfigItemCurrent.cs" />
-    <Compile Include="IConfigItemProperty.cs" />
+    <Compile Include="XamlParsing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CK.Windows.Core\CK.Windows.Core.csproj">
+    <ProjectReference Include="..\..\CK.Windows.Core\CK.Windows.Core.csproj">
       <Project>{9F3F9332-6CAD-413D-BF7C-580228D62FCD}</Project>
       <Name>CK.Windows.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\Back.png" />
-    <Resource Include="Views\Forward.png" />
-    <Resource Include="Views\Gear.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Views\CK.Config.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
