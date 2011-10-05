@@ -7,19 +7,21 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/CK.Windows.Config;component/Views/CK.Config.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    
-    <DataTemplate DataType="{x:Type loc:SpecificViewModel}">
-        <loc:SpecView/>
-    </DataTemplate>
+
+    <ck:CompositeDataTemplateSelector Fallback="{ck:FindFirstResource DefaultConfigPageTemplateSelector}" x:Key="DefaultConfigPageTemplateSelector">
+        <ck:TypeDataTemplateSelector Type="{ck:Type loc:SpecificViewModel}" >
+            <DataTemplate>
+                <loc:SpecView/>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
+    </ck:CompositeDataTemplateSelector>
 
     <ck:CompositeDataTemplateSelector Fallback="{ck:FindFirstResource DefaultConfigSelector}" x:Key="DefaultConfigSelector">
-
         <ck:TypeDataTemplateSelector Type="{ck:Type config:IConfigItemProperty(sys:Boolean)}" >
             <DataTemplate>
                 <Label>Specific visualization of IConfigItemProperty</Label>
             </DataTemplate>
         </ck:TypeDataTemplateSelector>
-
     </ck:CompositeDataTemplateSelector>
 
 </ResourceDictionary>

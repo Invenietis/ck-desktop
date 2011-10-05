@@ -11,6 +11,7 @@ namespace CK.Windows.Demo
     internal class SubViewModel : ConfigPage
     {
         SpecificViewModel _specificVM;
+        public SpecificViewModel SpecificVM { get { return _specificVM ?? (_specificVM = new SpecificViewModel( ConfigManager )); } }
 
         public bool BoolProperty { get; set; }
 
@@ -21,7 +22,7 @@ namespace CK.Windows.Demo
 
             this.AddProperty( "Bool property", this, ( o ) => o.BoolProperty );
 
-            this.AddLink( _specificVM ?? (_specificVM = new SpecificViewModel( configManager )) );
+            this.AddLink( SpecificVM );
         }
     }
 }

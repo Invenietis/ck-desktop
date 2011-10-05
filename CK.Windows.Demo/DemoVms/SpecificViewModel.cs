@@ -15,5 +15,7 @@ namespace CK.Windows.Demo
         {
             DisplayName = "Specific view";
         }
+
+        public string Property { get { return "Some bound text !"; } }
     }
 }
