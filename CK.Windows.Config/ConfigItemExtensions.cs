@@ -22,10 +22,11 @@ namespace CK.Windows.Config
             return g;
         }
 
-        public static ConfigPage AddLink( this IConfigItemContainer c, ConfigPage page )
+        public static ConfigItemLink AddLink( this IConfigItemContainer c, ConfigPage page )
         {
-            c.Items.Add( new ConfigItemLink( c.ConfigManager, page, null ) );
-            return page;
+            ConfigItemLink l = new ConfigItemLink( c.ConfigManager, page, null );
+            c.Items.Add( l );
+            return l;
         }
 
         public static ConfigItemProperty<T> AddProperty<T, THolder>( this IConfigItemContainer c, THolder o, Expression<Func<THolder, T>> prop )

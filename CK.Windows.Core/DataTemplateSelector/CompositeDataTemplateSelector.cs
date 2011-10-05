@@ -14,14 +14,24 @@ namespace CK.Windows
     [ContentProperty( "Selectors" )]
     public class CompositeDataTemplateSelector : DataTemplateSelector
     {
-        //static internal Common.Logging.ILog Log { get { return Common.Logging.LogManager.GetLogger<CompositeDataTemplateSelector>(); } }
-
-        static internal Lazy<Common.Logging.ILog> Log = new Lazy<Common.Logging.ILog>( () => Common.Logging.LogManager.GetLogger<CompositeDataTemplateSelector>(), true );
+        static Common.Logging.ILog _log;
+        static internal Common.Logging.ILog Log
+        {
+            get
+            {
+                return _log ?? (_log = Common.Logging.LogManager.GetLogger<CompositeDataTemplateSelector>());
+            }
+        }
 
         public CompositeDataTemplateSelector()
         {
             Selectors = new List<DataTemplateSelector>();
         }
+
+        /// <summary>
+        /// Gets the CompositeDataTemplateSelector on which we have to look for selectors if we don't find a good one in our <see pref="Selectors"/>.
+        /// </summary>
+        public CompositeDataTemplateSelector Fallback { get; set; }
 
         /// <summary>
         /// Gets the list of <see cref="DataTemplateSelector"/> that this composite contains.
@@ -41,6 +51,8 @@ namespace CK.Windows
             {
                 if( (result = s.SelectTemplate( item, container )) != null ) break;
             }
+            if( result == null && Fallback != null )
+                result = Fallback.SelectTemplate( item, container );
             return result;
         }
     }

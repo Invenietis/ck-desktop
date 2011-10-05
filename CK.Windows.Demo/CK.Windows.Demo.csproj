@@ -63,8 +63,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DemoVms\SpecificViewModel.cs" />
+    <Compile Include="DemoVms\SubViewModel.cs" />
     <Compile Include="UserControls\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SpecView.xaml.cs">
+      <DependentUpon>SpecView.xaml</DependentUpon>
     </Compile>
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -77,7 +82,15 @@
     <Compile Include="CommonLogger.cs" />
     <Compile Include="DemoVms\AppViewModel.cs" />
     <Compile Include="DemoVms\RootViewModel.cs" />
+    <Page Include="MyDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\AppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SpecView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

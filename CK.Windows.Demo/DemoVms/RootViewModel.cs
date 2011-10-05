@@ -10,6 +10,8 @@ namespace CK.Windows.Demo
 {
     internal class RootViewModel : ConfigPage
     {
+        SubViewModel _subvm;
+
         public RootViewModel( ConfigManager configManager )
             : base( configManager )
         {
@@ -17,6 +19,8 @@ namespace CK.Windows.Demo
 
             this.AddAction( "Show a popup", () => MessageBox.Show( "Pow!" ) );
             this.AddAction( "Show another popup", () => MessageBox.Show( "Another Pow!" ) );
+
+            this.AddLink( _subvm ?? (_subvm = new SubViewModel( configManager )) );
         }
     }
 }

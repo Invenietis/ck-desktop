@@ -1,8 +1,7 @@
 ﻿<UserControl x:Class="CK.Windows.Demo.AppView"
              xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loc="clr-namespace:CK.Windows.Demo"
              MinWidth="300" MinHeight="300">
     <ContentControl Content="{Binding ActiveItem}"/>
 </UserControl>

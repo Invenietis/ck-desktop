@@ -9,7 +9,6 @@ using CK.Core;
 
 namespace CK.Windows
 {
-
     /// <summary>
     /// Replacement for the standard <see cref="System.Windows.Markup.TypeExtension"/> to support generic types
     /// definition in markup (currently up to 5 type arguments are supported).
@@ -76,7 +75,6 @@ namespace CK.Windows
             }
         }
     }
-
 
     internal class TypeExtensionConverter : TypeConverter
     {

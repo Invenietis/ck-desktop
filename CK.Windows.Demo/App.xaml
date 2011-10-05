@@ -8,7 +8,7 @@
                 <ResourceDictionary>
                     <local:AppBoostrapper x:Key="bootstrapper"/>
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/CK.Windows.Config;component/Views/CK.Config.xaml"/>
+                <ResourceDictionary Source="MyDataTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

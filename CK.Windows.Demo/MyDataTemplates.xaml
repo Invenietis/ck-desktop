@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:ck="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+                    xmlns:config="clr-namespace:CK.Windows.Config;assembly=CK.Windows.Config"
+                    xmlns:loc="clr-namespace:CK.Windows.Demo">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/CK.Windows.Config;component/Views/CK.Config.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <DataTemplate DataType="{x:Type loc:SpecificViewModel}">
+        <loc:SpecView/>
+    </DataTemplate>
+
+    <ck:CompositeDataTemplateSelector Fallback="{ck:FindFirstResource DefaultConfigSelector}" x:Key="DefaultConfigSelector">
+
+        <ck:TypeDataTemplateSelector Type="{ck:Type config:IConfigItemProperty(sys:Boolean)}" >
+            <DataTemplate>
+                <Label>Specific visualization of IConfigItemProperty</Label>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
+
+    </ck:CompositeDataTemplateSelector>
+
+</ResourceDictionary>
