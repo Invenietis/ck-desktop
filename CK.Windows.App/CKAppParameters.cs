@@ -23,7 +23,7 @@ namespace CK.Windows.App
         /// Must be an indentifier (no /, \ or other special characters in it: see <see cref="Path.GetInvalidPathChars"/>).
         /// </param>
         /// <param name="subAppName">Optional second name (can be null). When not null, it must be an identifier just like <paramref name="appName"/>.</param>
-        public CKAppParameters( string appName, string subAppName )
+        public CKAppParameters( string appName, string subAppName = null )
         {
             char[] illegal = Path.GetInvalidPathChars();
             if( String.IsNullOrEmpty( appName ) ) throw new ArgumentNullException( "appName" );
