@@ -16,37 +16,37 @@ namespace CK.Windows.App
         /// Initializes a new <see cref="CKAppParameters"/> with an application name and an optional subordinated name. 
         /// These are used to build the <see cref="ApplicationDataPath"/> and <see cref="CommonApplicationDataPath"/>.
         /// This constructor does no more than validating its parameters: it is totally safe and secure as long as <paramref name="appName"/> 
-        /// and <see cref="subAppName"/> are valid.
+        /// and <see cref="distribName"/> are valid.
         /// </summary>
         /// <param name="appName">
-        /// Name of the application (Civikey-Standard for instance for the Civikey Standard application). 
+        /// Name of the application (Civikey for instance for the Civikey application). 
         /// Must be an indentifier (no /, \ or other special characters in it: see <see cref="Path.GetInvalidPathChars"/>).
         /// </param>
-        /// <param name="subAppName">Optional second name (can be null). When not null, it must be an identifier just like <paramref name="appName"/>.</param>
-        public CKAppParameters( string appName, string subAppName = null )
+        /// <param name="distribName">Distribution name (can not be null nor empty). It must be an identifier just like <paramref name="appName"/>.</param>
+        public CKAppParameters( string appName, string distribName = "Standard" )
         {
             char[] illegal = Path.GetInvalidPathChars();
             if( String.IsNullOrEmpty( appName ) ) throw new ArgumentNullException( "appName" );
             if( appName.IndexOf( '/' ) >= 0 || appName.IndexOf( '\\' ) >= 0 ) throw new ArgumentException( "appName" );
-            if( subAppName != null )
+            if( distribName != null )
             {
-                subAppName = subAppName.Trim();
-                if( subAppName.Length == 0 )
-                    subAppName = null;
+                distribName = distribName.Trim();
+                if( distribName.Length == 0 )
+                    distribName = null;
                 else
                 {
-                    if( subAppName.IndexOf( '/' ) >= 0 || subAppName.IndexOf( '\\' ) >= 0 ) throw new ArgumentException( "subAppName" );
-                    if( subAppName.Any( c => illegal.Contains( c ) ) ) throw new ArgumentException( "subAppName" );
+                    if( distribName.IndexOf( '/' ) >= 0 || distribName.IndexOf( '\\' ) >= 0 ) throw new ArgumentException( "distribName" );
+                    if( distribName.Any( c => illegal.Contains( c ) ) ) throw new ArgumentException( "distribName" );
                 }
             }
             if( appName.Any( c => illegal.Contains( c ) ) ) throw new ArgumentException( "appName" );
 
             AppName = appName;
-            SubAppName = subAppName;
+            DistribName = distribName;
         }
 
         /// <summary>
-        /// Builds the path with <see cref="AppName"/> and <see cref="SubAppName"/> and ensures that the folder exists.
+        /// Builds the path with <see cref="AppName"/> and <see cref="DistribName"/> and ensures that the folder exists.
         /// </summary>
         /// <param name="pathPrefix">
         /// Typically <see cref="Environment.GetFolderPath"/> called 
@@ -60,8 +60,8 @@ namespace CK.Windows.App
             string p = pathPrefix
                     + AppName
                     + Path.DirectorySeparatorChar;
-            if( SubAppName != null )
-                p += SubAppName + Path.DirectorySeparatorChar;
+            if( DistribName != null )
+                p += DistribName + Path.DirectorySeparatorChar;
             if( !Directory.Exists( p ) ) Directory.CreateDirectory( p );
             return p;
         }
@@ -93,22 +93,22 @@ namespace CK.Windows.App
         public string AppName { get; private set; }
 
         /// <summary>
-        /// Gets an optional second name (can be null).
-        /// When not null, it is an identifier just like <see cref="AppName"/>.
+        /// Gets the name of the distribution (can be not null nor empty).
+        /// It is an identifier just like <see cref="AppName"/>.
         /// </summary>
-        public string SubAppName { get; private set; }
+        public string DistribName { get; private set; }
 
         /// <summary>
-        /// Unique name (Global\Install-AppName-SubAppName) that identifies the application and that can be 
+        /// Unique name (Global\Install-AppName-DistribName) that identifies the application and that can be 
         /// used by installers to detect a running instance.
         /// </summary>
-        public string GlobalMutexName { get { return @"Global\Install-" + AppName + "-" + SubAppName; } }
+        public string GlobalMutexName { get { return @"Global\Install-" + AppName + "-" + DistribName; } }
 
         /// <summary>
-        /// Unique name (Local\AppName-SubAppName) that identifies the application and that can 
+        /// Unique name (Local\AppName-DistribName) that identifies the application and that can 
         /// be used to avoid multiple application instance.
         /// </summary>
-        public string LocalMutexName { get { return @"Local\" + AppName + "-" + SubAppName; } }
+        public string LocalMutexName { get { return @"Local\" + AppName + "-" + DistribName; } }
 
         /// <summary>
         /// Gets the full directory path to use for application updates. 
