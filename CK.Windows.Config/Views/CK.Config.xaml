@@ -4,7 +4,7 @@
                     xmlns:ck="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
                     xmlns:local="clr-namespace:CK.Windows.Config">
 
-    <Style TargetType="Border" x:Key="Rounded">
+    <Style TargetType="Border" x:Key="CK.Config.RoundBox">
         <Setter Property="Background" Value="White"></Setter>
         <Setter Property="BorderBrush" Value="Gray"></Setter>
         <Setter Property="BorderThickness" Value="0.5"></Setter>
@@ -13,14 +13,14 @@
         <Setter Property="Padding" Value="5 2"></Setter>
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="ConfigLink" >
+    <Style TargetType="{x:Type Button}" x:Key="CK.Config.Link" >
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="OverridesDefaultStyle" Value="false"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border x:Name="Border" Style="{StaticResource Rounded}" >
+                    <Border x:Name="Border" Style="{StaticResource CK.Config.RoundBox}" >
                         <ContentPresenter Margin="2"  VerticalAlignment="Center" RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -48,6 +48,7 @@
         </Setter>
     </Style>
 
+    <!-- This template is bound to the ConfigManager type. -->
     <DataTemplate DataType="{x:Type local:ConfigManager}">
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal" >
@@ -64,7 +65,7 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
-            <ContentControl Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource DefaultConfigPageTemplateSelector}"/>
+            <ContentControl Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
         </StackPanel>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding Previous}" Value="{x:Null}">
@@ -73,23 +74,8 @@
         </DataTemplate.Triggers>
     </DataTemplate>
 
-    <ck:CompositeDataTemplateSelector x:Key="DefaultConfigPageTemplateSelector">
-        <ck:TypeDataTemplateSelector Type="{x:Type local:ConfigPage}">
-            <DataTemplate>
-                <Border HorizontalAlignment="Stretch" CornerRadius="2" Background="White" Margin="3" Padding="5" BorderThickness="1" BorderBrush="Gray" >
-                    <ItemsControl ItemsSource="{Binding Items}" ItemTemplateSelector="{DynamicResource DefaultConfigSelector}" Margin="5" />
-                </Border>
-            </DataTemplate>
-        </ck:TypeDataTemplateSelector>
-    </ck:CompositeDataTemplateSelector>
-
-    <DataTemplate x:Key="ConfigGroupTemplate">
-        <Border HorizontalAlignment="Stretch" Style="{StaticResource Rounded}" >
-            <ItemsControl ItemsSource="{Binding Items}" ItemTemplateSelector="{DynamicResource DefaultConfigSelector}" />
-        </Border>
-    </DataTemplate>
-
-    <DataTemplate x:Key="ConfigActivableSection">
+ 
+    <DataTemplate x:Key="CK.Config.ActivableSectionTemplate">
         <DockPanel>
             <CheckBox HorizontalAlignment="Center" FontSize="14" DockPanel.Dock="Top" IsChecked="{Binding Value}">
                 <StackPanel Orientation="Horizontal">
@@ -97,8 +83,8 @@
                     <TextBlock FontWeight="Bold" Margin="5 0 0 0" Text="{Binding DisplayName}" ToolTip="{Binding Description}"/>
                 </StackPanel>
             </CheckBox>
-            <Border Name="border" Style="{StaticResource Rounded}">
-                <ItemsControl IsEnabled="{Binding Value}" ItemsSource="{Binding Items}" ItemTemplateSelector="{DynamicResource DefaultConfigSelector}"/>
+            <Border Name="border" Style="{StaticResource CK.Config.RoundBox}">
+                <ItemsControl IsEnabled="{Binding Value}" ItemsSource="{Binding Items}" ItemTemplateSelector="{DynamicResource CK.Config.DefaultItemSelector}"/>
             </Border>
         </DockPanel>
         <DataTemplate.Triggers>
@@ -123,11 +109,27 @@
         </DataTemplate.Triggers>
     </DataTemplate>
 
-    <ck:CompositeDataTemplateSelector x:Key="DefaultConfigSelector">
+    <DataTemplate x:Key="CK.Config.GroupTemplate">
+        <Border HorizontalAlignment="Stretch" Style="{StaticResource CK.Config.RoundBox}" >
+            <ItemsControl ItemsSource="{Binding Items}" ItemTemplateSelector="{DynamicResource CK.Config.DefaultItemSelector}" />
+        </Border>
+    </DataTemplate>
 
-        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigActivableSection}" Template="{StaticResource ConfigActivableSection}"/>
+    <ck:CompositeDataTemplateSelector x:Key="CK.Config.DefaultPageSelector">
+        <ck:TypeDataTemplateSelector Type="{x:Type local:ConfigPage}">
+            <DataTemplate>
+                <Border HorizontalAlignment="Stretch" CornerRadius="2" Background="White" Margin="3" Padding="5" BorderThickness="1" BorderBrush="Gray" >
+                    <ItemsControl ItemsSource="{Binding Items}" ItemTemplateSelector="{DynamicResource CK.Config.DefaultItemSelector}" Margin="5" />
+                </Border>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
+    </ck:CompositeDataTemplateSelector>
+    
+    <ck:CompositeDataTemplateSelector x:Key="CK.Config.DefaultItemSelector">
 
-        <ck:TypeDataTemplateSelector Type="{ck:Type local:ConfigGroup}" Template="{StaticResource ConfigGroupTemplate}" />
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigActivableSection}" Template="{StaticResource CK.Config.ActivableSectionTemplate}"/>
+
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:ConfigGroup}" Template="{StaticResource CK.Config.GroupTemplate}" />
 
         <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigItemProperty(sys:Boolean)}" >
             <DataTemplate>
@@ -153,7 +155,7 @@
 
         <ck:TypeDataTemplateSelector Type="{ck:Type local:ConfigItemAction}" >
             <DataTemplate>
-                <Button Style="{StaticResource ConfigLink}" HorizontalContentAlignment="Stretch" Command="{Binding ActionCommand}">
+                <Button Style="{StaticResource CK.Config.Link}" HorizontalContentAlignment="Stretch" Command="{Binding ActionCommand}">
                     <DockPanel LastChildFill="False"> 
                         <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding DisplayName}"/>
                         <Image DockPanel.Dock="Right" Stretch="None">
@@ -174,7 +176,7 @@
 
         <ck:TypeDataTemplateSelector Type="{ck:Type local:ConfigItemLink}" >
             <DataTemplate>
-                <Button HorizontalContentAlignment="Stretch" Command="{Binding GotoCommand}" Style="{StaticResource ConfigLink}">
+                <Button HorizontalContentAlignment="Stretch" Command="{Binding GotoCommand}" Style="{StaticResource CK.Config.Link}">
                     <DockPanel LastChildFill="False">
                         <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding DisplayName}"/>
                         <Image Name="image" DockPanel.Dock="Right" Stretch="None" >

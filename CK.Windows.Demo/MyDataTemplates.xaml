@@ -4,15 +4,16 @@
                     xmlns:ck="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
                     xmlns:config="clr-namespace:CK.Windows.Config;assembly=CK.Windows.Config"
                     xmlns:local="clr-namespace:CK.Windows.Demo">
+    
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/CK.Windows.Config;component/Views/CK.Config.xaml"/>
         <ResourceDictionary>
-            <StaticResource x:Key="OriginalConfigPageTemplateSelector" ResourceKey="DefaultConfigPageTemplateSelector" />
-            <StaticResource x:Key="OriginalConfigSelector" ResourceKey="DefaultConfigSelector" />
+            <StaticResource x:Key="OriginalConfigPageSelector" ResourceKey="CK.Config.DefaultPageSelector" />
+            <StaticResource x:Key="OriginalConfigItemSelector" ResourceKey="CK.Config.DefaultItemSelector" />
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
-    <ck:CompositeDataTemplateSelector Fallback="{StaticResource OriginalConfigPageTemplateSelector}" x:Key="DefaultConfigPageTemplateSelector">
+    <ck:CompositeDataTemplateSelector Fallback="{StaticResource OriginalConfigPageSelector}" x:Key="CK.Config.DefaultPageSelector">
         <ck:TypeDataTemplateSelector Type="{ck:Type local:SpecificViewModel}" >
             <DataTemplate>
                 <local:SpecView/>
@@ -20,7 +21,7 @@
         </ck:TypeDataTemplateSelector>
     </ck:CompositeDataTemplateSelector>
 
-    <ck:CompositeDataTemplateSelector Fallback="{StaticResource OriginalConfigSelector}" x:Key="DefaultConfigSelector">
+    <ck:CompositeDataTemplateSelector Fallback="{StaticResource OriginalConfigItemSelector}" x:Key="CK.Config.DefaultItemSelector">
         <ck:TypeDataTemplateSelector Type="{ck:Type config:IConfigItemProperty(sys:Boolean)}" >
             <DataTemplate>
                 <Label>Specific visualization of IConfigItemProperty</Label>

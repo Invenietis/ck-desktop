@@ -49,9 +49,9 @@ namespace CK.Windows.Core
     xmlns:ck=""clr-namespace:CK.Windows;assembly=CK.Windows.Core"" >
 
     <Window.Resources>
-        <x:Array x:Key=""SimpleIntArray"" Type=""{x:Type sys:Int32}"">
+        <x:Array x:Key=""Simple.Int.Array"" Type=""{x:Type sys:Int32}"">
         </x:Array>
-        <x:Array x:Key=""SimpleObjArray"" Type=""{x:Type test:OneObject}"">
+        <x:Array x:Key=""Simple.Obj.Array"" Type=""{x:Type test:OneObject}"">
         </x:Array>
     </Window.Resources>
 
@@ -62,7 +62,7 @@ namespace CK.Windows.Core
             using( var reader = new XmlTextReader( text ) )
             {
                 var w = (Window)System.Windows.Markup.XamlReader.Load( reader );
-                Assert.That( w.Resources["SimpleObjArray"], Is.InstanceOf<TestXaml.TestNamespace.OneObject[]>() );
+                Assert.That( w.Resources["Simple.Obj.Array"], Is.InstanceOf<TestXaml.TestNamespace.OneObject[]>() );
             }
         }
 
