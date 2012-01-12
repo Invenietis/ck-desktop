@@ -71,9 +71,9 @@ namespace CK.Windows.Config
             return a;
         }
 
-        public static ConfigItemCurrent<T> AddCurrentItem<T, THolder>( this IConfigItemContainer c, string displayName, string description, THolder o, Expression<Func<THolder, T>> prop, Func<THolder,object> valueCollection )
+        public static ConfigItemCurrent<T> AddCurrentItem<T, THolder>( this IConfigItemContainer c, string displayName, string description, THolder o, Expression<Func<THolder, T>> prop, Func<THolder,object> valueCollection, bool ensureCurrentNotNull, string noCurrentDisplayString )
         {
-            ConfigItemCurrent<T> a = new ConfigItemCurrent<T>( c.ConfigManager, o, ReflectionHelper.GetPropertyInfo( o, prop ), () => valueCollection( o ) ) { DisplayName = displayName, Description = description };
+            ConfigItemCurrent<T> a = new ConfigItemCurrent<T>( c.ConfigManager, o, ReflectionHelper.GetPropertyInfo( o, prop ), () => valueCollection( o ), ensureCurrentNotNull, noCurrentDisplayString ) { DisplayName = displayName, Description = description };
             c.Items.Add( a );
             return a;
         }

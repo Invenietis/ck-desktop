@@ -63,7 +63,7 @@ namespace CK.Windows.App
         
         static public void Run( Func<Application> createAndInitializeApp )
         {
-            SplashScreen splashScreen = new SplashScreen( Assembly.GetCallingAssembly(), "Views/splash.png" );
+            SplashScreen splashScreen = new SplashScreen( Assembly.GetCallingAssembly(), "Views/Splash.png" );
             splashScreen.Show( false );
 
             Application app = createAndInitializeApp();

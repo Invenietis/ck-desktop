@@ -13,6 +13,9 @@ namespace CK.Windows.Demo
         SpecificViewModel _specificVM;
         public SpecificViewModel SpecificVM { get { return _specificVM ?? (_specificVM = new SpecificViewModel( ConfigManager )); } }
 
+        ProfilesViewModel _profilesVM;
+        public ProfilesViewModel ProfilesVM { get { return _profilesVM ?? ( _profilesVM = new ProfilesViewModel( ConfigManager ) ); } }
+
         public bool BoolProperty { get; set; }
 
         public SubViewModel( ConfigManager configManager )
@@ -23,6 +26,8 @@ namespace CK.Windows.Demo
             this.AddProperty( "Bool property", this, ( o ) => o.BoolProperty );
 
             this.AddLink( SpecificVM );
+
+            this.AddLink( ProfilesVM );
         }
     }
 }

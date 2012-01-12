@@ -63,6 +63,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DemoVms\ProfilesAutoSetViewModel.cs" />
+    <Compile Include="DemoVms\ProfilesViewModel.cs" />
     <Compile Include="DemoVms\SpecificViewModel.cs" />
     <Compile Include="DemoVms\SubViewModel.cs" />
     <Compile Include="UserControls\AppView.xaml.cs">

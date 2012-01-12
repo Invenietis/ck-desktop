@@ -27,6 +27,15 @@
                 <Label>Specific visualization of IConfigItemProperty</Label>
             </DataTemplate>
         </ck:TypeDataTemplateSelector>
+        <ck:TypeDataTemplateSelector Type="{ck:Type config:IConfigItemProperty(sys:String)}" >
+            <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding DisplayName}" />
+                    <Label Content=" : " />
+                    <Label Content="{Binding Value}" />
+                </StackPanel>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
     </ck:CompositeDataTemplateSelector>
-
+    
 </ResourceDictionary>
