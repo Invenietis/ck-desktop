@@ -13,8 +13,8 @@ namespace CK.Windows.Demo
         SpecificViewModel _specificVM;
         public SpecificViewModel SpecificVM { get { return _specificVM ?? (_specificVM = new SpecificViewModel( ConfigManager )); } }
 
-        ProfilesViewModel _profilesVM;
-        public ProfilesViewModel ProfilesVM { get { return _profilesVM ?? ( _profilesVM = new ProfilesViewModel( ConfigManager ) ); } }
+        ConfigCurrentItemTestsViewModel _profilesVM;
+        public ConfigCurrentItemTestsViewModel ProfilesVM { get { return _profilesVM ?? (_profilesVM = new ConfigCurrentItemTestsViewModel( ConfigManager )); } }
 
         public bool BoolProperty { get; set; }
 

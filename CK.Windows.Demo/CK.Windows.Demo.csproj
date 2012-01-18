@@ -63,6 +63,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DemoVms\ConfigCurrentItemTestsViewModel.cs" />
     <Compile Include="DemoVms\ProfilesAutoSetViewModel.cs" />
     <Compile Include="DemoVms\ProfilesNoNotifyViewModel.cs" />
     <Compile Include="DemoVms\ProfilesViewModel.cs" />

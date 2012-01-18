@@ -55,7 +55,7 @@ namespace CK.Windows.Demo
 
             this.AddAction( "Remove a profile", () => { if ( Profiles.Count > 0 ) Profiles.Remove( Profiles.First() ); } );
 
-            this.AddLink( ProfilesNoNotifyVM );
+            //this.AddLink( ProfilesNoNotifyVM );
         }
     }
 }

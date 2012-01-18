@@ -17,8 +17,7 @@ using System.Windows;
 namespace CK.Windows.Config
 {
     public class ConfigItemCurrent<T> : ConfigItem, IConfigItemCurrent<T>
-    {
-        bool _readMode = false;
+    {        
         ValueProperty<T> _current;
         INotifyPropertyChanged _monitorCurrent;
         Func<object> _sourceValues;
@@ -116,8 +115,7 @@ namespace CK.Windows.Config
 
         void OnCurrentChanged()
         {
-            if(!_readMode)
-                _current.Set( (T)_values.CurrentItem );
+            _current.Set( (T)_values.CurrentItem );
 
             //When current is not auto-set and current is not null and there is only one element in the collectionView, (which means that the only element of the collection IS the current)
             //then the combobox isn't necessary anymore. Trigger PropertyChanged on ShowMultiple & ShowOne to have the combo replaced by a textblock
@@ -128,11 +126,13 @@ namespace CK.Windows.Config
             }
         }
 
+        //Should only be useful when the model does not implement INotifyPropertyChanged
         public void RefreshCurrent( object o, EventArgs e )
         {
             Values.MoveCurrentTo( _current.Get() );  
         }
 
+        //Should be only be useful when the model does not implement INotifyPropertyChanged
         public void RefreshValues( object o, EventArgs e )
         {             
             Values.Refresh();         
