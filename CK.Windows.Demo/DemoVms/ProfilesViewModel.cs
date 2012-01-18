@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace CK.Windows.Demo
 {
+    //This ViewModel uses the ConfigItemCurrent with "don't ensure that current is not null". It will not set the model unless the user changes it via the combobox.
     internal class ProfilesViewModel : ConfigPage
     {
         ProfilesAutoSetViewModel _profilesAutoSetVM;

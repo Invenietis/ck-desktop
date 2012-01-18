@@ -71,6 +71,20 @@ namespace CK.Windows.Config
             return a;
         }
 
+        /// <summary>       
+        /// Adds a combobox bound to an ObservableCollection and a property showing the currently selected element from the collection
+        /// </summary>
+        /// <typeparam name="T">Type of one element of the collection</typeparam>
+        /// <typeparam name="THolder">Type of the holder of the selected element property</typeparam>
+        /// <param name="c"></param>
+        /// <param name="displayName">Label of the collection</param>
+        /// <param name="description">Description of the control</param>
+        /// <param name="o">instance of the holder of the selected element property</param>
+        /// <param name="prop">Expression that returns the selected element property</param>
+        /// <param name="valueCollection">Function that returns the ObservableCollection</param>
+        /// <param name="ensureCurrentNotNull">set to true if you want the collection to set the current element if it is null and there are elements in the valueCollection</param>
+        /// <param name="noCurrentDisplayString">Displayed string when the current element is null</param>
+        /// <returns></returns>
         public static ConfigItemCurrent<T> AddCurrentItem<T, THolder>( this IConfigItemContainer c, string displayName, string description, THolder o, Expression<Func<THolder, T>> prop, Func<THolder,object> valueCollection, bool ensureCurrentNotNull, string noCurrentDisplayString )
         {
             ConfigItemCurrent<T> a = new ConfigItemCurrent<T>( c.ConfigManager, o, ReflectionHelper.GetPropertyInfo( o, prop ), () => valueCollection( o ), ensureCurrentNotNull, noCurrentDisplayString ) { DisplayName = displayName, Description = description };

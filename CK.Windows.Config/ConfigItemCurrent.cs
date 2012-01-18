@@ -18,6 +18,7 @@ namespace CK.Windows.Config
 {
     public class ConfigItemCurrent<T> : ConfigItem, IConfigItemCurrent<T>
     {
+        bool _readMode = false;
         ValueProperty<T> _current;
         INotifyPropertyChanged _monitorCurrent;
         Func<object> _sourceValues;
@@ -25,18 +26,35 @@ namespace CK.Windows.Config
         bool _ensureCurrentNotNull;
         string _noCurrentDisplayString;
 
+        /// <summary>
+        /// Initalizes a Wrapper that adds a "selected element" notion to an Observable collection set as sourceValue
+        /// </summary>
+        /// <param name="configManager"></param>
+        /// <param name="o">The object holding the selected element property</param>
+        /// <param name="current">PropertyInfo of the selected element property</param>
+        /// <param name="valueCollection">Func that returns the ObservableCollection listing the values</param>
+        /// <param name="ensureCurrentNotNull">set to true if you want the collection to set the current element if it is null and there are elements in the valueCollection</param>
+        /// <param name="noCurrentDisplayString">Displayed string when the current element is null</param>
         public ConfigItemCurrent( ConfigManager configManager, object o, PropertyInfo current, Func<object> valueCollection, bool ensureCurrentNotNull, string noCurrentDisplayString )
             : this( configManager, new ValueProperty<T>( o, current ), valueCollection, o as INotifyPropertyChanged, ensureCurrentNotNull, noCurrentDisplayString )
         {
         }
 
+        /// <summary>
+        /// Initalizes a Wrapper that adds a "selected element" notion to an Observable collection set as sourceValue
+        /// </summary>
+        /// <param name="configManager"></param>
+        /// <param name="current">ValueProperty of the selected element property</param>
+        /// <param name="valueCollection">Func that returns the ObservableCollection listing the values</param>
+        /// <param name="monitorCurrent">Instance of the selected element property's holder, must implement INotifyPropertChanged</param>
+        /// <param name="ensureCurrentNotNull">set to true if you want the collection to set the current element if it is null and there are elements in the valueCollection</param>
+        /// <param name="noCurrentDisplayString">Displayed string when the current element is null</param>
         public ConfigItemCurrent( ConfigManager configManager, ValueProperty<T> current, Func<object> valueCollection, INotifyPropertyChanged monitorCurrent, bool ensureCurrentNotNull, string noCurrentDisplayString )
             : base( configManager )
         {
             _current = current;
             if ( ( _monitorCurrent = monitorCurrent ) != null )
             {
-                //When the holder triggers a PropertyChanged event
                 _monitorCurrent.PropertyChanged += new PropertyChangedEventHandler( OnHolderPropertyChanged );
             }
             _sourceValues = valueCollection;
@@ -48,7 +66,7 @@ namespace CK.Windows.Config
         {
             if ( e.PropertyName == _current.PropertyInfo.Name )
             {
-                //When the Holder's Selected property changes, refresh the collectionView's current element
+                //When the Holder's selected element property changes, refresh the collectionView's current element
                 _values.MoveCurrentTo( _current.Get() );
             }
         }        
@@ -73,14 +91,17 @@ namespace CK.Windows.Config
                 if( _values == null )
                 {
                     _values = CollectionViewSource.GetDefaultView( _sourceValues() );
-
                     _values.MoveCurrentTo( _current.Get() );
+
+                    //Triggered when the user selects a new item in the combobox or when Values.Refresh() is called
                     _values.CurrentChanged += (s,e) => OnCurrentChanged();
+
+                    //Triggerd by the underlying ObservableCollection or when Values.Refresh() is called
                     _values.CollectionChanged += (s,e) => OnCollectionChanged();
                 }
                 return _values; 
             }
-        }        
+        }
 
         void OnCollectionChanged()
         {
@@ -95,11 +116,11 @@ namespace CK.Windows.Config
 
         void OnCurrentChanged()
         {
-            //When the user has chosen a current in the combobox, set the model
-            _current.Set( (T)_values.CurrentItem );            
+            if(!_readMode)
+                _current.Set( (T)_values.CurrentItem );
 
             //When current is not auto-set and current is not null and there is only one element in the collectionView, (which means that the only element of the collection IS the current)
-            //then the combobox isn't necesary anymore. Trigger PropertyChanged on ShowMultiple & ShowOne to have the combo replaced by a textblock
+            //then the combobox isn't necessary anymore. Trigger PropertyChanged on ShowMultiple & ShowOne to have the combo replaced by a textblock
             if ( !_ensureCurrentNotNull && _current.Get() != null && !IsMoreThanOne )
             {
                 NotifyOfPropertyChange( "ShowMultiple" );
@@ -107,11 +128,14 @@ namespace CK.Windows.Config
             }
         }
 
-        public void ValuesRefresh( object o, EventArgs e )
+        public void RefreshCurrent( object o, EventArgs e )
         {
-            Values.Refresh();
+            Values.MoveCurrentTo( _current.Get() );  
         }
 
-       
+        public void RefreshValues( object o, EventArgs e )
+        {             
+            Values.Refresh();         
+        }
     }
 }

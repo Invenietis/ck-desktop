@@ -36,6 +36,39 @@
                 </StackPanel>
             </DataTemplate>
         </ck:TypeDataTemplateSelector>
+
+               
+        <!-- HowTo : set the tempaltes of a ConfigItemCurrent & a linked ConfigItemProperty -->
+               
+        <ck:TypeDataTemplateSelector Type="{ck:Type config:IConfigItemCurrent(local:CustomProfile)}">
+            <DataTemplate>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding DisplayName}"/>
+                    <Label DockPanel.Dock="Left" FontWeight="DemiBold" Visibility="{Binding ShowOne}" Content="{Binding Values.CurrentItem.Name}"></Label>
+                    <Image DockPanel.Dock="Right" Stretch="None" Source="{Binding ImagePath}" Margin="0 0 5 0" />
+                    <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0 0 5 0"/>
+                    <ComboBox Visibility="{Binding ShowMultiple}" FontSize="12" Margin="3" ItemsSource="{Binding Values}" IsSynchronizedWithCurrentItem="True">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Name}"></Label>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </DockPanel>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
+
+        <ck:TypeDataTemplateSelector Type="{ck:Type config:IConfigItemProperty(local:CustomProfile)}" >
+            <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding DisplayName}" />
+                    <Label Content=" : " />
+                    <Label Content="{Binding Value.Name}" />
+                </StackPanel>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
+        <!-- End of the HowTo -->
+        
     </ck:CompositeDataTemplateSelector>
     
 </ResourceDictionary>
