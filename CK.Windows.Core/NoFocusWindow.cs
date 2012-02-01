@@ -37,7 +37,7 @@ namespace CK.Windows
             }
             else
             {
-
+                this.Background = new SolidColorBrush( Colors.WhiteSmoke );
             }
 
             _wndHook = new HwndSourceHook( WndProc );
