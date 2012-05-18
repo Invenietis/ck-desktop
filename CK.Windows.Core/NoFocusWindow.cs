@@ -5,11 +5,15 @@ using CK.Core;
 using System.Windows.Media;
 using CK.Interop;
 using System.Windows.Input;
+using System.Runtime.InteropServices;
 
 namespace CK.Windows
 {
     public class NoFocusWindow : Window
     {
+        private const int SW_SHOWNORMAL = 1;
+        private const int SW_SHOWMINIMIZED = 2;
+
         WindowInteropHelper _interopHelper;
         HwndSourceHook _wndHook;
         IntPtr _lastFocused;
@@ -17,12 +21,11 @@ namespace CK.Windows
 
         public NoFocusWindow()
         {
+            _interopHelper = new WindowInteropHelper( this );
         }
 
         protected override void OnSourceInitialized( EventArgs e )
         {
-            _interopHelper = new WindowInteropHelper( this );
-
             Win.Functions.SetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE, (uint)Win.WS_EX.NOACTIVATE );
 
             HwndSource mainWindowSrc = HwndSource.FromHwnd( _interopHelper.Handle );
@@ -70,7 +73,6 @@ namespace CK.Windows
             Win.Functions.SetForegroundWindow( _lastFocused );
         }
 
-
         IntPtr WndProc( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
             switch( (Win.WM)msg )
@@ -95,5 +97,76 @@ namespace CK.Windows
             if( WindowState == System.Windows.WindowState.Maximized )
                 WindowState = System.Windows.WindowState.Normal;
         }
+
+        #region WindowPlacement methods
+       
+        public void SetPlacement( WINDOWPLACEMENT placement )
+        {
+            placement.length = Marshal.SizeOf( typeof( WINDOWPLACEMENT ) );
+            placement.flags = 0;
+            placement.showCmd = ( placement.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : placement.showCmd );
+            SetWindowPlacement( _interopHelper.Handle, ref placement );
+        }
+
+        public WINDOWPLACEMENT GetPlacement()
+        {
+            WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+            GetWindowPlacement( _interopHelper.Handle, out placement );
+            return placement;
+        }
+
+        [System.Runtime.InteropServices.DllImport( "user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall )]
+        private static extern bool SetWindowPlacement( IntPtr hWnd, [In] ref WINDOWPLACEMENT lpwndpl );
+
+        [System.Runtime.InteropServices.DllImport( "user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall )]
+        private static extern bool GetWindowPlacement( IntPtr hWnd, out WINDOWPLACEMENT lpwndpl );
     }
+    // RECT structure required by WINDOWPLACEMENT structure
+        [Serializable]
+        [StructLayout( LayoutKind.Sequential )]
+        public struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+
+            public RECT( int left, int top, int right, int bottom )
+            {
+                this.Left = left;
+                this.Top = top;
+                this.Right = right;
+                this.Bottom = bottom;
+            }
+        }
+
+        // POINT structure required by WINDOWPLACEMENT structure
+        [Serializable]
+        [StructLayout( LayoutKind.Sequential )]
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+
+            public POINT( int x, int y )
+            {
+                this.X = x;
+                this.Y = y;
+            }
+        }
+
+        // WINDOWPLACEMENT stores the position, size, and state of a window
+        [Serializable]
+        [StructLayout( LayoutKind.Sequential )]
+        public struct WINDOWPLACEMENT
+        {
+            public int length;
+            public int flags;
+            public int showCmd;
+            public POINT minPosition;
+            public POINT maxPosition;
+            public RECT normalPosition;
+        }
+
+        #endregion
 }

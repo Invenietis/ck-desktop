@@ -1490,6 +1490,18 @@
             Places the window above all non-topmost windows. The window maintains its topmost position even when it is deactivated.
             </summary>
         </member>
+        <member name="T:CK.Interop.PInvoker">
+            <summary>
+            Static class that dynamically handles the <see cref="T:CK.Interop.DllImportAttribute">CK.Interop.DllImportAttribute</see>.
+            </summary>
+        </member>
+        <member name="M:CK.Interop.PInvoker.GetInvoker``1">
+            <summary>
+            Gets an automatically generated implementation for an interface that must be marked with a <see cref="T:CK.Interop.NativeDllAttribute"/>.
+            </summary>
+            <typeparam name="T">Interface that must be obtained.</typeparam>
+            <returns>Implementation that can be used to call the native functions.</returns>
+        </member>
         <member name="T:CK.Interop.DllImportAttribute">
             <summary>
             This attribute duplicates the <see cref="T:System.Runtime.InteropServices.DllImportAttribute"/> fields and adds
@@ -1601,18 +1613,6 @@
             Gets or sets the name of the native default library to be used when running in 64 bits hosts for any methods
             of the interface that do not specify it in their <see cref="T:CK.Interop.DllImportAttribute"/>.
             </summary>
-        </member>
-        <member name="T:CK.Interop.PInvoker">
-            <summary>
-            Static class that dynamically handles the <see cref="T:CK.Interop.DllImportAttribute">CK.Interop.DllImportAttribute</see>.
-            </summary>
-        </member>
-        <member name="M:CK.Interop.PInvoker.GetInvoker``1">
-            <summary>
-            Gets an automatically generated implementation for an interface that must be marked with a <see cref="T:CK.Interop.NativeDllAttribute"/>.
-            </summary>
-            <typeparam name="T">Interface that must be obtained.</typeparam>
-            <returns>Implementation that can be used to call the native functions.</returns>
         </member>
         <member name="F:CK.Interop.Dwm.DWMNCRP_USEWINDOWSTYLE">
             <summary>
