@@ -66,7 +66,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Runtime\Current\Common.Logging.Log4Net.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=8692c11e1bce2429, processorArchitecture=MSIL">
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Runtime\Current\log4net.dll</HintPath>
     </Reference>
