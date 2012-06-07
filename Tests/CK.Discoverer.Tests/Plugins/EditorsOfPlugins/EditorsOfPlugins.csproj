@@ -61,7 +61,7 @@
     </ProjectReference>
     <ProjectReference Include="..\ServiceA\ServiceA.csproj">
       <Project>{0834218A-9AA5-414A-8679-A7EF7E7B59AB}</Project>
-      <Name>ServiceA %28Tests\Discoverer.Tests.Plugins\ServiceA%29</Name>
+      <Name>ServiceA %28_Tests\Discoverer.Tests.Plugins\ServiceA%29</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
