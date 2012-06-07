@@ -1,0 +1,214 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ck="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+                    xmlns:local="clr-namespace:CK.Windows.Config">
+
+    <Style TargetType="Border" x:Key="CK.Config.RoundBox">
+        <Setter Property="Background" Value="White"></Setter>
+        <Setter Property="BorderBrush" Value="Gray"></Setter>
+        <Setter Property="BorderThickness" Value="0.5"></Setter>
+        <Setter Property="CornerRadius" Value="5"></Setter>
+        <Setter Property="Margin" Value="0 5 0 0"></Setter>
+        <Setter Property="Padding" Value="5 2"></Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="CK.Config.Link" >
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="false"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Border" Style="{StaticResource CK.Config.RoundBox}" >
+                        <ContentPresenter Margin="2"  VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#202020" />
+                        </Trigger>
+                        <Trigger Property="IsDefaulted" Value="true">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#202020" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Border" Property="Background" Value="#FFEFEFEF" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="Border" Property="Background" Value="#E0E0E0" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#606060" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
+                            <Setter Property="Foreground" Value="#888888"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- This template is bound to the ConfigManager type. -->
+    <DataTemplate DataType="{x:Type local:ConfigManager}">
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" >
+                <StackPanel.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFC7C7C7" Offset="1" />
+                        <GradientStop Color="White" Offset="0" />
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+                <Button Margin="3" Command="{Binding GoBackCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image x:Name="BackArrow" Width="16" Height="16" Source="Back.png"/>
+                        <ContentPresenter Margin="5 0 0 0" Content="{Binding Path=Previous.DisplayName}"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <ContentControl Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
+        </StackPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Previous}" Value="{x:Null}">
+                <Setter TargetName="BackArrow" Property="Opacity" Value="0.3"/>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+ 
+    <DataTemplate x:Key="CK.Config.ActivableSectionTemplate">
+        <DockPanel>
+            <CheckBox HorizontalAlignment="Center" FontSize="14" DockPanel.Dock="Top" IsChecked="{Binding Value}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Uid="activate-activablesection">Activate</TextBlock>
+                    <TextBlock FontWeight="Bold" Margin="5 0 0 0" Text="{Binding DisplayName}" ToolTip="{Binding Description}"/>
+                </StackPanel>
+            </CheckBox>
+            <Border Name="border" Style="{StaticResource CK.Config.RoundBox}">
+                <ItemsControl IsEnabled="{Binding Value}" ItemsSource="{Binding Items}" ItemTemplateSelector="{DynamicResource CK.Config.DefaultItemSelector}"/>
+            </Border>
+        </DockPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Value}" Value="False">
+                <Setter TargetName="border" Property="TextElement.Foreground" Value="#888888"/>
+                
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard TargetName="border">
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.5" Duration="0:0:0.5"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard TargetName="border">
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.5"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CK.Config.GroupTemplate">
+        <Border HorizontalAlignment="Stretch" Style="{StaticResource CK.Config.RoundBox}" >
+            <ItemsControl ItemsSource="{Binding Items}" ItemTemplateSelector="{DynamicResource CK.Config.DefaultItemSelector}" />
+        </Border>
+    </DataTemplate>
+
+    <ck:CompositeDataTemplateSelector x:Key="CK.Config.DefaultPageSelector">
+        <ck:TypeDataTemplateSelector Type="{x:Type local:ConfigPage}">
+            <DataTemplate>
+                <Border HorizontalAlignment="Stretch" CornerRadius="2" Background="White" Margin="3" Padding="5" BorderThickness="1" BorderBrush="Gray" >
+                    <ItemsControl ItemsSource="{Binding Items}" ItemTemplateSelector="{DynamicResource CK.Config.DefaultItemSelector}" Margin="5" />
+                </Border>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
+    </ck:CompositeDataTemplateSelector>
+    
+    <ck:CompositeDataTemplateSelector x:Key="CK.Config.DefaultItemSelector">
+
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigActivableSection}" Template="{StaticResource CK.Config.ActivableSectionTemplate}"/>
+
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:ConfigGroup}" Template="{StaticResource CK.Config.GroupTemplate}" />
+
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigItemProperty(sys:Boolean)}" >
+            <DataTemplate>
+                <DockPanel LastChildFill="False" Margin="3">
+                    <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center" IsChecked="{Binding Value}" Margin="0 0 3 0"/>
+                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{Binding DisplayName}"/>
+                    <Image DockPanel.Dock="Left" Stretch="None" Source="{Binding ImagePath}" />
+                    <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
+                </DockPanel>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
+
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigItemProperty(sys:Int32)}">
+            <DataTemplate>
+                <DockPanel LastChildFill="False" Margin="3">
+                    <TextBox DockPanel.Dock="Right" Text="{Binding Path=Value, Mode=TwoWay}" Width="50" Margin="0 0 3 0"/>
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding DisplayName}" VerticalAlignment="Center"/>
+                    <Image DockPanel.Dock="Left" Stretch="None" Source="{Binding ImagePath}" />
+                    <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
+                </DockPanel>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
+
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:ConfigItemAction}" >
+            <DataTemplate>
+                <Button Style="{StaticResource CK.Config.Link}" HorizontalContentAlignment="Stretch" Command="{Binding ActionCommand}">
+                    <DockPanel LastChildFill="False"> 
+                        <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding DisplayName}"/>
+                        <Image DockPanel.Dock="Right" Stretch="None">
+                            <Image.Source>
+                                <Binding>
+                                    <Binding.Source>ImagePath</Binding.Source>
+                                    <Binding.FallbackValue>
+                                        <ImageSource>Gear.png</ImageSource>
+                                    </Binding.FallbackValue>
+                                </Binding>
+                            </Image.Source>
+                        </Image>
+                        <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
+                    </DockPanel>
+                </Button>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
+
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:ConfigItemLink}" >
+            <DataTemplate>
+                <Button HorizontalContentAlignment="Stretch" Command="{Binding GotoCommand}" Style="{StaticResource CK.Config.Link}">
+                    <DockPanel LastChildFill="False">
+                        <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding DisplayName}"/>
+                        <Image Name="image" DockPanel.Dock="Right" Stretch="None" >
+                            <Image.Source>
+                                <Binding>
+                                    <Binding.Source>ImagePath</Binding.Source>
+                                    <Binding.FallbackValue>
+                                        <ImageSource>Forward.png</ImageSource>
+                                    </Binding.FallbackValue>
+                                </Binding>
+                            </Image.Source>
+                        </Image>
+                        <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
+                    </DockPanel>
+                </Button>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
+
+        <!-- This one is very general: any IConfigItemCurrent<> will match. -->
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:IConfigItemCurrent(sys:Object)}" >
+            <DataTemplate>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding DisplayName}"/>
+                    <Label DockPanel.Dock="Left" FontWeight="DemiBold" Visibility="{Binding ShowOne}" Content="{Binding Values.CurrentItem}"></Label>
+                    <!-- Then comes, on the right, the description and the image. -->
+                    <Image DockPanel.Dock="Right" Stretch="None" Source="{Binding ImagePath}" Margin="0 0 5 0" />
+                    <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0 0 5 0"/>
+                    <ComboBox Visibility="{Binding ShowMultiple}" FontSize="12" Margin="3" ItemsSource="{Binding Values}" IsSynchronizedWithCurrentItem="True" />
+                </DockPanel>
+            </DataTemplate>
+        </ck:TypeDataTemplateSelector>
+
+    </ck:CompositeDataTemplateSelector>
+
+</ResourceDictionary>

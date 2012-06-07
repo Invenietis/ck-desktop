@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="CK.Windows.Demo.SpecView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             MinHeight="230">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Property}" FontSize="22" Width="190" Height="40">
+            <Label.LayoutTransform>
+                <RotateTransform Angle="{Binding ElementName=angle, Path=Value}" CenterX="95" CenterY="20"/>
+            </Label.LayoutTransform>
+        </Label>
+        <Slider Grid.Row="1" Minimum="0" Maximum="360" Name="angle" Margin="10 0 10 0"></Slider>
+    </Grid>
+</UserControl>

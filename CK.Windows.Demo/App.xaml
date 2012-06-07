@@ -1,0 +1,15 @@
+﻿<Application x:Class="CK.Windows.Demo.App"
+             xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:CK.Windows.Demo">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <local:AppBoostrapper x:Key="bootstrapper"/>
+                </ResourceDictionary>
+                <ResourceDictionary Source="MyDataTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
