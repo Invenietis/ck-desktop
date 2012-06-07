@@ -58,12 +58,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CK.Core\CK.Core.csproj">
-      <Project>{6DFBE436-2571-4029-B220-E101D2162A63}</Project>
-      <Name>CK.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>

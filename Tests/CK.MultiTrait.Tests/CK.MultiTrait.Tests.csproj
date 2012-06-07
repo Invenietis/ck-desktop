@@ -45,16 +45,6 @@
     <Compile Include="Traits.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\CK.Core\CK.Core.csproj">
-      <Project>{97578828-71EC-46B3-BD9A-44E58292386F}</Project>
-      <Name>CK.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CK.MultiTrait\CK.MultiTrait.csproj">
-      <Project>{89B2B146-28C7-4037-9412-2E596D77C6FC}</Project>
-      <Name>CK.MultiTrait</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

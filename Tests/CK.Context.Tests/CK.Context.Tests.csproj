@@ -61,10 +61,6 @@
       <Project>{C438577C-F468-4168-98A7-2CE52F2E976A}</Project>
       <Name>CK.Context</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\CK.Core\CK.Core.csproj">
-      <Project>{97578828-71EC-46B3-BD9A-44E58292386F}</Project>
-      <Name>CK.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
       <Project>{96D1DD2E-9E76-40EA-A943-1E85B44AB862}</Project>
       <Name>CK.Plugin.Config.Model</Name>
@@ -84,10 +80,6 @@
     <ProjectReference Include="..\..\CK.Plugin.Runner\CK.Plugin.Runner.csproj">
       <Project>{9C5F6F2E-D921-4D98-BAA3-CBED45EC3A4C}</Project>
       <Name>CK.Plugin.Runner</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CK.Storage\CK.Storage.csproj">
-      <Project>{DB4586A0-0BB0-4902-870E-391B66539572}</Project>
-      <Name>CK.Storage</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

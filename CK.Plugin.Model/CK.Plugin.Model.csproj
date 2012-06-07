@@ -123,12 +123,6 @@
     <Compile Include="SolvedConfigStatus.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CK.Core\CK.Core.csproj">
-      <Project>{97578828-71EC-46B3-BD9A-44E58292386F}</Project>
-      <Name>CK.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\SharedKey.snk">
       <Link>SharedKey.snk</Link>
     </None>

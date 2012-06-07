@@ -61,10 +61,6 @@
     <Compile Include="SolvedPluginConfigurationSnapshot.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CK.Core\CK.Core.csproj">
-      <Project>{6DFBE436-2571-4029-B220-E101D2162A63}</Project>
-      <Name>CK.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
       <Project>{96D1DD2E-9E76-40EA-A943-1E85B44AB862}</Project>
       <Name>CK.Plugin.Config.Model</Name>

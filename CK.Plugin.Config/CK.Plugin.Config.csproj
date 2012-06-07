@@ -85,10 +85,6 @@
     <Compile Include="UserAndSystemConfig\LiveConfiguration\ILiveUserConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CK.Core\CK.Core.csproj">
-      <Project>{6DFBE436-2571-4029-B220-E101D2162A63}</Project>
-      <Name>CK.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
       <Project>{96D1DD2E-9E76-40EA-A943-1E85B44AB862}</Project>
       <Name>CK.Plugin.Config.Model</Name>
@@ -100,10 +96,6 @@
     <ProjectReference Include="..\CK.SharedDic\CK.SharedDic.csproj">
       <Project>{0BEFACC1-7CF4-4634-BD78-AACA73B3224F}</Project>
       <Name>CK.SharedDic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CK.Storage\CK.Storage.csproj">
-      <Project>{DB4586A0-0BB0-4902-870E-391B66539572}</Project>
-      <Name>CK.Storage</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

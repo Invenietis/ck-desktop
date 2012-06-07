@@ -81,19 +81,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CK.Core\CK.Core.csproj">
-      <Project>{6DFBE436-2571-4029-B220-E101D2162A63}</Project>
-      <Name>CK.Core</Name>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\CK.Plugin.Model\CK.Plugin.Model.csproj">
       <Project>{D6E4A9FE-F9B9-4FDC-A21A-E3E7109128C6}</Project>
       <Name>CK.Plugin.Model</Name>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\CK.Reflection\CK.Reflection.csproj">
-      <Project>{6C169A4A-969F-4952-9AD6-3D84BD0AD98B}</Project>
-      <Name>CK.Reflection</Name>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
