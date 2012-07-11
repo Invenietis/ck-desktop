@@ -39,6 +39,12 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CK.Core">
+      <HintPath>..\packages\CK.Core.2.7.5-develop\lib\net40\CK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Reflection">
+      <HintPath>..\packages\CK.Reflection.2.7.5-develop\lib\net40\CK.Reflection.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Runtime\Current\Common.Logging.dll</HintPath>

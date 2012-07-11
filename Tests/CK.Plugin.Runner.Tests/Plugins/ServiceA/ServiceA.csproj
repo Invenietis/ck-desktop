@@ -52,6 +52,12 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\packages\CK.Core.2.7.5-develop\lib\net40\CK.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

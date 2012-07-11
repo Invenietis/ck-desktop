@@ -39,6 +39,12 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CK.Core">
+      <HintPath>..\packages\CK.Core.2.7.5-develop\lib\net40\CK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Storage">
+      <HintPath>..\packages\CK.Storage.2.7.5-develop\lib\net40\CK.Storage.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging">
       <HintPath>..\Runtime\Current\Common.Logging.dll</HintPath>
     </Reference>

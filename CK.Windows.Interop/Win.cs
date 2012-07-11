@@ -24,6 +24,8 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using CK.Core;
+using CK.Interop;
 
 namespace CK.WindowsInterop
 {
@@ -1367,31 +1369,31 @@ namespace CK.WindowsInterop
         [NativeDll(DefaultDllNameGeneric="user32")]
         public interface User32Api
         {
-            [DllImport]
+            [CK.Interop.DllImport]
             IntPtr GetForegroundWindow();
 
-            [DllImport]
+            [CK.Interop.DllImport]
             int SetForegroundWindow( IntPtr hWnd );
 
-            [DllImport( EntryPoint32 = "SetWindowLong", EntryPoint64 = "SetWindowLongPtr", ExactSpelling = false )]
+            [CK.Interop.DllImport( EntryPoint32 = "SetWindowLong", EntryPoint64 = "SetWindowLongPtr", ExactSpelling = false )]
             IntPtr SetWindowLong( IntPtr hWnd, WindowLongIndex index, uint dwNewLong );
 
-            [DllImport( EntryPoint32 = "GetWindowLong", EntryPoint64 = "GetWindowLongPtr", ExactSpelling = false  )]
+            [CK.Interop.DllImport( EntryPoint32 = "GetWindowLong", EntryPoint64 = "GetWindowLongPtr", ExactSpelling = false )]
             IntPtr GetWindowLong( IntPtr hWnd, WindowLongIndex index );
 
-            [DllImport( SetLastError = true )]
+            [CK.Interop.DllImport( SetLastError = true )]
             bool SetWindowPos( IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags flags );
 
-            [DllImport]
+            [CK.Interop.DllImport]
             IntPtr GetDC( IntPtr hWnd );
 
-            [DllImport]
+            [CK.Interop.DllImport]
             bool ReleaseDC( IntPtr hWnd, IntPtr hdc );
 
-            [DllImport]
+            [CK.Interop.DllImport]
             bool GetClientRect( IntPtr hwnd, out Rect r );
 
-            [DllImport]
+            [CK.Interop.DllImport]
             bool GetWindowRect( IntPtr hwnd, out Rect r );
 
         }

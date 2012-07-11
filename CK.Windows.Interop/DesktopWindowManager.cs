@@ -23,6 +23,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using CK.Interop;
 
 namespace CK.WindowsInterop
 {
@@ -241,28 +242,28 @@ namespace CK.WindowsInterop
         [NativeDll( DefaultDllNameGeneric = "DwmApi" )]
         public interface DwmApi
         {
-            [DllImport( EntryPoint = "DwmExtendFrameIntoClientArea", PreserveSig = false )]
+            [CK.Interop.DllImport( EntryPoint = "DwmExtendFrameIntoClientArea", PreserveSig = false )]
             void ExtendFrameIntoClientArea( IntPtr hwnd, ref Win.Margins margins );
 
-            [DllImport( EntryPoint = "DwmEnableComposition" )]
+            [CK.Interop.DllImport( EntryPoint = "DwmEnableComposition" )]
             void EnableComposition( bool enabled );
 
-            [DllImport( EntryPoint = "DwmIsCompositionEnabled", PreserveSig = false )]
+            [CK.Interop.DllImport( EntryPoint = "DwmIsCompositionEnabled", PreserveSig = false )]
             bool IsCompositionEnabled();
 
-            [DllImport( EntryPoint = "DwmEnableBlurBehindWindow", PreserveSig = false )]
+            [CK.Interop.DllImport( EntryPoint = "DwmEnableBlurBehindWindow", PreserveSig = false )]
             void EnableBlurBehindWindow( IntPtr hwnd, ref BlurBehind bb );
 
-            [DllImport( EntryPoint = "DwmGetCompositionTimingInfo", PreserveSig = false )]
+            [CK.Interop.DllImport( EntryPoint = "DwmGetCompositionTimingInfo", PreserveSig = false )]
             TimingInfo GetCompositionTimingInfo( IntPtr hwnd );
 
-            [DllImport( EntryPoint = "DwmSetWindowAttribute", PreserveSig = false )]
+            [CK.Interop.DllImport( EntryPoint = "DwmSetWindowAttribute", PreserveSig = false )]
             void SetWindowAttribute( IntPtr hwnd, uint dwAttributeToSet, IntPtr pvAttributeValue, uint cbAttribute );
 
-            [DllImport( EntryPoint = "DwmGetWindowAttribute", PreserveSig = false )]
+            [CK.Interop.DllImport( EntryPoint = "DwmGetWindowAttribute", PreserveSig = false )]
             void GetWindowAttribute( IntPtr hwnd, uint dwAttributeToGet, IntPtr pvAttributeValue, uint cbAttribute );
 
-            [DllImport( EntryPoint = "DwmSetPresentParameters", PreserveSig = false )]
+            [CK.Interop.DllImport( EntryPoint = "DwmSetPresentParameters", PreserveSig = false )]
             void SetPresentParameters( IntPtr hwnd, ref PresentParameters presentParams );
 
         }
