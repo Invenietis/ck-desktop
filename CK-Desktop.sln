@@ -110,14 +110,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{7347FEB7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CKPackage", "CKPackage", "{B66EF332-5B70-4407-BF58-FADE8050860D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CCA1C37E-14BE-43DD-8EF5-A66EDA5DD540}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Windows.App", "CK.Windows.App\CK.Windows.App.csproj", "{22048282-DBE5-4E6A-AE1B-BB74AF5CC86B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Windows.Config", "CK.Windows.Config\CK.Windows.Config.csproj", "{739010D0-1211-453A-B3F3-0FF1AFC8CC14}"
@@ -131,6 +123,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CK.Windows", "CK.Windows", "{88ED1D88-3AE7-44E5-934C-1B54D549A074}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Windows.Core.Tests", "Tests\CK.Windows.Core.Tests\CK.Windows.Core.Tests.csproj", "{2533A7E9-BF25-454D-8604-2829C78EE29C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{064441FE-2707-424E-A7B4-2862A87568E0}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\nuget.exe = .nuget\nuget.exe
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
