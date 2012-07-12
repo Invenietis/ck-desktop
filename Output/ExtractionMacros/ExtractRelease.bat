@@ -12,10 +12,12 @@ xcopy ..\..\CK.Plugin.Runner\bin\Release ..\Release\ /y
 xcopy ..\..\CK.Reflection\bin\Release ..\Release\ /y
 xcopy ..\..\CK.SharedDic\bin\Release ..\Release\ /y
 xcopy ..\..\CK.Storage\bin\Release ..\Release\ /y
+
 xcopy ..\..\CK.Windows.App\bin\Release ..\Release\ /y
 xcopy ..\..\CK.Windows.Config\bin\Release ..\Release\ /y
 xcopy ..\..\CK.Windows.Core\bin\Release ..\Release\ /y
 xcopy ..\..\CK.Windows.Demo\bin\Release ..\Release\ /y
+xcopy ..\..\CK.Windows.Interop\bin\Release ..\Release\ /y
 
 del ..\Release\*.pdb
 del ..\Release\*.exe

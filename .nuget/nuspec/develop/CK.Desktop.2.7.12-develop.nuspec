@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>CK-Desktop</id>
+    <version>2.7.12-develop</version>
+    <authors>Invenietis</authors>
+    <owners>Invenietis</owners>
+    <licenseUrl>http://civikey.codeplex.com/license</licenseUrl>
+    <projectUrl>http://civikey.codeplex.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Contains all the dlls from CK-Desktop, which are part of the CK-Certified Runtime.</description>
+    <language>en-US</language>
+	 <dependencies>
+	  <dependency id="CK.Storage" version="2.7.3" />
+	  <dependency id="CK.Reflection" version="2.7.3" />
+	  <dependency id="Caliburn.Micro" version="1.3.1" />
+	  <dependency id="Common.Logging" version="2.1.1" />
+    </dependencies> 
+  </metadata>
+  <files>
+    <file src="..\..\..\Output\Debug\CK.Context.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Context.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Context.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.Interop.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Interop.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Interop.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.Plugin.Config.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Plugin.Config.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Plugin.Config.xml" target="lib\net40" />
+
+	
+	<file src="..\..\..\Output\Debug\CK.Plugin.Config.Model.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Plugin.Config.Model.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Plugin.Config.Model.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.Plugin.Discoverer.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Plugin.Discoverer.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Plugin.Discoverer.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.Plugin.Discoverer.Runner.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Plugin.Discoverer.Runner.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Plugin.Discoverer.Runner.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.Plugin.Host.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Plugin.Host.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Plugin.Host.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.Plugin.Model.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Plugin.Model.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Plugin.Model.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.Plugin.Runner.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Plugin.Runner.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Plugin.Runner.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.SharedDic.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.SharedDic.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.SharedDic.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.Windows.App.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Windows.App.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Windows.App.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.Windows.Config.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Windows.Config.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Windows.Config.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.Windows.Core.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Windows.Core.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Windows.Core.xml" target="lib\net40" />
+	
+	<file src="..\..\..\Output\Debug\CK.Windows.Interop.dll" target="lib\net40" />
+	<file src="..\..\..\Output\Debug\CK.Windows.Interop.pdb" target="lib\net40" />
+	<file src="..\..\..\Output\Release\CK.Windows.Interop.xml" target="lib\net40" />
+  </files>
+</package>

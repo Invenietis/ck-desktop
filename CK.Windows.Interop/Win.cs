@@ -27,7 +27,7 @@ using System.Security;
 using CK.Core;
 using CK.Interop;
 
-namespace CK.WindowsInterop
+namespace CK.Windows.Interop
 {
     public static class Win
     {

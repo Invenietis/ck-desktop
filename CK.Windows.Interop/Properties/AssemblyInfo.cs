@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "CK-WindowsInterop" )]
+[assembly: AssemblyTitle( "CK.Windows.Interop" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "CK-WindowsInterop" )]
+[assembly: AssemblyProduct( "CK.Windows.Interop" )]
 [assembly: AssemblyCopyright( "Copyright ©  2012" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]

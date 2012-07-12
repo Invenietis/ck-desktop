@@ -25,7 +25,7 @@ using System;
 using System.Runtime.InteropServices;
 using CK.Interop;
 
-namespace CK.WindowsInterop
+namespace CK.Windows.Interop
 {
     public static class Dwm
     {

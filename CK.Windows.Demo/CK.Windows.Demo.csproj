@@ -92,15 +92,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caliburn\AppBootstrapper.cs" />
     <Compile Include="DemoVms\ConfigCurrentItemTestsViewModel.cs" />
     <Compile Include="DemoVms\ProfilesAutoSetViewModel.cs" />
     <Compile Include="DemoVms\ProfilesNoNotifyViewModel.cs" />
     <Compile Include="DemoVms\ProfilesViewModel.cs" />
     <Compile Include="DemoVms\SpecificViewModel.cs" />
     <Compile Include="DemoVms\SubViewModel.cs" />
-    <Compile Include="Caliburn\IShell.cs" />
-    <Compile Include="Caliburn\ShellViewModel.cs" />
     <Compile Include="UserControls\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>
@@ -121,10 +118,6 @@
     <Page Include="MyDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Caliburn\ShellView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\AppView.xaml">
       <SubType>Designer</SubType>

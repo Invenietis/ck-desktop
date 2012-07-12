@@ -6,7 +6,7 @@ using System.Windows.Media;
 using CK.Interop;
 using System.Windows.Input;
 using System.Runtime.InteropServices;
-using CK.WindowsInterop;
+using CK.Windows.Interop;
 
 namespace CK.Windows
 {
@@ -27,17 +27,17 @@ namespace CK.Windows
 
         protected override void OnSourceInitialized( EventArgs e )
         {
-            CK.WindowsInterop.Win.Functions.SetWindowLong( _interopHelper.Handle, CK.WindowsInterop.Win.WindowLongIndex.GWL_EXSTYLE, (uint)CK.WindowsInterop.Win.WS_EX.NOACTIVATE );
+            CK.Windows.Interop.Win.Functions.SetWindowLong( _interopHelper.Handle, CK.Windows.Interop.Win.WindowLongIndex.GWL_EXSTYLE, (uint)CK.Windows.Interop.Win.WS_EX.NOACTIVATE );
 
             HwndSource mainWindowSrc = HwndSource.FromHwnd( _interopHelper.Handle );
 
             mainWindowSrc.CompositionTarget.BackgroundColor = Color.FromArgb( 0, 0, 0, 0 );
             mainWindowSrc.CompositionTarget.RenderMode = RenderMode.Default;
 
-            if( OSVersionInfo.IsWindowsVistaOrGreater && CK.WindowsInterop.Dwm.Functions.IsCompositionEnabled() )
+            if( OSVersionInfo.IsWindowsVistaOrGreater && CK.Windows.Interop.Dwm.Functions.IsCompositionEnabled() )
             {
-                CK.WindowsInterop.Win.Margins m = new CK.WindowsInterop.Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
-                CK.WindowsInterop.Dwm.Functions.ExtendFrameIntoClientArea( _interopHelper.Handle, ref m );
+                CK.Windows.Interop.Win.Margins m = new CK.Windows.Interop.Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
+                CK.Windows.Interop.Dwm.Functions.ExtendFrameIntoClientArea( _interopHelper.Handle, ref m );
             }
             else
             {
@@ -65,24 +65,24 @@ namespace CK.Windows
 
         void GetFocus()
         {
-            _lastFocused = CK.WindowsInterop.Win.Functions.GetForegroundWindow();
-            CK.WindowsInterop.Win.Functions.SetForegroundWindow( _interopHelper.Handle );
+            _lastFocused = CK.Windows.Interop.Win.Functions.GetForegroundWindow();
+            CK.Windows.Interop.Win.Functions.SetForegroundWindow( _interopHelper.Handle );
         }
 
         void ReleaseFocus()
         {
-            CK.WindowsInterop.Win.Functions.SetForegroundWindow( _lastFocused );
+            CK.Windows.Interop.Win.Functions.SetForegroundWindow( _lastFocused );
         }
 
         IntPtr WndProc( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
-            switch( (CK.WindowsInterop.Win.WM)msg )
+            switch( (CK.Windows.Interop.Win.WM)msg )
             {
-                case CK.WindowsInterop.Win.WM.NCLBUTTONDOWN:
+                case CK.Windows.Interop.Win.WM.NCLBUTTONDOWN:
                     _ncbuttondown = true;
                     GetFocus();
                     break;
-                case CK.WindowsInterop.Win.WM.NCMOUSEMOVE:
+                case CK.Windows.Interop.Win.WM.NCMOUSEMOVE:
                     if( _ncbuttondown )
                     {
                         ReleaseFocus();

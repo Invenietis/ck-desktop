@@ -8,8 +8,8 @@
     <ProjectGuid>{FC440A2D-A82E-4587-88C2-5484BD9AC2D2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CK_WindowsInterop</RootNamespace>
-    <AssemblyName>CK-WindowsInterop</AssemblyName>
+    <RootNamespace>CK.Windows.Interop</RootNamespace>
+    <AssemblyName>CK.Windows.Interop</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -31,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\CK.Windows.Interop.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CK.Core">
