@@ -46,7 +46,6 @@ namespace CK.Plugin.Hosting
 			AssemblyName assemblyName = new AssemblyName("CKProxyAssembly");
 			assemblyName.Version = new Version( 1, 0, 0, 0 );
            
-#if(DEBUG) //Signing the DynamicAssembly when being in Release Mode
             StrongNameKeyPair kp;
             using( Stream stream = Assembly.GetAssembly( typeof( ProxyFactory ) ).GetManifestResourceStream( "CK.Plugin.DynamicKeyPair.DynamicKeyPair.snk" ) )
             {
@@ -56,7 +55,7 @@ namespace CK.Plugin.Hosting
                 kp = new StrongNameKeyPair( result );
             }
             assemblyName.KeyPair = kp;
-#endif
+
 			// Creates a new Assembly for running only (not saved).
 			AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly( assemblyName, AssemblyBuilderAccess.Run );
 			// Creates a new Module
