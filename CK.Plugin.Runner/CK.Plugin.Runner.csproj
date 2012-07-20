@@ -41,8 +41,9 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Core">
-      <HintPath>..\packages\CK.Core.2.7.3\lib\net40\CK.Core.dll</HintPath>
+    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Core.2.7.13\lib\net40\CK.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,22 +70,27 @@
     <ProjectReference Include="..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
       <Project>{96D1DD2E-9E76-40EA-A943-1E85B44AB862}</Project>
       <Name>CK.Plugin.Config.Model</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\CK.Plugin.Config\CK.Plugin.Config.csproj">
       <Project>{CA150073-0318-4281-8324-03246F09A4DD}</Project>
       <Name>CK.Plugin.Config</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\CK.Plugin.Discoverer\CK.Plugin.Discoverer.csproj">
       <Project>{7B9A41C4-0D83-4CDE-9A78-45847F8A0D4B}</Project>
       <Name>CK.Plugin.Discoverer</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\CK.Plugin.Host\CK.Plugin.Host.csproj">
       <Project>{C9FCBF26-371B-48C2-AA78-06292EE30B9D}</Project>
       <Name>CK.Plugin.Host</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\CK.Plugin.Model\CK.Plugin.Model.csproj">
       <Project>{D6E4A9FE-F9B9-4FDC-A21A-E3E7109128C6}</Project>
       <Name>CK.Plugin.Model</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

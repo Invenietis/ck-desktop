@@ -45,11 +45,13 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Core">
-      <HintPath>..\packages\CK.Core.2.7.3\lib\net40\CK.Core.dll</HintPath>
+    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Core.2.7.13\lib\net40\CK.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Reflection">
-      <HintPath>..\packages\CK.Reflection.2.7.5-develop\lib\net40\CK.Reflection.dll</HintPath>
+      <HintPath>..\packages\CK.Reflection.2.7.13\lib\net40\CK.Reflection.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -93,10 +95,12 @@
     <ProjectReference Include="..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
       <Project>{96D1DD2E-9E76-40EA-A943-1E85B44AB862}</Project>
       <Name>CK.Plugin.Config.Model</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\CK.Plugin.Model\CK.Plugin.Model.csproj">
       <Project>{D6E4A9FE-F9B9-4FDC-A21A-E3E7109128C6}</Project>
       <Name>CK.Plugin.Model</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

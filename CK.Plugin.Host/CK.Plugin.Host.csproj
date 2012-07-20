@@ -41,14 +41,17 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Core">
-      <HintPath>..\packages\CK.Core.2.7.3\lib\net40\CK.Core.dll</HintPath>
+    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Core.2.7.13\lib\net40\CK.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Reflection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
-      <HintPath>..\packages\CK.Reflection.2.7.5-develop\lib\net40\CK.Reflection.dll</HintPath>
+      <HintPath>..\packages\CK.Reflection.2.7.13\lib\net40\CK.Reflection.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Common.Logging">
       <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -91,7 +94,7 @@
     <ProjectReference Include="..\CK.Plugin.Model\CK.Plugin.Model.csproj">
       <Project>{D6E4A9FE-F9B9-4FDC-A21A-E3E7109128C6}</Project>
       <Name>CK.Plugin.Model</Name>
-      <Private>True</Private>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

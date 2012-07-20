@@ -327,10 +327,6 @@ namespace CK.Plugin.Hosting
                 }
                 catch( Exception ex )
                 {
-#if DEBUG
-                    //Helps the developper identify the culprit of exceptions
-                    Debugger.Break();
-#endif
                     // Emitted as low level log.
                     _log.ErrorFormat( "There has been a problem when starting the {0} plugin.", ex, p.PublicName );
 

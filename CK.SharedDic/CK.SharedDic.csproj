@@ -46,14 +46,17 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Core">
-      <HintPath>..\packages\CK.Core.2.7.3\lib\net40\CK.Core.dll</HintPath>
+    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Core.2.7.13\lib\net40\CK.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Reflection">
-      <HintPath>..\packages\CK.Reflection.2.7.5-develop\lib\net40\CK.Reflection.dll</HintPath>
+    <Reference Include="CK.Reflection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Reflection.2.7.13\lib\net40\CK.Reflection.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Storage">
-      <HintPath>..\packages\CK.Storage.2.7.5-develop\lib\net40\CK.Storage.dll</HintPath>
+    <Reference Include="CK.Storage, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Storage.2.7.13\lib\net40\CK.Storage.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -87,6 +90,7 @@
     <ProjectReference Include="..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
       <Project>{96D1DD2E-9E76-40EA-A943-1E85B44AB862}</Project>
       <Name>CK.Plugin.Config.Model</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -42,7 +42,7 @@ namespace CK.Windows.App
                 // If the logs are sent (or are to be sent), this directory must no more exist otherwise the user will
                 // be prompted again next time the application runs.
                 CrashLogManager.HandleExistingCrashLogs();
-                
+
                 // Handle existing updates after crash logs: this way the crash mechanism
                 // can be updated!
                 UpdateManager.Initialize( _params.UpdaterPath );

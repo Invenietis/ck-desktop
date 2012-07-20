@@ -27,7 +27,7 @@ namespace CK.Windows.App
 
         public static bool LaunchExistingUpdater()
         {
-            string updateFile = _dir + "Updares\\Update.exe";
+            string updateFile = _dir + "Updates\\Update.exe";
             string isUdpateDone = _dir + "UpdateDone";
             if( File.Exists( isUdpateDone ) )
             {
