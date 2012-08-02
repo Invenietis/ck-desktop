@@ -20,6 +20,12 @@ namespace CK.Windows.App
         CachedProperty _first;
         Delayed _delay;
 
+		internal void Updated( string propertyName )
+        {
+            NotifyOfPropertyChange( propertyName );
+        }
+
+		
         class Delayed : IDisposable
         {
             public CachedPropertyVM Holder;
@@ -114,7 +120,10 @@ namespace CK.Windows.App
             Files = new ObservableCollection<FileInfo>( c.GetFiles( "*.log" ) );
             _uploadUri = new Uri( _defaultUploadUrl );
             _progressPercentage = -1;
+			ViewFileCommand = new SimpleCommand<FileInfo>( ViewFile, f => IsNotUploading );
+            DeleteFileCommand = new SimpleCommand<FileInfo>( DeleteFile, f => IsNotUploading );
 
+			
             AddProperty( this, t => t.DisplayProgress );
             AddProperty( this, t => t.ProgressPercentage );
             AddProperty( this, t => t.CanSend );
@@ -126,6 +135,10 @@ namespace CK.Windows.App
             AddProperty( this, t => t.OkButtonText );
         }
 
+		public ICommand ViewFileCommand { get; private set; }
+
+        public ICommand DeleteFileCommand { get; private set; }
+		
         public ObservableCollection<FileInfo> Files { get; private set; }
 
         public Visibility DisplayProgress
@@ -261,21 +274,18 @@ namespace CK.Windows.App
 
         private void DoDeleteFile( FileInfo f )
         {
-            if( IsNotUploading )
-            {
-                using( DelayedPropertyChanged() )
-                {
-                    try
-                    {
-                        f.Delete();
-                    }
-                    catch( Exception ex )
-                    {
-                        _log.Error( "While deleting crash log.", ex );
-                    }
-                    Files.Remove( f );
-                }
-            }
+			using( DelayedPropertyChanged() )
+			{
+				try
+				{
+					f.Delete();
+				}
+				catch( Exception ex )
+				{
+					_log.Error( "While deleting crash log.", ex );
+				}
+				Files.Remove( f );
+			}
         }
 
         private void OnUploadCompleted()

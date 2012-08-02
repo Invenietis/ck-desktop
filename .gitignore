@@ -34,3 +34,4 @@ _ReSharper*/
 /packages/
 CK-Core.Tests.VisualState.xml
 CK-Core.Tests.VisualState.xml
+*.csproj.user

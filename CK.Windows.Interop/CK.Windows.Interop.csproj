@@ -34,14 +34,17 @@
     <DocumentationFile>bin\Release\CK.Windows.Interop.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Core">
-      <HintPath>..\packages\CK.Core.2.7.5-develop\lib\net40\CK.Core.dll</HintPath>
+    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Core.2.7.13\lib\net40\CK.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Interop">
-      <HintPath>..\packages\CK.Interop.2.7.5-develop\lib\net40\CK.Interop.dll</HintPath>
+    <Reference Include="CK.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Interop.2.7.13\lib\net40\CK.Interop.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Reflection">
-      <HintPath>..\packages\CK.Reflection.2.7.5-develop\lib\net40\CK.Reflection.dll</HintPath>
+    <Reference Include="CK.Reflection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Reflection.2.7.13\lib\net40\CK.Reflection.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
