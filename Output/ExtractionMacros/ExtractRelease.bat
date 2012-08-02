@@ -21,3 +21,5 @@ xcopy ..\..\CK.Windows.Interop\bin\Release ..\Release\ /y
 
 del ..\Release\*.pdb
 del ..\Release\*.exe
+
+pause;

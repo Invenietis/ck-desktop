@@ -113,7 +113,7 @@ namespace CK.Windows.App
         /// <summary>
         /// Gets the full directory path to use for application updates. 
         /// </summary>
-        public string UpdaterPath { get { return _updaterPath ?? (_updaterPath = EnsureStandardPath( Path.GetTempPath() )); } }
+        //public string UpdaterPath { get { return _updaterPath ?? (_updaterPath = EnsureStandardPath( Path.GetTempPath() )); } }
 
     }
 }

@@ -117,10 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="RememberMyDecision" xml:space="preserve">
+    <value>Ne plus me demander</value>
+  </data>
   <data name="Update" xml:space="preserve">
     <value>Une mise à jour est disponible</value>
   </data>
   <data name="UpdateMessage" xml:space="preserve">
     <value>Une nouvelle version est prête à être installée, voulez-vous mettre à jour maintenant ?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
   </data>
 </root>
