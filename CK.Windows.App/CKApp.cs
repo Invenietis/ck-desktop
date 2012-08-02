@@ -45,7 +45,7 @@ namespace CK.Windows.App
 
                 // Handle existing updates after crash logs: this way the crash mechanism
                 // can be updated!
-                UpdateManager.Initialize( _params.UpdaterPath );
+                UpdateManager.Initialize( _params.CommonApplicationDataPath, _params.ApplicationDataPath );
                 if( !UpdateManager.LaunchExistingUpdater() )
                 {
                     mutex.Dispose();
