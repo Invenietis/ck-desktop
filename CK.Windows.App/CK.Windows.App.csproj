@@ -85,6 +85,10 @@
     <Compile Include="CrashLog\View\CrashLogWindow.xaml.cs">
       <DependentUpon>CrashLogWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MsgBox\CustomMsgBox.xaml.cs">
+      <DependentUpon>CustomMsgBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MsgBox\ModalViewModel.cs" />
     <Compile Include="MsgBox\MsgBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +132,10 @@
     <Page Include="CrashLog\View\CrashLogWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MsgBox\CustomMsgBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
