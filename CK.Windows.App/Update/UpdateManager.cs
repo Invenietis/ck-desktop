@@ -42,7 +42,7 @@ namespace CK.Windows.App
 
         /// <summary>
         /// Handles the launching of the downloaded updates.
-        /// Aksks the user if he wants to launch an available update. If yes, executes the updates.exe found in the sharedUpdateDirectory set in the Initialize phase.
+        /// Asks the user if he wants to launch an available update. If yes, executes the updates.exe found in the sharedUpdateDirectory set in the Initialize phase.
         /// Handles the deleting of files when the update has been done (when an UpdateDone file can be found in the sharedUpdateDirectory)
         /// </summary>
         /// <returns></returns>
@@ -60,19 +60,22 @@ namespace CK.Windows.App
             }
             if( File.Exists( updateFile ) && !File.Exists( stopReminderFile ) )
             {
-                MsgBox b = new MsgBox( Update.R.UpdateMessage, Update.R.Update );
-                b.SetCheckbox( Update.R.RememberMyDecision );
-                b.SetButtons( Update.R.Yes, Update.R.No );
-                b.ShowDialog();
+                ModalViewModel mvm = new ModalViewModel( Update.R.Update, Update.R.UpdateMessage, true, Update.R.RememberMyDecision );
+                mvm.Buttons.Add( new ModalButton( mvm, Update.R.Yes, null, ModalResult.Yes ) );
+                mvm.Buttons.Add( new ModalButton( mvm, Update.R.No, null, ModalResult.No ) );
+                
+                CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
 
-                DialogBoxResult result = b.DialogBoxResult;
+                msgBox.ShowDialog();
 
-                if( result == DialogBoxResult.Button1 )
+                ModalResult result = mvm.ModalResult;
+
+                if( result == ModalResult.Yes )
                 {
                     Process.Start( updateFile );
                     return false;
                 }
-                else if( b.CheckboxChecked )
+                else if( mvm.IsCheckboxSelected && result != ModalResult.Cancel )
                 {
                     string updateDir = Path.Combine( _privateDir, "Updates" );
                     if( !Directory.Exists( updateDir ) ) Directory.CreateDirectory( updateDir );

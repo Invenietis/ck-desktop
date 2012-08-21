@@ -95,8 +95,16 @@ namespace CK.Windows.App
             ShowCheckBox = showCheckBox;
             Description = description;
             Title = title;
+            Buttons = new List<ModalButton>();
         }
 
+        /// <summary>
+        /// Constructor of the ViewModel used by the WPF <see cref="CustomMsgBox"/>.
+        /// This constructor default behavior is not to show the checkbox.
+        /// Use another constructor to configure the checkbox directly.
+        /// </summary>
+        /// <param name="title">Title of the modal</param>
+        /// <param name="description">Description of the modal</param>
         public ModalViewModel( string title, string description )
             : this( title, description, false, "" )
         {

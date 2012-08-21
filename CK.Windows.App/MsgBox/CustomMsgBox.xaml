@@ -9,29 +9,34 @@
             Title="{Binding Title}"
             ResizeMode="NoResize"
             mc:Ignorable="d"
-            Topmost="True">
+            Topmost="True"
+            MaxWidth="400">
     <Window.Resources>
         <ckcore:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConv"></ckcore:BooleanToVisibilityConverter>
     </Window.Resources>
-    <StackPanel Margin="10">
-        <TextBlock Text="{Binding Description}" Margin="0 0 0 15"></TextBlock>
-        <CheckBox Visibility="{Binding ShowCheckBox, Converter={StaticResource BooleanToVisibilityConv}}" IsChecked="{Binding IsCheckboxSelected}" Content="{Binding CheckBoxLabel}"></CheckBox>
-        <ListBox ItemsSource="{Binding Buttons}" BorderBrush="Transparent" Grid.IsSharedSizeScope="True">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid HorizontalAlignment="Right">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="ButtonGroup"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Content="{Binding Label}" Command="{Binding ButtonClickCommand}" Margin="5 0" />
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+    <StackPanel Background="#ececec" >
+        <StackPanel Background="White">
+            <TextBlock Margin="10 10 10 15" TextWrapping="Wrap" Text="{Binding Description}" />
+            <CheckBox Margin="10 0 10 10" Visibility="{Binding ShowCheckBox, Converter={StaticResource BooleanToVisibilityConv}}" IsChecked="{Binding IsCheckboxSelected}" Content="{Binding CheckBoxLabel}"></CheckBox>
+        </StackPanel>
+        <StackPanel Background="Transparent" Margin="10 10 10 10">
+            <ListBox Background="Transparent"  ItemsSource="{Binding Buttons}" BorderBrush="Transparent" Grid.IsSharedSizeScope="True">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Right">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition SharedSizeGroup="ButtonGroup"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="{Binding Label}" Command="{Binding ButtonClickCommand}" Margin="5 0 0 0" MinWidth="50" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
     </StackPanel>
 </Window>
