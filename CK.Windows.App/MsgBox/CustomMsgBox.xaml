@@ -5,7 +5,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
             xmlns:ckcore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
             SizeToContent="WidthAndHeight"    
-            WindowStartupLocation="CenterOwner"
+            WindowStartupLocation="CenterScreen"
             Title="{Binding Title}"
             ResizeMode="NoResize"
             mc:Ignorable="d"

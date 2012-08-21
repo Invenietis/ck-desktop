@@ -12,8 +12,6 @@ namespace CK.Windows.Demo
     internal class RootViewModel : ConfigPage
     {
         SubViewModel _subvm;
-        public bool IsActive { get; set; }
-
 
         public RootViewModel( ConfigManager configManager )
             : base( configManager )
@@ -31,7 +29,7 @@ namespace CK.Windows.Demo
         /// </summary>
         internal void ShowCustomMessageBox()
         {
-            ModalViewModel modalDataContext = new ModalViewModel( "Mise à jour disponible", "Une mise à jour est disponible, voulez-vous l'installer ? \r\n Mon message est super long, il faut que la textbox sur wrap correctemenet pour eviter de donner une modale trop longue", false, "Ne plus me le rappeler" );
+            ModalViewModel modalDataContext = new ModalViewModel( "Mise à jour disponible", "Une mise à jour est disponible, voulez-vous l'installer ? \r\n \r\n Testing TextWrapping to make sure that the window won't end up extremely wide.", false, "Ne plus me le rappeler" );
 
             IList<ModalButton> dic = new List<ModalButton>();
             dic.Add( new ModalButton( modalDataContext, "OK", null, ModalResult.Ok ) );
