@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -19,7 +21,7 @@ namespace CK.Windows.App
     /// </summary>
     public partial class CustomMsgBox : Window
     {
-        public CustomMsgBox(ref ModalViewModel dataContext)
+        public CustomMsgBox( ref ModalViewModel dataContext )
         {
             dataContext.Holder = this;
             DataContext = dataContext;

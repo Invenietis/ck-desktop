@@ -69,10 +69,16 @@ namespace CK.Windows.App
         //The list of buttons to add to the modal
         public IList<ModalButton> Buttons { get; set; }
 
-        //Checkbox configuration
+        //Icon configuration
+        public CustomMsgBoxIcon Icon { get; set; }
+
+        #region Checkbox configuration
+        
         public bool IsCheckboxSelected { get; set; }
         public string CheckBoxLabel { get; set; }
         public bool ShowCheckBox { get; set; }
+        
+        #endregion
 
         //Result of the modal
         public ModalResult ModalResult { get; set; }
@@ -88,7 +94,26 @@ namespace CK.Windows.App
         /// <param name="description">Description of the modal</param>
         /// <param name="showCheckBox">Whether or not we should display a checkbox</param>
         /// <param name="checkBoxLabel">The label of the checkbox</param>
+        public ModalViewModel( string title, string description, bool showCheckBox, string checkBoxLabel, CustomMsgBoxIcon messageBoxIcon )
+        {
+            Icon = messageBoxIcon;
+            ModalResult = App.ModalResult.Cancel;
+            CheckBoxLabel = checkBoxLabel;
+            ShowCheckBox = showCheckBox;
+            Description = description;
+            Title = title;
+            Buttons = new List<ModalButton>();
+        }
+
+        /// <summary>
+        /// Constructor of the ViewModel used by the WPF <see cref="CustomMsgBox"/>.
+        /// </summary>
+        /// <param name="title">Title of the modal</param>
+        /// <param name="description">Description of the modal</param>
+        /// <param name="showCheckBox">Whether or not we should display a checkbox</param>
+        /// <param name="checkBoxLabel">The label of the checkbox</param>
         public ModalViewModel( string title, string description, bool showCheckBox, string checkBoxLabel )
+            : this( title, description, showCheckBox, checkBoxLabel, CustomMsgBoxIcon.Information )
         {
             ModalResult = App.ModalResult.Cancel;
             CheckBoxLabel = checkBoxLabel;

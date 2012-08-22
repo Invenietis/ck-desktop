@@ -29,7 +29,7 @@ namespace CK.Windows.Demo
         /// </summary>
         internal void ShowCustomMessageBox()
         {
-            ModalViewModel modalDataContext = new ModalViewModel( "Mise à jour disponible", "Une mise à jour est disponible, voulez-vous l'installer ? \r\n \r\n Testing TextWrapping to make sure that the window won't end up extremely wide.", false, "Ne plus me le rappeler" );
+            ModalViewModel modalDataContext = new ModalViewModel( "Mise à jour disponible", String.Format("Testing TextWrapping to make sure that the window {0}won't end up extremely wide.", Environment.NewLine + Environment.NewLine), false, "Ne plus me le rappeler", CustomMsgBoxIcon.Question );
 
             IList<ModalButton> dic = new List<ModalButton>();
             dic.Add( new ModalButton( modalDataContext, "OK", null, ModalResult.Ok ) );
