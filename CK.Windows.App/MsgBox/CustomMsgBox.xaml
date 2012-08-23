@@ -5,12 +5,12 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
             xmlns:ckcore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
             xmlns:local="clr-namespace:CK.Windows.App"
+            WindowStartupLocation="CenterScreen"    
             SizeToContent="WidthAndHeight"    
-            WindowStartupLocation="CenterScreen"
             Title="{Binding Title}"
-        x:Name="page"
             ResizeMode="NoResize"
             mc:Ignorable="d"
+            x:Name="page"    
             Topmost="True"
             MaxWidth="400">
     <Window.Resources>
@@ -21,13 +21,18 @@
         <StackPanel Background="White">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="70"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Width="50" Height="50" Source="{Binding Icon, Converter={StaticResource IconToBitmapConverter}}" Stretch="None" />
-                <TextBlock Grid.Column="1" Margin="10 10 10 15" TextWrapping="Wrap" Text="{Binding Description}" MaxWidth="{Binding ActualWidth, ElementName=page}"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Image Grid.Column="0" Width="50" Height="50" Source="{Binding Icon, Converter={StaticResource IconToBitmapConverter}}" Stretch="None" Margin="10" />
+                <TextBlock Grid.Column="1" Margin="0 20 10 15" TextWrapping="Wrap" Text="{Binding Description}" MaxWidth="{Binding ActualWidth, ElementName=page}"/>
+                <CheckBox Grid.Column="1" Grid.Row="1" Margin="0 0 10 10" Visibility="{Binding ShowCheckBox, Converter={StaticResource BooleanToVisibilityConv}}" IsChecked="{Binding IsCheckboxSelected}" Content="{Binding CheckBoxLabel}"></CheckBox>
             </Grid>
-            <CheckBox Margin="10 0 10 10" Visibility="{Binding ShowCheckBox, Converter={StaticResource BooleanToVisibilityConv}}" IsChecked="{Binding IsCheckboxSelected}" Content="{Binding CheckBoxLabel}"></CheckBox>
+
         </StackPanel>
         <StackPanel Background="Transparent" Margin="10 10 10 10">
             <ListBox Background="Transparent"  ItemsSource="{Binding Buttons}" BorderBrush="Transparent" Grid.IsSharedSizeScope="True">

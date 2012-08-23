@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (CK.Windows.App\Update\UpdateManager.cs) is part of CiviKey. 
 *  
@@ -98,7 +98,7 @@ namespace CK.Windows.App
                     Process.Start( updateFile );
                     return false;
                 }
-                else if( mvm.IsCheckboxSelected && result != ModalResult.Cancel )
+                else if( mvm.IsCheckboxChecked && result != ModalResult.Cancel )
                 {
                     string updateDir = Path.Combine( _privateDir, "Updates" );
                     if( !Directory.Exists( updateDir ) ) Directory.CreateDirectory( updateDir );

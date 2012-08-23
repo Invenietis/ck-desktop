@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (CK.Windows.Demo\DemoVms\RootViewModel.cs) is part of CiviKey. 
 *  
@@ -52,7 +52,7 @@ namespace CK.Windows.Demo
         /// </summary>
         internal void ShowCustomMessageBox()
         {
-            ModalViewModel modalDataContext = new ModalViewModel( "Mise à jour disponible", String.Format("Testing TextWrapping to make sure that the window {0}won't end up extremely wide.", Environment.NewLine + Environment.NewLine), false, "Ne plus me le rappeler", CustomMsgBoxIcon.Question );
+            ModalViewModel modalDataContext = new ModalViewModel( "Mise à jour disponible", String.Format( "Testing TextWrapping to make sure that the window {0}won't end up extremely wide.", Environment.NewLine ), true, "Remember my choice test", CustomMsgBoxIcon.Question );
 
             IList<ModalButton> dic = new List<ModalButton>();
             dic.Add( new ModalButton( modalDataContext, "OK", null, ModalResult.Ok ) );
@@ -62,7 +62,7 @@ namespace CK.Windows.Demo
             CustomMsgBox b = new CustomMsgBox( ref modalDataContext );
             b.ShowDialog();
 
-            Console.Out.WriteLine( String.Format( "resultat : {0}", modalDataContext.ModalResult + " \r\n checkbox checked : " + modalDataContext.IsCheckboxSelected ) );
+            Console.Out.WriteLine( String.Format( "result : {0}", modalDataContext.ModalResult + " \r\n checkbox checked : " + modalDataContext.IsCheckboxChecked ) );
         }
     }
 }

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (CK.Windows.App\MsgBox\ModalViewModel.cs) is part of CiviKey. 
 *  
@@ -97,17 +97,41 @@ namespace CK.Windows.App
 
         #region Checkbox configuration
         
-        public bool IsCheckboxSelected { get; set; }
-        public string CheckBoxLabel { get; set; }
+        /// <summary>
+        /// Gets or sets whether the checkbox of the modal is checked
+        /// </summary>
+        public bool IsCheckboxChecked { get; set; }
+
+        /// <summary>
+        /// Gets the label of the checkbox displayed in the modal
+        /// </summary>
+        public string CheckBoxLabel { get; private set; }
+
+        /// <summary>
+        /// Gets or sets whether the checkbox is to be displayed in the modal
+        /// </summary>
         public bool ShowCheckBox { get; set; }
         
         #endregion
 
-        //Result of the modal
+        /// <summary>
+        /// Result of the modal, returns the innerValue of the clicked button (returns <see cref="ModalResult.Cancel"/> if the close button has been pressed)
+        /// </summary>
         public ModalResult ModalResult { get; set; }
 
-        public Window Holder { private get; set; }
+        /// <summary>
+        /// Gets or sets the Window holding this viewmodel.
+        /// </summary>
+        internal Window Holder { private get; set; }
+
+        /// <summary>
+        /// Gets the title of the modal
+        /// </summary>
         public string Title { get; private set; }
+
+        /// <summary>
+        /// Gets the description of the modal
+        /// </summary>
         public string Description { get; private set; }
 
         /// <summary>
@@ -158,6 +182,9 @@ namespace CK.Windows.App
         {
         }
 
+        /// <summary>
+        /// Closes the window set has holder of this viewmodel
+        /// </summary>
         public void CloseModal()
         {
             if( Holder != null )
