@@ -1,6 +1,6 @@
-CK-Desktop
+CK-Desktop (C#)
 ==========
-This solution holds every dll necessary for the CiviKey project (C#) to run.
+This solution holds every dll necessary for the [CiviKey](https://github.com/Invenietis/ck-certified) project to run.
 
 ##Content##
 ###CK.Windows.*###
