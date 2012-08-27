@@ -2,7 +2,8 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ck="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
-                    xmlns:local="clr-namespace:CK.Windows.Config">
+                    xmlns:local="clr-namespace:CK.Windows.Config"
+                    xmlns:res="clr-namespace:CK.Windows.Config.Resources">
 
     <Style TargetType="Border" x:Key="CK.Config.RoundBox">
         <Setter Property="Background" Value="White"></Setter>
@@ -79,7 +80,7 @@
         <DockPanel>
             <CheckBox HorizontalAlignment="Center" FontSize="14" DockPanel.Dock="Top" IsChecked="{Binding Value}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Uid="activate-activablesection">Activate</TextBlock>
+                    <TextBlock x:Uid="activate-activablesection" Text="{x:Static res:R.Activate}"/>
                     <TextBlock FontWeight="Bold" Margin="5 0 0 0" Text="{Binding DisplayName}" ToolTip="{Binding Description}"/>
                 </StackPanel>
             </CheckBox>
