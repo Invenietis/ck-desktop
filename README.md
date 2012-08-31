@@ -2,6 +2,9 @@ CK-Desktop (C#)
 ==========
 This solution holds every dll necessary for the [CiviKey](https://github.com/Invenietis/ck-certified) project to run.
 
+This project is based on the [CK-Core](https://github.com/Invenietis/ck-core) repository, also hosted on Github.
+References of this project are handled through Nuget packages, available on this nuget feed : [nuget link](https://get-package.net/CiviKey/JGHRN6ACE2MXNXGRMMMTYXFXUJYRWXGRHDNLWCJD24NVXZGE2ZRXY79C5JFC3DAC4J4WHUYXCMMMXHS5MZRCNMW3YCKX2N9FUJBTSCGVFC9VWSSFNGGZ3YDV7J9Q67QF6GRYN2SEUD9Q3DJF4Z6V29FXF8TVY3SVV8UZ2JJR7G6BHJDER2HC6BSXTMFT38DV7Z6LY6GXYC6XS/api/v2)
+
 ##Content##
 ###CK.Windows.*###
 Contains projects that define a WPF easy-to-use configuration interface for any application.
