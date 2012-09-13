@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Tests", "_Tests", "{A87208F3-D73C-4AD4-9FF5-0314968EDD74}"
 	ProjectSection(SolutionItems) = preProject
 		CK-Desktop.Tests.nunit = CK-Desktop.Tests.nunit
@@ -103,10 +103,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Packages", "_Packages", "{BE07A70D-AB8C-41F7-A8E6-AC12E7EA11C7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{7347FEB7-22FB-4802-927D-1B8FC5EBB7CC}"
-	ProjectSection(SolutionItems) = preProject
-		Output\Packages\Nuget\CK.Core.nuspec = Output\Packages\Nuget\CK.Core.nuspec
-		Output\Packages\Nuget\CK.Plugin.nuspec = Output\Packages\Nuget\CK.Plugin.nuspec
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CKPackage", "CKPackage", "{B66EF332-5B70-4407-BF58-FADE8050860D}"
 EndProject

@@ -96,7 +96,7 @@ namespace CK.Windows.App
         public CustomMsgBoxIcon Icon { get; set; }
 
         #region Checkbox configuration
-        
+
         /// <summary>
         /// Gets or sets whether the checkbox of the modal is checked
         /// </summary>
@@ -111,8 +111,14 @@ namespace CK.Windows.App
         /// Gets or sets whether the checkbox is to be displayed in the modal
         /// </summary>
         public bool ShowCheckBox { get; set; }
-        
+
         #endregion
+
+        /// <summary>
+        /// Gets or sets the index of the button that has focus at launch.
+        /// If not set, the first button of the list will be set as default.
+        /// </summary>
+        public int FocusedButtonIndex { get; set; }
 
         /// <summary>
         /// Result of the modal, returns the innerValue of the clicked button (returns <see cref="ModalResult.Cancel"/> if the close button has been pressed)
@@ -141,15 +147,17 @@ namespace CK.Windows.App
         /// <param name="description">Description of the modal</param>
         /// <param name="showCheckBox">Whether or not we should display a checkbox</param>
         /// <param name="checkBoxLabel">The label of the checkbox</param>
-        public ModalViewModel( string title, string description, bool showCheckBox, string checkBoxLabel, CustomMsgBoxIcon messageBoxIcon )
+        /// <param name="focusedButtonIndex">Index of the button that will have keyboard focus</param>int focusedButtonIndex, 
+        public ModalViewModel( string title, string description, bool showCheckBox, string checkBoxLabel, CustomMsgBoxIcon messageBoxIcon, int focusedButtonIndex )
         {
-            Icon = messageBoxIcon;
+            FocusedButtonIndex = focusedButtonIndex;
             ModalResult = App.ModalResult.Cancel;
+            Buttons = new List<ModalButton>();
             CheckBoxLabel = checkBoxLabel;
             ShowCheckBox = showCheckBox;
             Description = description;
+            Icon = messageBoxIcon;
             Title = title;
-            Buttons = new List<ModalButton>();
         }
 
         /// <summary>
@@ -159,15 +167,72 @@ namespace CK.Windows.App
         /// <param name="description">Description of the modal</param>
         /// <param name="showCheckBox">Whether or not we should display a checkbox</param>
         /// <param name="checkBoxLabel">The label of the checkbox</param>
-        public ModalViewModel( string title, string description, bool showCheckBox, string checkBoxLabel )
-            : this( title, description, showCheckBox, checkBoxLabel, CustomMsgBoxIcon.Information )
+        /// <param name="focusedButtonIndex">Index of the button that will have keyboard focus</param>int focusedButtonIndex, 
+        public ModalViewModel( string title, string description, bool showCheckBox, string checkBoxLabel, CustomMsgBoxIcon messageBoxIcon )
+            : this( title, description, showCheckBox, checkBoxLabel, messageBoxIcon, 0 )
         {
-            ModalResult = App.ModalResult.Cancel;
-            CheckBoxLabel = checkBoxLabel;
-            ShowCheckBox = showCheckBox;
-            Description = description;
-            Title = title;
-            Buttons = new List<ModalButton>();
+        }
+
+        /// <summary>
+        /// Constructor of the ViewModel used by the WPF <see cref="CustomMsgBox"/>.
+        /// </summary>
+        /// <param name="title">Title of the modal</param>
+        /// <param name="description">Description of the modal</param>
+        /// <param name="showCheckBox">Whether or not we should display a checkbox</param>
+        /// <param name="checkBoxLabel">The label of the checkbox</param>
+        /// <param name="focusedButtonIndex">Index of the button that will have keyboard focus</param>
+        public ModalViewModel( string title, string description, bool showCheckBox, string checkBoxLabel, int focusedButtonIndex )
+            : this( title, description, showCheckBox, checkBoxLabel, CustomMsgBoxIcon.Information, focusedButtonIndex )
+        {
+        }
+
+        /// <summary>
+        /// Constructor of the ViewModel used by the WPF <see cref="CustomMsgBox"/>.
+        /// </summary>
+        /// <param name="title">Title of the modal</param>
+        /// <param name="description">Description of the modal</param>
+        /// <param name="showCheckBox">Whether or not we should display a checkbox</param>
+        /// <param name="checkBoxLabel">The label of the checkbox</param>
+        /// <param name="focusedButtonIndex">Index of the button that will have keyboard focus</param>
+        public ModalViewModel( string title, string description, bool showCheckBox, string checkBoxLabel )
+            : this( title, description, showCheckBox, checkBoxLabel, CustomMsgBoxIcon.Information, 0 )
+        {
+        }
+
+        /// <summary>
+        /// Constructor of the ViewModel used by the WPF <see cref="CustomMsgBox"/>.
+        /// </summary>
+        /// <param name="title">Title of the modal</param>
+        /// <param name="description">Description of the modal</param>
+        /// <param name="messageBoxIcon">the icon of the message box, from the <see cref="CustomMsgBoxIcon"/> enum</param>
+        /// /// <param name="focusedButtonIndex">Index of the button that will have keyboard focus</param>
+        public ModalViewModel( string title, string description, CustomMsgBoxIcon messageBoxIcon, int focusedButtonIndex )
+            : this( title, description, false, "", messageBoxIcon, focusedButtonIndex )
+        {
+        }
+
+        /// <summary>
+        /// Constructor of the ViewModel used by the WPF <see cref="CustomMsgBox"/>.
+        /// </summary>
+        /// <param name="title">Title of the modal</param>
+        /// <param name="description">Description of the modal</param>
+        /// <param name="messageBoxIcon">the icon of the message box, from the <see cref="CustomMsgBoxIcon"/> enum</param>
+        public ModalViewModel( string title, string description, CustomMsgBoxIcon messageBoxIcon )
+            : this( title, description, false, "", messageBoxIcon, 0 )
+        {
+        }
+
+        /// <summary>
+        /// Constructor of the ViewModel used by the WPF <see cref="CustomMsgBox"/>.
+        /// This constructor default behavior is not to show the checkbox.
+        /// Use another constructor to configure the checkbox directly.
+        /// </summary>
+        /// <param name="title">Title of the modal</param>
+        /// <param name="description">Description of the modal</param>
+        /// <param name="focusedButtonIndex">Index of the button that will have keyboard focus</param>
+        public ModalViewModel( string title, string description, int focusedButtonIndex )
+            : this( title, description, false, "", focusedButtonIndex )
+        {
         }
 
         /// <summary>
@@ -178,7 +243,7 @@ namespace CK.Windows.App
         /// <param name="title">Title of the modal</param>
         /// <param name="description">Description of the modal</param>
         public ModalViewModel( string title, string description )
-            : this( title, description, false, "" )
+            : this( title, description, false, "", 0 )
         {
         }
 

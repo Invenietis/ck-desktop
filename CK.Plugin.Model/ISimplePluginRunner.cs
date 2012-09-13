@@ -38,7 +38,7 @@ namespace CK.Plugin
     {
         /// <summary>
         /// Gets or sets whether all plugins should be disabled or not. Defaults to false. 
-        /// Changing this property changes <see cref="IsDirty"/> (<see cref="Apply"/> must be called).
+        /// Changing this property changes <see cref="IsDirty"/> (<see cref="Apply()"/> must be called).
         /// </summary>
         bool Disabled { get; set; }
 
@@ -64,13 +64,13 @@ namespace CK.Plugin
         event EventHandler IsDirtyChanged;
 
         /// <summary>
-        /// Gets whether <see cref="Apply"/> should be called because something has changed
+        /// Gets whether <see cref="Apply()"/> should be called because something has changed
         /// in the configuration.
         /// </summary>
         bool IsDirty { get; }
 
         /// <summary>
-        /// Fires at the end of an <see cref="Apply"/>.
+        /// Fires at the end of an <see cref="Apply()"/>.
         /// </summary>
         event EventHandler<ApplyDoneEventArgs> ApplyDone;
 

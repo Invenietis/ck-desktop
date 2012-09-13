@@ -44,11 +44,30 @@ namespace CK.Windows.App
     /// </summary>
     public partial class CustomMsgBox : Window
     {
+        ModalViewModel _ctx;
         public CustomMsgBox( ref ModalViewModel dataContext )
         {
+            _ctx = dataContext;
+            EnsureButtons();
+
             dataContext.Holder = this;
-            DataContext = dataContext;
+            DataContext = _ctx;
             InitializeComponent();
+        }
+
+        private void EnsureButtons()
+        {
+            if( _ctx.Buttons.Count == 0 ) _ctx.Buttons.Add( new ModalButton( _ctx, "OK", null, ModalResult.Ok ) );
+        }
+
+        protected override void OnContentRendered( EventArgs e )
+        {
+            IEnumerable<Button> visualButtons = CK.Windows.Helper.TreeHelper.FindChildren<Button>( this.buttongrid );
+            if(_ctx.FocusedButtonIndex >= visualButtons.ToList().Count) _ctx.FocusedButtonIndex = 0;
+            Button b = visualButtons.ElementAtOrDefault( _ctx.FocusedButtonIndex );
+            if( b != null ) b.Focus();
+
+            base.OnContentRendered( e );
         }
     }
 }

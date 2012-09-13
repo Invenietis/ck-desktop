@@ -35,7 +35,7 @@
     <DocumentationFile>bin\Release\CK.Windows.Core.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
@@ -83,6 +83,7 @@
     <Compile Include="DataTemplateSelector\TemplatedDataTemplateSelector.cs" />
     <Compile Include="DependencyObjectExtensions.cs" />
     <Compile Include="Helpers\ScreenHelper.cs" />
+    <Compile Include="Helpers\TreeHelper.cs" />
     <Compile Include="Markup\MarkupTypeRef.cs" />
     <Compile Include="Markup\TypeExtension.cs" />
     <Compile Include="NoFocusWindow.cs" />
