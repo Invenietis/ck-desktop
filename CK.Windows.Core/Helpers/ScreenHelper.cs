@@ -28,7 +28,7 @@ using System.Windows.Interop;
 using System;
 using System.Windows;
 
-namespace CK.Windows.Helper
+namespace CK.Windows.Helpers
 {
     public class ScreenHelper
     {

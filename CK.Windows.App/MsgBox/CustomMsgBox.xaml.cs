@@ -40,15 +40,43 @@ using System.Windows.Shapes;
 namespace CK.Windows.App
 {
     /// <summary>
-    /// Interaction logic for CustomMsgBox.xaml
+    /// This Messagebox enables you to display a messagebox without being restricted by the YesNo or OK buttons of the built-in message box.
+    /// You can choose to display a checkbox (see the different constructors of the <see cref="ModalViewModel"/> )
+    /// Retrieve the information after the call to <see cref="Window.ShowDialog()"/> in the <see cref="ModalViewModel"/> object.
     /// </summary>
     public partial class CustomMsgBox : Window
     {
+        ModalViewModel _ctx;
+        /// <summary>
+        /// Constructor of a CustomMsgBox
+        /// This Messagebox enables you to display a messagebox without being restricted by the YesNo or OK buttons of the built-in message box.
+        /// You can choose to display a checkbox (see the different constructors of the <see cref="ModalViewModel"/>)
+        /// Retrieve the information after the call to <see cref="Window.ShowDialog()"/> in the <see cref="ModalViewModel"/> object.
+        /// </summary>
+        /// <param name="dataContext"></param>
         public CustomMsgBox( ref ModalViewModel dataContext )
         {
+            _ctx = dataContext;
+            EnsureButtons();
+            
             dataContext.Holder = this;
-            DataContext = dataContext;
+            DataContext = _ctx;
             InitializeComponent();
+        }
+
+        private void EnsureButtons()
+        {
+            if( _ctx.Buttons.Count == 0 ) _ctx.Buttons.Add( new ModalButton( _ctx, "OK", null, ModalResult.Ok ) );
+        }
+
+        protected override void OnContentRendered( EventArgs e )
+        {
+            IEnumerable<Button> visualButtons = CK.Windows.Helpers.TreeHelper.FindChildren<Button>( this.buttongrid );
+            if(_ctx.FocusedButtonIndex >= visualButtons.ToList().Count) _ctx.FocusedButtonIndex = 0;
+            Button b = visualButtons.ElementAtOrDefault( _ctx.FocusedButtonIndex );
+            if( b != null ) b.Focus();
+
+            base.OnContentRendered( e );
         }
     }
 }

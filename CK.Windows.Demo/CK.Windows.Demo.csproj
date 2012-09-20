@@ -70,9 +70,6 @@
     <Reference Include="Common.Logging">
       <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging.Log4Net">
-      <HintPath>..\Runtime\Current\Common.Logging.Log4Net.dll</HintPath>
-    </Reference>
     <Reference Include="Common.Logging.Log4Net1211, Version=2.1.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Common.Logging.Log4Net1211.2.1.1\lib\net40\Common.Logging.Log4Net1211.dll</HintPath>
@@ -170,7 +167,7 @@
       <Name>CK.Windows.App</Name>
     </ProjectReference>
     <ProjectReference Include="..\CK.Windows.Config\CK.Windows.Config.csproj">
-      <Project>{739010D0-1211-453A-B3F3-0FF1AFC8CC14}</Project>
+      <Project>{739010d0-1211-453a-b3f3-0ff1afc8cc14}</Project>
       <Name>CK.Windows.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\CK.Windows.Core\CK.Windows.Core.csproj">
