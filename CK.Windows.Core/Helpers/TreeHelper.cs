@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Media;
 
-namespace CK.Windows.Helper
+namespace CK.Windows.Helpers
 {
     /// <summary>
     /// Helper methods for UI-related tasks.
