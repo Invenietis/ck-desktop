@@ -284,6 +284,7 @@ namespace CK.Windows.Interop
             SIZE = 0x0005,
             /// <summary>
             /// The WM_ACTIVATE message is sent to both the window being activated and the window being deactivated. If the windows use the same input queue, the message is sent synchronously, first to the window procedure of the top-level window being deactivated, then to the window procedure of the top-level window being activated. If the windows use different input queues, the message is sent asynchronously, so the window is activated immediately.
+            /// The wParam contains a pointer to the last focused window
             /// </summary>
             ACTIVATE = 0x0006,
             /// <summary>
