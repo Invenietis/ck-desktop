@@ -30,11 +30,18 @@ using CK.Core;
 
 namespace Caliburn.Micro
 {
+    /// <summary>
+    /// A Conductor that is a collection of views. enable going back to the stacked views.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class StackConductor<T> : Conductor<T>.Collection.OneActive
         where T : class
     {
         List<T> _stack;
 
+        /// <summary>
+        /// Ctor
+        /// </summary>
         public StackConductor()
         {
             _stack = new List<T>();
@@ -56,16 +63,36 @@ namespace Caliburn.Micro
             };
         }
 
+        /// <summary>
+        /// Gets the Previous item in the view stack
+        /// </summary>
         public T Previous
         {
             get { return _stack.Count > 1 ? _stack[_stack.Count - 2] : null; }
         }
 
+        /// <summary>
+        /// Activates the previous view
+        /// </summary>
         public void GoBack()
         {
-            if( CanGoBack() ) ActivateItem( Previous );
+            if( CanGoBack() && OnBeforeGoBack() ) ActivateItem( Previous );
         }
 
+        /// <summary>
+        /// When overridden in a inherited class, tests whether we should actually go to the previous view.
+        /// Can be used to do things before going back.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool OnBeforeGoBack()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Gets whether there is a "previous view", to which going back is possible
+        /// </summary>
+        /// <returns></returns>
         public bool CanGoBack()
         {
             return _stack.Count > 1;
@@ -101,14 +128,14 @@ namespace Caliburn.Micro
             static public void RaiseCanExecuteChanged( WeakReference<GoBackCmd> cmdRef )
             {
                 GoBackCmd cmd;
-                if( cmdRef != null && (cmd = cmdRef.Target) != null ) cmd.RaiseCanExecuteChanged();
+                if( cmdRef != null && ( cmd = cmdRef.Target ) != null ) cmd.RaiseCanExecuteChanged();
             }
 
             static public GoBackCmd Ensure( StackConductor<T> holder, ref WeakReference<GoBackCmd> cmdRef )
             {
                 GoBackCmd cmd;
                 if( cmdRef == null ) cmdRef = cmd = new GoBackCmd( holder );
-                else if( (cmd = cmdRef.Target) == null ) cmdRef.Target = cmd = new GoBackCmd( holder );
+                else if( ( cmd = cmdRef.Target ) == null ) cmdRef.Target = cmd = new GoBackCmd( holder );
                 return cmd;
             }
 
@@ -171,7 +198,6 @@ namespace Caliburn.Micro
             NotifyOfPropertyChange( "Previous" );
             if( _stack.Count == 1 ) GoBackCmd.RaiseCanExecuteChanged( _goBackCommand );
         }
-
     }
 
 }

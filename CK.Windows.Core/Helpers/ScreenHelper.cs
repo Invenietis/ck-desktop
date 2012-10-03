@@ -30,29 +30,56 @@ using System.Windows;
 
 namespace CK.Windows.Helpers
 {
+    /// <summary>
+    /// Class holding helpers. Checking if an object is in ou out of the computer screens, getting the primary screen etc..
+    /// </summary>
     public class ScreenHelper
     {
+        /// <summary>
+        /// Gets whether a rectangle is in one of the screens of the computer
+        /// </summary>
+        /// <param name="rect">The rectangle</param>
+        /// <returns>true if the rectangle is in one of the screens of the computer</returns>
         public static bool IsInScreen( Rectangle rect )
         {
             return Screen.AllScreens.Any( ( s ) => s.WorkingArea.Contains( rect ) );
         }
 
+        /// <summary>
+        /// Gets whether a point is in one of the screens of the computer
+        /// </summary>
+        /// <param name="point">The point</param>
+        /// <returns>true if the point is in one of the screens of the computer</returns>
         public static bool IsInScreen( System.Drawing.Point point )
         {
             return Screen.AllScreens.Any( ( s ) => s.WorkingArea.Contains( point ) );
         }
 
+        /// <summary>
+        /// Gets whether a window is in one of the screens of the computer
+        /// </summary>
+        /// <param name="window">The window</param>
+        /// <returns>true if the window is in one of the screens of the computer</returns>
         public static bool IsInScreen( Window window )
         {
             return Screen.AllScreens.Any( ( s ) => s.WorkingArea.Contains( new Rectangle( (int)window.Top, (int)window.Left, (int)window.Width, (int)window.Left ) ) );
         }
 
+        /// <summary>
+        /// Gets the point at the center of the screen in which is the Rectangle set as parameter
+        /// </summary>
+        /// <param name="rect">The rectangle</param>
+        /// <returns></returns>
         public static System.Drawing.Point GetCenterOfParentScreen( Rectangle rect )
         {
             Screen parent = Screen.FromRectangle( rect );
             return new System.Drawing.Point( parent.WorkingArea.Width / 2, parent.WorkingArea.Height / 2 );
         }
 
+        /// <summary>
+        /// Gets the Rectangle of the primary screen
+        /// </summary>
+        /// <returns>The rectangle of the primary screen</returns>
         public static Rectangle GetPrimaryScreenSize()
         {
             return Screen.PrimaryScreen.Bounds;
