@@ -98,6 +98,20 @@ namespace Caliburn.Micro
             return _stack.Count > 1;
         }
 
+        /// <summary>
+        /// Goes directly back to the root page, popping all the stack of pages until the first one.
+        /// </summary>
+        public void GoBackToRoot()
+        {
+            while( CanGoBack() )
+            {
+                Pop();
+            }
+
+            if(_stack.Count == 1)
+                ActivateItem( _stack[0] );
+        }
+
         class GoBackCmd : ICommand
         {
             StackConductor<T> _c;
