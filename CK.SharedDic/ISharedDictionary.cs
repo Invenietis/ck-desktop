@@ -40,15 +40,18 @@ namespace CK.Plugin.Config
         void Import( ISharedDictionary source, MergeMode mergeMode );
 
         /// <summary>
-        /// 
+        /// Registers a reader. Enables reading the plugin datas of the objects that the <see cref="IStructuredReader"/> reads.
         /// </summary>
-        /// <param name="reader"></param>
-        /// <param name="mergeMode"></param>
-        /// <returns></returns>
+        /// <param name="reader">the reader</param>
+        /// <param name="mergeMode">the merge mode</param>
+        /// <returns>The shared dic structured reader</returns>
         ISharedDictionaryReader RegisterReader( IStructuredReader reader, MergeMode mergeMode );
 
+        /// <summary>
+        /// Registers a writer. Enables writing the plugin datas of the objects that the writer writes.
+        /// </summary>
+        /// <param name="writer">the writer</param>
+        /// <returns>The shared dic structured writer</returns>
         ISharedDictionaryWriter RegisterWriter( IStructuredWriter writer );
-
-
     }
 }

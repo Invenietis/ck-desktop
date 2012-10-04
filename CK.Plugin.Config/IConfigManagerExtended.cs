@@ -31,7 +31,7 @@ namespace CK.Plugin.Config
 {
     public interface IConfigManagerExtended
     {
-        /// <summary>
+                /// <summary>
         /// Gets the simple configuration object.
         /// </summary>
         IConfigManager ConfigManager { get; }

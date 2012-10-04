@@ -108,7 +108,7 @@ namespace Caliburn.Micro
                 Pop();
             }
 
-            if(_stack.Count == 1)
+            if( _stack.Count == 1 )
                 ActivateItem( _stack[0] );
         }
 

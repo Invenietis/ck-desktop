@@ -104,6 +104,11 @@ namespace CK.Context
                 _serviceContainer.Add<IContext>( this );
             }
             _pluginRunner.Initialize( _proxifiedContext );
+
+            //TODO remove this //WORKAROUND
+            //The SharedDictionary is added here in order for the ContextEditor plugin to be able to write/read pluginsdata.
+            //Remember to find another way to do this.
+            ServiceContainer.Add<ISharedDictionary>( _dic );
        }
 
         public IContext ProxifiedContext
