@@ -7,7 +7,6 @@ Output/Debug
 Thumbs.db
 #Ignore files build by Visual Studio
 *.obj
-*.exe
 *.pdb
 *.user
 *.aps
@@ -33,5 +32,5 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 /packages/
 CK-Core.Tests.VisualState.xml
-CK-Core.Tests.VisualState.xml
-*.csproj.user
+*.user
+CK-Desktop.Tests.VisualState.xml
