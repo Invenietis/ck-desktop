@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E0DF60D3-74C3-48C8-80D7-B6DEE01C6FDA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TestMaster</RootNamespace>
+    <AssemblyName>TestMaster</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Output\Tests\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\Tests\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CK.Context\CK.Context.csproj">
+      <Project>{C438577C-F468-4168-98A7-2CE52F2E976A}</Project>
+      <Name>CK.Context</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
+      <Project>{96D1DD2E-9E76-40EA-A943-1E85B44AB862}</Project>
+      <Name>CK.Plugin.Config.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CK.Plugin.Config\CK.Plugin.Config.csproj">
+      <Project>{CA150073-0318-4281-8324-03246F09A4DD}</Project>
+      <Name>CK.Plugin.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CK.Plugin.Discoverer.Runner\CK.Plugin.Discoverer.Runner.csproj">
+      <Project>{D6ACE31B-0A1B-4AC8-9C7E-CE1FFE6C1868}</Project>
+      <Name>CK.Plugin.Discoverer.Runner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CK.Plugin.Discoverer\CK.Plugin.Discoverer.csproj">
+      <Project>{7B9A41C4-0D83-4CDE-9A78-45847F8A0D4B}</Project>
+      <Name>CK.Plugin.Discoverer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CK.Plugin.Host\CK.Plugin.Host.csproj">
+      <Project>{C9FCBF26-371B-48C2-AA78-06292EE30B9D}</Project>
+      <Name>CK.Plugin.Host</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CK.Plugin.Model\CK.Plugin.Model.csproj">
+      <Project>{D6E4A9FE-F9B9-4FDC-A21A-E3E7109128C6}</Project>
+      <Name>CK.Plugin.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CK.Plugin.Runner\CK.Plugin.Runner.csproj">
+      <Project>{9C5F6F2E-D921-4D98-BAA3-CBED45EC3A4C}</Project>
+      <Name>CK.Plugin.Runner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CK.SharedDic\CK.SharedDic.csproj">
+      <Project>{0BEFACC1-7CF4-4634-BD78-AACA73B3224F}</Project>
+      <Name>CK.SharedDic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CK.Windows.Core\CK.Windows.Core.csproj">
+      <Project>{9F3F9332-6CAD-413D-BF7C-580228D62FCD}</Project>
+      <Name>CK.Windows.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.Context.Tests\CK.Context.Tests.csproj">
+      <Project>{57015573-9E25-4A4C-8E6A-3BF6CA97FB33}</Project>
+      <Name>CK.Context.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.Discoverer.Tests\CK.Discoverer.Tests.csproj">
+      <Project>{A7ECEE18-2D66-4D50-8BFE-6F721F3D3D2F}</Project>
+      <Name>CK.Discoverer.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.Plugin.Config.Tests\CK.Plugin.Config.Tests.csproj">
+      <Project>{5B852105-EDA2-4F96-8608-8F161DAF6FD7}</Project>
+      <Name>CK.Plugin.Config.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.Plugin.Host.Tests\CK.Plugin.Host.Tests.csproj">
+      <Project>{5F2F4441-FB3F-4805-ADB0-A1613214ED2A}</Project>
+      <Name>CK.Plugin.Host.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.Plugin.Runner.Tests\CK.Plugin.Runner.Tests.csproj">
+      <Project>{0A6686FD-1896-4189-A09A-0EB4140E755F}</Project>
+      <Name>CK.Plugin.Runner.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.SharedDic.Tests\CK.SharedDic.Tests.csproj">
+      <Project>{A3E3B84E-59FD-410E-98A6-383F2D9BD418}</Project>
+      <Name>CK.SharedDic.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.Windows.Core.Tests\CK.Windows.Core.Tests.csproj">
+      <Project>{2533A7E9-BF25-454D-8604-2829C78EE29C}</Project>
+      <Name>CK.Windows.Core.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
