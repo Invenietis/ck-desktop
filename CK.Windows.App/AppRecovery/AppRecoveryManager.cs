@@ -187,32 +187,35 @@ namespace CK.Windows.App
             {
                 using( var e = ApplicationCrashedEventArgs.InitOnce() )
                 {
-                    Delegate[] all = h.GetInvocationList();
-                    foreach( Delegate d in all )
+                    if( e != null )
                     {
-                        try
+                        Delegate[] all = h.GetInvocationList();
+                        foreach( Delegate d in all )
                         {
-                            d.DynamicInvoke( null, e );
-                        }
-                        catch( Exception ex )
-                        {
-                            e.CrashLog.Writer.WriteLine();
-                            e.CrashLog.Writer.WriteLine( "== Exception in ApplicationCrashed handling: Type={0}", d.Method.DeclaringType.AssemblyQualifiedName );
-                            e.CrashLog.WriteException( ex );
-                            e.CrashLog.Writer.WriteLine( "== End of Exception in ApplicationCrashed handling" );
-                        }
-                    }
-                    if( e.CrashLog.IsValid )
-                    {
-                        e.CrashLog.Writer.WriteLine( "== Registered Exceptions" );
-                        if( _registeredExceptions.Count > 0 )
-                        {
-                            foreach( string oEx in _registeredExceptions )
+                            try
                             {
-                                e.CrashLog.Writer.WriteLine( oEx );
+                                d.DynamicInvoke( null, e );
+                            }
+                            catch( Exception ex )
+                            {
+                                e.CrashLog.Writer.WriteLine();
+                                e.CrashLog.Writer.WriteLine( "== Exception in ApplicationCrashed handling: Type={0}", d.Method.DeclaringType.AssemblyQualifiedName );
+                                e.CrashLog.WriteException( ex );
+                                e.CrashLog.Writer.WriteLine( "== End of Exception in ApplicationCrashed handling" );
                             }
                         }
-                        e.CrashLog.Writer.WriteLine( "== End of Registered Exceptions" );
+                        if( e.CrashLog.IsValid )
+                        {
+                            e.CrashLog.Writer.WriteLine( "== Registered Exceptions" );
+                            if( _registeredExceptions.Count > 0 )
+                            {
+                                foreach( string oEx in _registeredExceptions )
+                                {
+                                    e.CrashLog.Writer.WriteLine( oEx );
+                                }
+                            }
+                            e.CrashLog.Writer.WriteLine( "== End of Registered Exceptions" );
+                        }
                     }
                 }
             }
