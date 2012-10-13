@@ -278,10 +278,6 @@ namespace CK.Plugin.Hosting
                 }
                 catch( Exception ex )
                 {
-#if DEBUG
-                    //Helps the developper identify the culprit of exceptions
-                    Debugger.Break();
-#endif
                     _log.ErrorFormat( "There has been a problem when setting up the {0} plugin.", ex, p.PublicName );
                     _serviceHost.LogMethodError( p.GetImplMethodInfoSetup(), ex );
 

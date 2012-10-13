@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="IServiceB.cs" />
-    <Compile Include="Plugin02.cs" />
+    <Compile Include="Plugin01.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -25,6 +25,7 @@ using System;
 using CK.Plugin.Config;
 using CK.Plugin.Hosting;
 using NUnit.Framework;
+using CK.Core;
 
 namespace CK.Plugin.Runner
 {
@@ -67,7 +68,9 @@ namespace CK.Plugin.Runner
 
             // Set a new user action --> stop the plugin
             for( int i = 0; i < idToStart.Length; i++ )
+            {
                 ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( idToStart[i], ConfigUserAction.Stopped );
+            }
 
             if( beforeStop != null ) beforeStop();
 
@@ -105,11 +108,29 @@ namespace CK.Plugin.Runner
             if( afterStop != null ) afterStop();
         }
 
+        private void CheckReferenceToServiceC( bool mustBeNotNull )
+        {
+            Type t = AssemblyCache.FindLoadedTypeByAssemblyQualifiedName( "CK.Tests.Plugin.IReferenceServiceC, PluginNeedsServiceC" );
+            Assert.That( t, Is.Not.Null );
+            object o = PluginRunner.ServiceHost.GetRunningProxy( t );
+            Assert.That( o, Is.Not.Null );
+            object rawImpl = o.GetType().GetProperty( "RawImpl" ).GetValue( o, null );
+            Assert.That( rawImpl, Is.Not.Null );
+            if( mustBeNotNull )
+            {
+                Assert.That( rawImpl.GetType().GetProperty( "ServiceCIsNotNull" ).GetValue( rawImpl, null ), Is.True );
+            }
+            else
+            {
+                Assert.That( rawImpl.GetType().GetProperty( "ServiceCIsNotNull" ).GetValue( rawImpl, null ), Is.False );
+            }
+        }
+
         #region Check all types of service references with fully implemented service.
 
         [Test]
         /// <summary>
-        /// A plugin needs (MustExistAndRun) a service implemented by an other plugin.
+        /// A plugin needs (MustExistAndRun) a service implemented by another plugin.
         /// Check if the plugin that implement the service is auto started to fill the service reference.
         /// </summary>
         public void ServiceReference_Normal_MustExistAndRun()
@@ -127,6 +148,7 @@ namespace CK.Plugin.Runner
                 // Check if the plugin is started, and if the plugin that implement the required service is started too.
                 Assert.IsTrue( PluginRunner.IsPluginRunning( PluginRunner.Discoverer.FindPlugin( id ) ) );
                 Assert.IsTrue( PluginRunner.IsPluginRunning( PluginRunner.Discoverer.FindPlugin( _implService ) ) );
+                CheckReferenceToServiceC( mustBeNotNull: true );
             };
             Action afterStop = () =>
             {

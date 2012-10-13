@@ -35,36 +35,13 @@ namespace CK.Tests.Plugin
     /// </summary>
     [Plugin( "{457E357D-102D-447D-89B8-DA9C849910C8}",
         PublicName = "PluginNeedsIService_MEAR", Version = "1.1.0" )]
-    public class PluginNeedsIService_MEAR : IPlugin
+    public class PluginNeedsIService_MEAR : PluginBase
     {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IServiceC> Service { get; set; }
+        
+        protected override IServiceC GetServiceC() { return Service.Service; }
 
-        public bool Started;
-
-        public void Start()
-        {
-            Started = true;
-        }
-
-        public void Stop()
-        {
-            Started = false;
-        }
-
-        #region IPlugin Membres
-
-        public bool Setup( IPluginSetupInfo info )
-        {
-            return true;
-        }
-
-        public void Teardown()
-        {
-            // Nothing to do.
-        }
-
-        #endregion
     }
 
     /// <summary>
@@ -72,36 +49,12 @@ namespace CK.Tests.Plugin
     /// </summary>
     [Plugin( "{9BBCFE92-7465-4B3B-88D0-3CEF1E2E5580}",
         PublicName = "PluginNeedsIService_METS", Version = "1.1.0" )]
-    public class PluginNeedsIService_METS : IPlugin
+    public class PluginNeedsIService_METS : PluginBase
     {
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IService<IServiceC> Service { get; set; }
 
-        public bool Started;
-
-        public void Start()
-        {
-            Started = true;
-        }
-
-        public void Stop()
-        {
-            Started = false;
-        }
-
-        #region IPlugin Membres
-
-        public bool Setup( IPluginSetupInfo info )
-        {
-            return true;
-        }
-
-        public void Teardown()
-        {
-            // Nothing to do.
-        }
-
-        #endregion
+        protected override IServiceC GetServiceC() { return Service.Service; }
     }
 
     /// <summary>
@@ -109,36 +62,13 @@ namespace CK.Tests.Plugin
     /// </summary>
     [Plugin( "{973B4050-280F-43B0-A9E3-0C4DC9BC2C5F}",
         PublicName = "PluginNeedsIService_ME", Version = "1.1.0" )]
-    public class PluginNeedsIService_ME : IPlugin
+    public class PluginNeedsIService_ME : PluginBase
     {
         [DynamicService( Requires = RunningRequirement.MustExist )]
         public IService<IServiceC> Service { get; set; }
 
-        public bool Started;
+        protected override IServiceC GetServiceC() { return Service.Service; }
 
-        public void Start()
-        {
-            Started = true;
-        }
-
-        public void Stop()
-        {
-            Started = false;
-        }
-
-        #region IPlugin Membres
-
-        public bool Setup( IPluginSetupInfo info )
-        {
-            return true;
-        }
-
-        public void Teardown()
-        {
-            // Nothing to do.
-        }
-
-        #endregion
     }
 
     /// <summary>
@@ -146,36 +76,12 @@ namespace CK.Tests.Plugin
     /// </summary>
     [Plugin( "{CDCE6413-038D-4020-A3E0-51FA755C5E72}",
         PublicName = "PluginNeedsIService_OTS", Version = "1.1.0" )]
-    public class PluginNeedsIService_OTS : IPlugin
+    public class PluginNeedsIService_OTS : PluginBase
     {
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IServiceC> Service { get; set; }
 
-        public bool Started;
-
-        public void Start()
-        {
-            Started = true;
-        }
-
-        public void Stop()
-        {
-            Started = false;
-        }
-
-        #region IPlugin Membres
-
-        public bool Setup( IPluginSetupInfo info )
-        {
-            return true;
-        }
-
-        public void Teardown()
-        {
-            // Nothing to do.
-        }
-
-        #endregion
+        protected override IServiceC GetServiceC() { return Service.Service; }
     }
 
     /// <summary>
@@ -183,35 +89,11 @@ namespace CK.Tests.Plugin
     /// </summary>
     [Plugin( "{FF896081-A15D-4A5C-8030-13544EF09673}",
         PublicName = "PluginNeedsIService_O", Version = "1.1.0" )]
-    public class PluginNeedsIService_O : IPlugin
+    public class PluginNeedsIService_O : PluginBase
     {
         [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IServiceC> Service { get; set; }
 
-        public bool Started;
-
-        public void Start()
-        {
-            Started = true;
-        }
-
-        public void Stop()
-        {
-            Started = false;
-        }
-
-        #region IPlugin Membres
-
-        public bool Setup( IPluginSetupInfo info )
-        {
-            return true;
-        }
-
-        public void Teardown()
-        {
-            // Nothing to do.
-        }
-
-        #endregion
+        protected override IServiceC GetServiceC() { return Service.Service; }
     }
 }

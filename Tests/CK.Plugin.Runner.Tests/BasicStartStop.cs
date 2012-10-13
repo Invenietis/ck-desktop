@@ -25,6 +25,7 @@ using System;
 using CK.Plugin.Config;
 using CK.Plugin.Hosting;
 using NUnit.Framework;
+using CK.Core;
 
 namespace CK.Plugin.Runner
 {
@@ -198,7 +199,11 @@ namespace CK.Plugin.Runner
             {
                 Assert.IsTrue( PluginRunner.IsPluginRunning( PluginRunner.Discoverer.FindPlugin( id ) ) );
                 // Check that the service is available.
-                //Assert.NotNull( PluginRunner.ServiceHost.GetRunningProxy( Type.GetType( "CK.Tests.Plugin.IServiceB, ServiceB, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", true ) ) );
+                //
+                // TODO: This does not work! The "ServiceB" assembly can not be found by the GetType( "CK.Tests.Plugin.IServiceB, ServiceB" )
+                //       Is this a bug of SimpleTypeFinder.WeakDefault ?
+                //
+                Assert.NotNull( PluginRunner.ServiceHost.GetRunningProxy( AssemblyCache.FindLoadedTypeByAssemblyQualifiedName( "CK.Tests.Plugin.IServiceB, ServiceB, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" ) ) );
             };
             Action afterStop = () => Assert.IsTrue( !PluginRunner.IsPluginRunning( PluginRunner.Discoverer.FindPlugin( id ) ) );
 

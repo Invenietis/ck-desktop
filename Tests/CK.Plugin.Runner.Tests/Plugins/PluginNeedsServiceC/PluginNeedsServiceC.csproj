@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PluginBase.cs" />
     <Compile Include="PluginNeedsIService.cs" />
     <Compile Include="PluginNeedsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

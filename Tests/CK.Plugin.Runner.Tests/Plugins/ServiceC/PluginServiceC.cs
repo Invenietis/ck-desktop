@@ -34,11 +34,10 @@ namespace CK.Tests.Plugin
         Version="1.0.0" )]
 	public class PluginServiceC : IPlugin, IServiceC
 	{
-		public bool CanStart( out string message )
-		{
-			message = null;
-			return true;
-		}
+        public bool Setup( IPluginSetupInfo info )
+        {
+            return true;
+        }
 
 		public void Start()
 		{
@@ -47,11 +46,6 @@ namespace CK.Tests.Plugin
 		public void Stop()
 		{
 		}
-
-        public bool Setup( IPluginSetupInfo info )
-        {
-            return true;
-        }
 
         public void Teardown()
         {

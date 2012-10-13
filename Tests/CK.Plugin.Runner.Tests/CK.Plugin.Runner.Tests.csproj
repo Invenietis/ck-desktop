@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="BasicStartStop.cs" />
     <Compile Include="CheckServiceReferences.cs" />
+    <Compile Include="AssemblyCache.cs" />
     <Compile Include="Injections.cs" />
     <Compile Include="IsDirty.cs" />
     <Compile Include="MiniContext.cs" />
