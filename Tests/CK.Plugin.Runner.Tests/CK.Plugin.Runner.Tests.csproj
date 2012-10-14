@@ -53,6 +53,7 @@
     <Compile Include="Injections.cs" />
     <Compile Include="IsDirty.cs" />
     <Compile Include="MiniContext.cs" />
+    <Compile Include="PluginNeedsServiceCIdentifiers.cs" />
     <Compile Include="ResolveRequirements.cs" />
     <Compile Include="RunningErrors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

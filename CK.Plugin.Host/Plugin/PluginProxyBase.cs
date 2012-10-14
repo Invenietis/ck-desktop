@@ -131,7 +131,7 @@ namespace CK.Plugin.Hosting
                         Type iType = t.GetInterfaces().FirstOrDefault( i => i != typeof( IDynamicService ) && typeof( IDynamicService ).IsAssignableFrom( i ) );
                         if( iType != null )
                         {
-                            Service = serviceHost.EnsureProxy( iType );
+                            Service = serviceHost.EnsureProxyForDynamicService( iType );
                         }
                     }
                 }

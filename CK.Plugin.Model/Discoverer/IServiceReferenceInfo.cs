@@ -45,7 +45,12 @@ namespace CK.Plugin
         /// </summary>
         IServiceInfo Reference { get; }
 
-		/// <summary>
+        /// <summary>
+        /// Gets whether the <see cref="Reference"/> is wrapped in <see cref="IService{T}"/>.
+        /// </summary>
+        bool IsIServiceWrapped { get; }
+		
+        /// <summary>
 		/// Gets the requirements for the referenced service.
 		/// </summary>
 		RunningRequirement Requirements { get; }

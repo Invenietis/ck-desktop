@@ -196,18 +196,34 @@ namespace CK.Plugin.Hosting
 
         void ConfigureServiceReferences( IReadOnlyCollection<IPluginProxy> newPluginsLoaded )
         {            
+            HashSet<PropertyInfo> processedProperties = new HashSet<PropertyInfo>();
             foreach( var p in newPluginsLoaded )
             {
-                HashSet<PropertyInfo> processedProperties = new HashSet<PropertyInfo>();
+                processedProperties.Clear();
                 Type pType = p.RealPluginObject.GetType();
 
                 foreach( IServiceReferenceInfo r in p.PluginKey.ServiceReferences )
                 {
                     PropertyInfo pService = pType.GetProperty( r.PropertyName );
                     processedProperties.Add( pService );
+                    Debug.Assert( !r.IsIServiceWrapped || r.Reference.IsDynamicService, "IService<T> => T is IDynamicService." );
                     if( r.Reference.IsDynamicService )
                     {
-                        object refService = _host.ServiceHost.GetProxy( pService.PropertyType );
+                        object refService;
+                        Type serviceType = pService.PropertyType;
+                        if( r.IsIServiceWrapped )
+                        {
+                            // Extracts the actual service type.
+                            Debug.Assert( serviceType.IsGenericType && serviceType.GetGenericTypeDefinition() == typeof( IService<> ) );
+                            serviceType = serviceType.GetGenericArguments()[0];
+                            // Ensures that the proxy exists.
+                            refService = _host.ServiceHost.EnsureProxyForDynamicService( serviceType );
+                        }
+                        else
+                        {
+                            // Not IService<> wrapped: sets it only if it is running (null otherwise).
+                            refService = _host.ServiceHost.GetRunningProxy( serviceType );
+                        }
                         pService.SetValue( p.RealPluginObject, refService, null );
                     }
                     else

@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DisabledAndRunningPluginsIntersect" xml:space="preserve">
     <value>Disabled and Running list share {0} plugin(s).</value>
@@ -123,8 +123,14 @@
   <data name="DisabledAndStoppedPluginsIntersect" xml:space="preserve">
     <value>Disabled and Stopped list share {0} plugin(s).</value>
   </data>
+  <data name="ExternalImplRequiredAsANonNullObject" xml:space="preserve">
+    <value>External Service implementation must be provided.</value>
+  </data>
   <data name="ExternalLogErrorMissException" xml:space="preserve">
     <value>Missing Exception object in call to ExternalLogError.</value>
+  </data>
+  <data name="InterfaceMustExtendIDynamicService" xml:space="preserve">
+    <value>Interface must extend IDynamicService to be a Dynamic Service.</value>
   </data>
   <data name="PluginConfiguratorIsNull" xml:space="preserve">
     <value>PluginRunner.PluginConfigurator must be not null.</value>
@@ -143,5 +149,8 @@
   </data>
   <data name="StoppedAndRunningPluginsIntersect" xml:space="preserve">
     <value>Stopped and Running list share {0} plugin(s).</value>
+  </data>
+  <data name="TypeMustBeAnInterface" xml:space="preserve">
+    <value>The type must be an Interface.</value>
   </data>
 </root>

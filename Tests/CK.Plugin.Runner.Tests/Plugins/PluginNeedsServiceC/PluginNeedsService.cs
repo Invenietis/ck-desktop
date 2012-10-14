@@ -33,8 +33,7 @@ namespace CK.Tests.Plugin
     /// <summary>
     /// Plugin that require (MustExistAndRun) the IServiceB interface directly.
     /// </summary>
-    [Plugin( "{4E69383E-044D-4786-9077-5F8E5B259793}",
-        PublicName = "PluginNeedsService_MEAR", Version = "1.1.0" )]
+    [Plugin( CK.Plugin.Runner.PluginNeedsServiceCIdentifiers.NakedService_MEAR, PublicName = "PluginNeedsService_MEAR", Version = "1.1.0" )]
     public class PluginNeedsService_MEAR : PluginBase
     {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -46,8 +45,7 @@ namespace CK.Tests.Plugin
     /// <summary>
     /// Plugin that require (MustExistTryStart) the IServiceB interface directly.
     /// </summary>
-    [Plugin( "{58C00B79-D882-4C11-BD90-1F25AD664C67}",
-        PublicName = "PluginNeedsService_METS", Version = "1.1.0" )]
+    [Plugin( CK.Plugin.Runner.PluginNeedsServiceCIdentifiers.NakedService_METS, PublicName = "PluginNeedsService_METS", Version = "1.1.0" )]
     public class PluginNeedsService_METS : PluginBase
     {
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
@@ -59,8 +57,7 @@ namespace CK.Tests.Plugin
     /// <summary>
     /// Plugin that require (MustExist) the IServiceB interface directly as a DynamicService.
     /// </summary>
-    [Plugin( "{317B5D34-BA84-4A15-92F4-4E791E737EF0}",
-        PublicName = "PluginNeedsService_ME", Version = "1.1.0" )]
+    [Plugin( CK.Plugin.Runner.PluginNeedsServiceCIdentifiers.NakedService_ME, PublicName = "PluginNeedsService_ME", Version = "1.1.0" )]
     public class PluginNeedsService_ME : PluginBase
     {
         [DynamicService( Requires = RunningRequirement.MustExist )]
@@ -72,8 +69,7 @@ namespace CK.Tests.Plugin
     /// <summary>
     /// Plugin that require (OptionalTryStart) the IServiceB interface directly as a DynamicService.
     /// </summary>
-    [Plugin( "{ABD53A18-4549-49B8-82C0-9977200F47E9}",
-        PublicName = "PluginNeedsService_OTS", Version = "1.1.0" )]
+    [Plugin( CK.Plugin.Runner.PluginNeedsServiceCIdentifiers.NakedService_OTS, PublicName = "PluginNeedsService_OTS", Version = "1.1.0" )]
     public class PluginNeedsService_OTS : PluginBase
     {
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
@@ -85,8 +81,7 @@ namespace CK.Tests.Plugin
     /// <summary>
     /// Plugin that require (Optional) the IServiceB interface directly as a DynamicService.
     /// </summary>
-    [Plugin( "{C78FCB4F-6925-4587-AC98-DA0AE1A977D1}",
-        PublicName = "PluginNeedsService_O", Version = "1.1.0" )]
+    [Plugin( CK.Plugin.Runner.PluginNeedsServiceCIdentifiers.NakedService_O, PublicName = "PluginNeedsService_O", Version = "1.1.0" )]
     public class PluginNeedsService_O : PluginBase
     {
         [DynamicService( Requires = RunningRequirement.Optional )]

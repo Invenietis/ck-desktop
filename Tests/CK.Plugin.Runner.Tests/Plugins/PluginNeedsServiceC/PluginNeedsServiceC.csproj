@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\PluginNeedsServiceCIdentifiers.cs">
+      <Link>PluginNeedsServiceCIdentifiers.cs</Link>
+    </Compile>
     <Compile Include="PluginBase.cs" />
     <Compile Include="PluginNeedsIService.cs" />
     <Compile Include="PluginNeedsService.cs" />

@@ -47,7 +47,7 @@ namespace CK.Plugin.Hosting
 		{
 			if( !typeInterface.IsInterface )
 			{
-				throw new ArgumentException( "Must be an interface.", "typeInterface" );
+				throw new ArgumentException( R.TypeMustBeAnInterface, "typeInterface" );
 			}
 			_typeInterface = typeInterface;
             _errorCatch = errorCatch;

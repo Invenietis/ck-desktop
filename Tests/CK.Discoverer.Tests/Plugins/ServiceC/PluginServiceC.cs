@@ -28,10 +28,7 @@ using CK.Plugin;
 
 namespace CK.Tests.Plugin
 {
-	[Plugin( "{C24EE3EA-F078-4974-A346-B34208221B35}", 
-        PublicName="PluginServiceC", 
-        Categories=new string[] { "Test" },
-        Version="1.0.0" )]
+	[Plugin( "{C24EE3EA-F078-4974-A346-B34208221B35}", PublicName="PluginServiceC", Categories=new string[] { "Test" }, Version="1.0.0" )]
 	public class PluginServiceC : IPlugin, IServiceC
 	{
 		public bool CanStart( out string message )

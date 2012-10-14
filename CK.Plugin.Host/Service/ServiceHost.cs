@@ -90,15 +90,17 @@ namespace CK.Plugin.Hosting
             set { _eventSender = value; }
         }
 
-        internal ServiceProxyBase EnsureProxy( Type interfaceType )
+        internal ServiceProxyBase EnsureProxyForDynamicService( Type interfaceType )
         {
+            Debug.Assert( typeof( IDynamicService ).IsAssignableFrom( interfaceType ) && interfaceType != typeof( IDynamicService ) );
             return EnsureProxy( interfaceType, false );
         }
 
-        internal ServiceProxyBase EnsureProxyForExternalService( Type interfaceType, object currentImplementation )
+        internal ServiceProxyBase EnsureProxyForExternalService( Type interfaceType, object externalImplementation )
         {
+            Debug.Assert( externalImplementation != null );
             ServiceProxyBase proxy = EnsureProxy( interfaceType, true );
-            proxy.SetExternalImplementation( currentImplementation );
+            proxy.SetExternalImplementation( externalImplementation );
             return proxy;
         }
 
@@ -166,6 +168,8 @@ namespace CK.Plugin.Hosting
                 proxy.EventEntries[i].LogOptions = o;
             }
         }
+
+        #region Interception Log methods.
 
         /// <summary>
         /// Called when a method is entered.
@@ -364,11 +368,23 @@ namespace CK.Plugin.Hosting
             else _untrackedErrors.Add( e );
         }
 
+        #endregion
+
         #region IServiceHost Members
 
         object IServiceHost.InjectExternalService( Type interfaceType, object currentImplementation )
         {
+            if( currentImplementation == null ) throw new ArgumentNullException( "currentImplementation", R.ExternalImplRequiredAsANonNullObject );
             return EnsureProxyForExternalService( interfaceType, currentImplementation );
+        }
+
+        object IServiceHost.EnsureProxyForDynamicService( Type interfaceType )
+        {
+            if( !typeof( IDynamicService ).IsAssignableFrom( interfaceType ) || interfaceType == typeof( IDynamicService ) )
+            {
+                throw new ArgumentException( R.InterfaceMustExtendIDynamicService, "interfaceType" );
+            }
+            return EnsureProxyForDynamicService( interfaceType );
         }
 
         object IServiceHost.GetProxy( Type interfaceType )

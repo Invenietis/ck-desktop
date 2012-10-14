@@ -75,10 +75,17 @@ namespace CK.Plugin
         object GetRunningProxy( Type interfaceType );
 
         /// <summary>
+        /// Ensures that a proxy exists for the given <see cref="IDynamicService"/> interface.
+        /// </summary>
+        /// <param name="interfaceType">Type of the interface. Must extend <see cref="IDynamicService"/>.</param>
+        /// <returns>The proxy object.</returns>
+        object EnsureProxyForDynamicService( Type interfaceType );
+
+        /// <summary>
         /// Ensures that a proxy exists for the given interface and associates it to an implementation.
         /// </summary>
-        /// <param name="interfaceType">Type of the interface.</param>
-        /// <param name="currentImplementation">Implementation to use.</param>
+        /// <param name="interfaceType">Type of the interface. May extend <see cref="IDynamicService"/> but it is not required: any interface can be injected.</param>
+        /// <param name="currentImplementation">Implementation to use. Must not be null.</param>
         /// <returns>The proxy object.</returns>
         object InjectExternalService( Type interfaceType, object currentImplementation );
 

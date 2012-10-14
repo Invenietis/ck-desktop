@@ -35,6 +35,7 @@ namespace CK.Plugin.Discoverer
         RunningRequirement	_requirements;
         ServiceInfo _reference;
         PluginInfo _owner;
+        bool _isServiceWrapped;
 
         public IPluginInfo Owner { get { return _owner; } }
 
@@ -53,6 +54,11 @@ namespace CK.Plugin.Discoverer
             get { return _reference; }
         }
 
+        public bool IsIServiceWrapped 
+        {
+            get { return _isServiceWrapped; } 
+        }
+
         internal ServiceReferenceInfo( PluginDiscoverer discoverer )
             : base( discoverer )
         {
@@ -65,6 +71,7 @@ namespace CK.Plugin.Discoverer
             _requirements = r.Requirements;
             _reference = merger.FindOrCreate( r.Reference );
             _owner = merger.FindOrCreate( r.Owner );
+            _isServiceWrapped = r.IsIServiceWrapped;
         }
 
         internal bool Merge( PluginDiscoverer.Merger merger, Runner.ServiceReferenceInfo r )
@@ -81,7 +88,11 @@ namespace CK.Plugin.Discoverer
                 _requirements = r.Requirements;
                 hasChanged = true;
             }
-
+            if( _isServiceWrapped != r.IsIServiceWrapped )
+            {
+                _isServiceWrapped = r.IsIServiceWrapped;
+                hasChanged = true;
+            }
             ServiceInfo newService = merger.FindOrCreate( r.Reference );
             if( _reference != newService )
             {

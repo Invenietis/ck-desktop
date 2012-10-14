@@ -157,10 +157,10 @@ namespace CK.Plugin.Hosting
                 {
                     if( !p.TryLoad( _serviceHost, PluginCreator ) )
                     {
-                        Debug.Assert( p.LoadError != null );
+                        Debug.Assert( p.LoadError != null, "Error is catched by the PluginHost itself." );
                         _serviceHost.LogMethodError( PluginCreator.Method, p.LoadError );
                         // Unable to load the plugin: leave now.
-                        return new ExecutionPlanResult() { Culprit = p.PluginKey, Status = ExecutionPlanResultStatus.LoadError };
+                        return new ExecutionPlanResult() { Culprit = p.PluginKey, Status = ExecutionPlanResultStatus.LoadError, Error = p.LoadError };
                     }
                     Debug.Assert( p.LoadError == null );
                     Debug.Assert( p.Status == RunningStatus.Disabled );
@@ -187,10 +187,6 @@ namespace CK.Plugin.Hosting
                     }
                     catch( Exception ex )
                     {
-#if DEBUG
-                    //Helps the developper identify the culprit of exception
-                    Debugger.Break();
-#endif 
                         _log.ErrorFormat( "There has been a problem when stopping the {0} plugin.", ex, p.PublicName );
                         _serviceHost.LogMethodError( p.GetImplMethodInfoStop(), ex );
                     }
@@ -213,10 +209,6 @@ namespace CK.Plugin.Hosting
                 }
                 catch( Exception ex )
                 {
-#if DEBUG
-                    //Helps the developper identify the culprit of exceptions
-                    Debugger.Break();
-#endif
                     _log.ErrorFormat( "There has been a problem when tearing down the {0} plugin.", ex, p.PublicName );
                     _serviceHost.LogMethodError( p.GetImplMethodInfoTeardown(), ex );
                 }
@@ -252,10 +244,6 @@ namespace CK.Plugin.Hosting
                 }
                 catch( Exception ex )
                 {
-#if DEBUG
-                    //Helps the developper identify the culprit of exceptions
-                    Debugger.Break();
-#endif
                     _log.ErrorFormat( "There has been a problem when disposing the {0} plugin.", ex, p.PublicName );
                     _serviceHost.LogMethodError( p.GetImplMethodInfoDispose(), ex );
                 }
@@ -303,7 +291,6 @@ namespace CK.Plugin.Hosting
             try
             {
                 var listNew = new ReadOnlyCollectionOnICollection<PluginProxy>( _newlyLoadedPlugins );
-                //var disabled = new ReadOnlyCollectionAdapter<IPluginProxy, PluginProxy>( toDisable );
                 ServiceReferencesBinder( listNew );
             }
             catch( Exception ex )

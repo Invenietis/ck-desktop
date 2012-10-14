@@ -141,7 +141,7 @@ namespace CK.Plugin.Host.Tests
         
         public ChoucroutePlugin RealPlugin { get; private set; }
 
-        public IService<IChoucrouteService> Service { get { return (IService<IChoucrouteService>)ServiceHost.EnsureProxy( typeof(IChoucrouteService) ); } }
+        public IService<IChoucrouteService> Service { get { return (IService<IChoucrouteService>)ServiceHost.EnsureProxyForDynamicService( typeof(IChoucrouteService) ); } }
 
         public PluginProxyBase ConsumerPluginProxy { get { return PluginHost.FindPluginProxy( PluginConsumerId ); } }
         

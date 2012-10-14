@@ -134,7 +134,7 @@ namespace CK.Plugin.Runner
         /// </summary>
         public void RefPluginStatusSwitching()
         {
-            Guid id = new Guid( "{4E69383E-044D-4786-9077-5F8E5B259793}" );
+            Guid id = new Guid( PluginNeedsServiceCIdentifiers.NakedService_MEAR );
 
             TestBase.CopyPluginToTestDir( "ServiceC.Model.dll" );
             TestBase.CopyPluginToTestDir( "ServiceC.dll" );
@@ -157,7 +157,7 @@ namespace CK.Plugin.Runner
          // 2 is stopped SetAction("stopped"). It should stop
          public void RefPluginLiveAction()
          {
-             Guid id1 = new Guid( "{4E69383E-044D-4786-9077-5F8E5B259793}" ); //called 1 in the commentary
+             Guid id1 = new Guid( PluginNeedsServiceCIdentifiers.NakedService_MEAR ); //called 1 in the commentary
              Guid id2 = new Guid( "{C24EE3EA-F078-4974-A346-B34208221B35}" ); //called 2 in the commentary
 
              TestBase.CopyPluginToTestDir( "ServiceC.Model.dll" );

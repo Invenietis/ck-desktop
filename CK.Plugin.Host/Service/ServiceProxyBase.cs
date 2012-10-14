@@ -123,7 +123,7 @@ namespace CK.Plugin.Hosting
         /// <summary>
         /// Currently, injection of external services must be totally independant of
         /// any Dynamic services: a Service is either a dynamic one, implemented by one (or more) plugin, 
-        /// or an external one that is considered to be persistent and available.
+        /// or an external one that is considered to be persistent and always available and started.
         /// </summary>
         /// <param name="implementation"></param>
         public void SetExternalImplementation( object implementation )
