@@ -39,20 +39,82 @@ namespace CK.Plugin.Hosting
     {
         class PluginData
         {
-            public PluginData( IPluginInfo p, int index, bool isRunning )
+            public PluginData( IPluginInfo p, int index, bool isRunning, SolvedConfigStatus pluginStatus, SolvedConfigStatus serviceStatus )
             {
+                Debug.Assert( pluginStatus != SolvedConfigStatus.Disabled );
                 PluginInfo = p;
                 Index = index;
                 IsRunning = isRunning;
+                PluginSolvedStatus = pluginStatus;
+                ServiceSolvedStatus = serviceStatus;
+                FinalSolvedStatus = serviceStatus > pluginStatus ? serviceStatus : pluginStatus;
             }
             public readonly IPluginInfo PluginInfo;
+            /// <summary>
+            /// The index of the PluginData in the array.
+            /// </summary>
             public readonly int Index;
+            /// <summary>
+            /// True if this plunning is currently running. This is used to impact cost (starting a stopped plugin costs a little bit more 
+            /// than keeping a running plugin that satisfies the same condition).
+            /// </summary>
             public readonly bool IsRunning;
+            /// <summary>
+            /// The max of PluginSolvedStatus and ServiceSolvedStatus.
+            /// </summary>
+            public readonly SolvedConfigStatus FinalSolvedStatus;
+            /// <summary>
+            /// The SolvedConfigStatus of the plugin itself.
+            /// </summary>
+            public readonly SolvedConfigStatus PluginSolvedStatus;
+            /// <summary>
+            /// The SolvedConfigStatus of the PluginInfo.Service. 
+            /// It is SolvedConfigStatus.Optional if PluginInfo.Service == null (the plugin does not implement any service).
+            /// </summary>
+            public readonly SolvedConfigStatus ServiceSolvedStatus;
+            /// <summary>
+            /// Locked is true whenever the plugin has no choice: it must be started or it must be stopped.
+            /// This is used to optimize the computation (no hypothesis are made for this plugin).
+            /// </summary>
             public bool Locked;
+            /// <summary>
+            /// Linked list of PluginData that implements the same Service.
+            /// </summary>
+            public PluginData NextPluginForService;
         }
+
+        class ServiceData
+        {
+            public ServiceData( IServiceInfo s, SolvedConfigStatus serviceStatus )
+            {
+                Debug.Assert( serviceStatus != SolvedConfigStatus.Disabled, "Disabled Services are not mapped to ServiceData." );
+                ServiceInfo = s;
+                ServiceSolvedStatus = serviceStatus;
+            }
+
+            public readonly IServiceInfo ServiceInfo;
+            /// <summary>
+            /// The SolvedConfigStatus of the Service. 
+            /// </summary>
+            public readonly SolvedConfigStatus ServiceSolvedStatus;
+
+            /// <summary>
+            /// Head of the linked list of PluginData that implements this Service.
+            /// </summary>
+            public PluginData FirstPlugin;
+
+            public void Register( PluginData p )
+            {
+                Debug.Assert( p.PluginInfo.Service == ServiceInfo );
+                if( FirstPlugin == null ) FirstPlugin = p;
+                else FirstPlugin.NextPluginForService = p;
+            }
+        }
+
+
         IPluginDiscoverer _discoverer;
         List<PluginData> _mappingArray;
-        Dictionary<IPluginInfo, PluginData> _mappingDic;
+        Dictionary<IPluginInfo, PluginData> _pluginDic;
         Dictionary<object, SolvedConfigStatus> _finalConfig;
         BitArray _parseMap; 
         Predicate<IPluginInfo> IsPluginRunning;
@@ -69,7 +131,7 @@ namespace CK.Plugin.Hosting
         {
             _discoverer = discoverer;
             _mappingArray = new List<PluginData>();
-            _mappingDic = new Dictionary<IPluginInfo, PluginData>();
+            _pluginDic = new Dictionary<IPluginInfo, PluginData>();
             IsPluginRunning = isPluginRunning;
         }
 
@@ -83,9 +145,10 @@ namespace CK.Plugin.Hosting
             if( _parseMap == null ) _parseMap = new BitArray( _discoverer.Plugins.Count );
             else _parseMap.Length = _discoverer.Plugins.Count;
             _mappingArray.Clear();
-            _mappingDic.Clear();
+            _pluginDic.Clear();
 
             int disabledCount = 0;
+            int lockedCount = 0;
 
             // Locking plugins : 
             // - If a plugin is disabled, it should not be launched, we do not add it to the map
@@ -97,19 +160,32 @@ namespace CK.Plugin.Hosting
             foreach( IPluginInfo pI in _discoverer.Plugins )
             {
                 // SolvedConfigStatus of the actual plugin.
+                // If a plugin is disabled, it should not be launched, we do not add it to the map.
                 SolvedConfigStatus pluginStatus = _finalConfig.GetValueWithDefault( pI, SolvedConfigStatus.Optional );
                 if( pluginStatus == SolvedConfigStatus.Disabled )
                 {
-                    // If a plugin is disabled, it should not be launched, we do not add it to the map.
                     disabledCount++;
                     continue;
                 }
+
+                //// If the plugin implements a Service...
+                //ServiceData serviceData = null;
+                //if( pI.Service != null )
+                //{
+                //    SolvedConfigStatus serviceStatus = _finalConfig.GetValueWithDefault( pI.Service, SolvedConfigStatus.Optional );
+                //    if( serviceStatus == SolvedConfigStatus.Disabled )
+                //    {
+                //        // If the Service implemented by a Plugin is disabled, the plugin is skipped (just as it was disabled).
+                //        disabledCount++;
+                //        continue;
+                //    }
+                //    serviceData = 
+                //}
 
                 // SolvedConfigStatus of the implemented service if any.
                 SolvedConfigStatus serviceStatus = pI.Service != null 
                     ? _finalConfig.GetValueWithDefault( pI.Service, SolvedConfigStatus.Optional ) 
                     : SolvedConfigStatus.Optional;
-
                 if( serviceStatus == SolvedConfigStatus.Disabled )
                 {
                     // If a plugin is disabled, it should not be launched, we do not add it to the map
@@ -117,13 +193,13 @@ namespace CK.Plugin.Hosting
                     continue;
                 }
 
-                // Here, we have no more disabled plugins.
+                // Here, we have no more disabled plugins (we are working on NOT disabled ones).
                 // Initializes a PluginData for this particular plugin and allocates
                 // a new index in the bit array.
                 Debug.Assert( index == _mappingArray.Count );
-                PluginData pluginData = new PluginData( pI, index, IsPluginRunning( pI ) );
+                PluginData pluginData = new PluginData( pI, index, IsPluginRunning( pI ), pluginStatus, serviceStatus );
                 _mappingArray.Add( pluginData );
-                _mappingDic.Add( pI, pluginData );
+                _pluginDic.Add( pI, pluginData );
 
                 if( pluginStatus == SolvedConfigStatus.MustExistAndRun
                         || (serviceStatus == SolvedConfigStatus.MustExistAndRun && pI.Service.Implementations.Count == 1) )
@@ -131,6 +207,7 @@ namespace CK.Plugin.Hosting
                     // If a plugin needs to be started (MustExistAndRun), we lock its value to true.
                     // If a plugin is the only implemention of a service and that this service has to be started, we lock this plugin's value to true.
                     _parseMap.Set( index, true );
+                    ++lockedCount;
                     pluginData.Locked = true;
                 }
                 else if( pI.Service == null && pI.ServiceReferences.Count == 0 ) // This plugin is independent.
@@ -145,22 +222,21 @@ namespace CK.Plugin.Hosting
                         // If a plugin has no service references and does not implement any services as well, 
                         // and that it is not asked to be started AND it is not running, we lock its value to false;
                         _parseMap.Set( index, false );
-                        // We do not set thereWillBeNoChange to false: there will ACTUALLY be no changes
-                        // since the plugin is NOT running.
                     }
                     else
                     {
-                        // If a plugin has no service references and does not implement any services as well, 
+                        // If a plugin has no service references and does not implement any service as well, 
                         // and that it is asked to be started OR is currently running, we lock its value to true;
                         _parseMap.Set( index, true );
                     }
+                    ++lockedCount;
                     pluginData.Locked = true;
                 }
                 index++;
             }
 
-            // Trim the parseMap, to remove indexes that should have been filled by disabled plugins.
-            Debug.Assert( _parseMap.Length >= disabledCount );
+            // Trim the parseMap, to remove indexes that would have been filled by disabled plugins.
+            Debug.Assert( _parseMap.Length >= disabledCount && _pluginDic.Values.Count( e => e.Locked ) == lockedCount );
             _parseMap.Length -= disabledCount;
 
             // If the parseMap has a length of 0, it means either that there are no plugins or that all plugins are disabled.
@@ -170,11 +246,11 @@ namespace CK.Plugin.Hosting
             if( _parseMap.Length > 0 )
             {
                 int bestCost = Int32.MaxValue;
-                double combinationsCount = Math.Pow( 2, _parseMap.Length - _mappingDic.Values.Count( ( e ) => { return e.Locked == true; } ) );
+                double combinationsCount = Math.Pow( 2, _parseMap.Length - lockedCount );
 
                 for( int i = 0; i < combinationsCount; i++ )
                 {
-                    int cost = ComputeCombination(stopLaunchedOptionals);
+                    int cost = ComputeCombination( stopLaunchedOptionals );
                     Debug.Assert( cost >= 0 );
                     // Return if the cost is equal to 0 (no better solution).
                     if( cost == 0 )
@@ -212,7 +288,7 @@ namespace CK.Plugin.Hosting
         {
             int cost = 0;
 
-            //If the given parseMap launches 2 plugins that implement the same service, discard it.
+            // If the given parseMap launches 2 plugins that implement the same service, discard it.
             List<IServiceInfo> services = new List<IServiceInfo>();
             for( int i = 0; i < _parseMap.Count; i++ )
             {
@@ -237,8 +313,8 @@ namespace CK.Plugin.Hosting
             for( int i = 0; i < _parseMap.Count; i++ )
             {
                 int elementCost = ComputeElementCost( i, stopLaunchedOptionals );
-                if( elementCost != Int32.MaxValue ) cost += elementCost;
-                else return Int32.MaxValue;
+                if( elementCost == Int32.MaxValue ) return Int32.MaxValue;
+                cost += elementCost;
             }
 
             Debug.Assert( cost >= 0 );
@@ -261,82 +337,64 @@ namespace CK.Plugin.Hosting
             IPluginInfo actualPlugin = plugin.PluginInfo;
             Debug.Assert( actualPlugin != null );
 
-            SolvedConfigStatus status =_finalConfig.GetValueWithDefault( actualPlugin, SolvedConfigStatus.Optional );
-            if( actualPlugin.Service != null )
-            {
-                var serviceStatus =_finalConfig.GetValueWithDefault( actualPlugin.Service.AssemblyQualifiedName, SolvedConfigStatus.Optional );
-                status = status < serviceStatus ? serviceStatus : status;
-            }
+            SolvedConfigStatus status = plugin.FinalSolvedStatus;
             
             // If the plugin has to be started.
             if( _parseMap[i] )
             {
+                Debug.Assert( status != SolvedConfigStatus.Disabled, "This has been optimized away while building _parseMap." );
                 // Check its references.
                 foreach( IServiceReferenceInfo serviceRef in actualPlugin.ServiceReferences )
                 {
                     if( !CheckReference( serviceRef, _parseMap, ref cost ) ) return int.MaxValue;
                 }
-
-                #region Check the cost regarding the plugin's requirement, when the plugin is to be started
-
-                // If the plugin needs to be started, but its not currently running.
+                // If the plugin needs to be started, but its not currently running,
                 // we increase the cost only if the plugin is not absolutely needed.
-                if( !plugin.IsRunning )
+                if( !plugin.IsRunning
+                    && ( status == SolvedConfigStatus.Optional || status == SolvedConfigStatus.MustExist ) )
                 {
-                    switch( status )
-                    {
-                        case SolvedConfigStatus.Optional:
-                        case SolvedConfigStatus.MustExist:
-                            cost += 10;
-                            break;
-                        case SolvedConfigStatus.Disabled:
-                            return Int32.MaxValue;
-                    }
+                    cost += 10;
                 }
-
-                #endregion
             }
-            // If the plugin doesn't need to be started (0 in the parseMap)
+            // If the plugin does not need to be started in this combinaison (0 in the parseMap).
             else
             {
                 // Here we check if the plugin can be stopped
 
                 // If the plugin implements a service, and if the service has a MustExistAndRun requirement
                 // and if this plugin is the only implementation of this service, so we return the max value.
-                // Otherwise, if we find a substitute, the combinaison is possible.
-                if( actualPlugin.Service != null )
+                // Otherwise, if we find a substitute (a plugin that implements the service and must run acccording 
+                // to this _parseMap), the combinaison is possible.
+                if( plugin.ServiceSolvedStatus == SolvedConfigStatus.MustExistAndRun )
                 {
+                    Debug.Assert( actualPlugin.Service != null, "Since ServiceSolvedStatus is not Optional, there is a Service." );
                     bool substitue = false;
-
-                    if( _finalConfig.GetValueWithDefault( actualPlugin.Service, SolvedConfigStatus.Optional ) == SolvedConfigStatus.MustExistAndRun )
+                    for( int idx = 0; idx < _parseMap.Length; idx++ )
                     {
-                        for( int idx = 0; idx < _parseMap.Length; idx++ )
+                        if( _parseMap[idx] && _mappingArray[idx].PluginInfo.Service == actualPlugin.Service )
                         {
-                            if( _parseMap[idx] 
-                                && _mappingArray[idx].PluginInfo.Service != null 
-                                && _mappingArray[idx].PluginInfo.Service == actualPlugin.Service )
-                            {
-                                substitue = true;
-                                break;
-                            }
+                            substitue = true;
+                            break;
                         }
-                        if( !substitue ) return int.MaxValue;
                     }
-
+                    if( !substitue ) return int.MaxValue;
                 }
                 else if( status == SolvedConfigStatus.MustExistAndRun )
+                {
                     return int.MaxValue;
+                }
 
-                // If this plugin is already running and stopLaunchedOptionals is set to false, don't stop it.
-                if( plugin.IsRunning && !stopLaunchedOptionals ) cost += 10;
-
-                #region Check the cost regarding the plugin's requirement when the plugin won't be started
-
-                // if we wanted this plugin started ... 
-                if( status == SolvedConfigStatus.MustExistTryStart || status == SolvedConfigStatus.OptionalTryStart) 
+                // If this plugin is already running and stopLaunchedOptionals is set to false, 
+                // this is not "perfect": we slightly increase the cost.
+                if( plugin.IsRunning && !stopLaunchedOptionals )
+                {
+                    cost += 1;
+                }
+                // Increase cost if we this plugin SHOULD be started (TryStart)... 
+                if( status == SolvedConfigStatus.MustExistTryStart || status == SolvedConfigStatus.OptionalTryStart )
+                {
                     cost += 10;
-
-                #endregion
+                }
             }
 
             return cost;
@@ -347,83 +405,84 @@ namespace CK.Plugin.Hosting
             // If the reference is a reference to an external service
             if( !serviceRef.Reference.IsDynamicService )
             {
-                return true; // todo check if the service is available in the service container.
+                // Todo?: check if the service is available in the service container.
+                return true; 
             }
             // Checks if at least one of the implementations of the service is available in the current map.
             bool implAvailable = serviceRef.Reference.Implementations.Count > 0;
 
-            // If the service is really needed and is not available, return the reference cannot be resolved.
-            if( serviceRef.Requirements >= RunningRequirement.MustExist && !implAvailable ) 
-                return false;
-            else
+            // If the referenced service is not available...
+            if( !implAvailable )
             {
-                Debug.Assert( serviceRef.Requirements < RunningRequirement.MustExist || implAvailable );
-
-                bool isPossible = false;
-                if( !implAvailable )
+                if( serviceRef.Requirements == RunningRequirement.Optional )
                 {
-                    switch( serviceRef.Requirements )
+                    // If the reference is optional, we do not care.
+                    return true;
+                }
+                if( serviceRef.Requirements == RunningRequirement.OptionalTryStart )
+                {
+                    // If the reference is optional but SHOULD be started, this is not a "perfect" 
+                    // situation: we slighlty increase the cost.
+                    cost += 10;
+                    return true;
+                }
+                // In all other cases, the fact that the service is not available makes
+                // the current combination not acceptable.
+                return false;
+            }
+            
+            bool isPossible = false;
+            #region
+            foreach( IPluginInfo impl in serviceRef.Reference.Implementations )
+            {
+                PluginData data = _pluginDic.GetValueWithDefault( impl, null );
+                if( data != null )
+                {
+                    // if the plugin is running in this map
+                    if( parseMap[data.Index] )
                     {
-                        // the plugin is stopped but it's optional -> whatever !
-                        case RunningRequirement.Optional: return true;
-                        case RunningRequirement.OptionalTryStart:
-                            cost += 10;
-                            return true;
+                        isPossible = true;
+
+                        switch( serviceRef.Requirements )
+                        {
+                            // the plugin is started but we don't really need it -> +10 if its not currently running.
+                            case RunningRequirement.Optional:
+                            case RunningRequirement.MustExist:
+                                if( !data.IsRunning ) cost += 10;
+                                break;
+                            // the plugin is started and we want it -> +0 (its what we want)
+                            case RunningRequirement.OptionalTryStart:
+                            case RunningRequirement.MustExistTryStart:
+                            case RunningRequirement.MustExistAndRun:
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch( serviceRef.Requirements )
+                        {
+                            // the plugin is stopped but it's optional -> whatever !
+                            case RunningRequirement.Optional:
+                            case RunningRequirement.MustExist:
+                                isPossible = true;
+                                break;
+                            // the plugin is stopped but we want it -> +10
+                            case RunningRequirement.OptionalTryStart:
+                                cost += 10;
+                                break;
+                            // the plugin is stopped but we absolutely needs it -> impossible.
+                            case RunningRequirement.MustExistTryStart:
+                            case RunningRequirement.MustExistAndRun:
+                                isPossible = false;
+                                break;
+                        }
                     }
                 }
                 else
-                {
-                    foreach( IPluginInfo impl in serviceRef.Reference.Implementations )
-                    {
-                        PluginData data = _mappingDic.GetValueWithDefault( impl, null );
-                        if( data != null )
-                        {
-                            // if the plugin is running in this map
-                            if( parseMap[data.Index] )
-                            {
-                                isPossible = true;
-
-                                switch( serviceRef.Requirements )
-                                {
-                                    // the plugin is started but we don't really need it -> +10 if its not currently running.
-                                    case RunningRequirement.Optional:
-                                    case RunningRequirement.MustExist:
-                                        if( !IsPluginRunning( impl ) ) cost += 10;
-                                        break;
-                                    // the plugin is started and we want it -> +0 (its what we want)
-                                    case RunningRequirement.OptionalTryStart:
-                                    case RunningRequirement.MustExistTryStart:
-                                    case RunningRequirement.MustExistAndRun:
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                switch( serviceRef.Requirements )
-                                {
-                                    // the plugin is stopped but it's optional -> whatever !
-                                    case RunningRequirement.Optional:
-                                    case RunningRequirement.MustExist:
-                                        isPossible = true;
-                                        break;
-                                    // the plugin is stopped but we wants it -> +10
-                                    case RunningRequirement.OptionalTryStart:
-                                        cost += 10;
-                                        break;
-                                    // the plugin is stopped but we absolutely needs it -> impossible.
-                                    case RunningRequirement.MustExistTryStart:
-                                    case RunningRequirement.MustExistAndRun:
-                                        isPossible = false;
-                                        break;
-                                }
-                            }
-                        }
-                        else
-                            isPossible = false;
-                    }
-                }
-                return isPossible;
+                    isPossible = false;
             }
+            #endregion
+            return isPossible;
         }
 
         /// <summary>
@@ -442,7 +501,7 @@ namespace CK.Plugin.Hosting
                 else stop.Add( _mappingArray[i].PluginInfo );
             }
 
-            Debug.Assert( (start.Count + stop.Count) == _mappingDic.Count );
+            Debug.Assert( (start.Count + stop.Count) == _pluginDic.Count );
 
             return new ExecutionPlan( start, stop, _discoverer.Plugins.Except( start.Concat( stop ) ).ToReadOnlyCollection() );
         }
@@ -457,10 +516,9 @@ namespace CK.Plugin.Hosting
         }
 
         /// <summary>
-        /// Adds 1 to the parsed map. it gets the next "plugin status combination".
-        /// Called this method with 0 as parameter, if you want to get a combination taking every plugin into account.
+        /// Adds 1 to the parsed map. It gets the next "plugin status combination".
         /// </summary>
-        /// <param name="i">set 0 if you want a combination taking every plugin into account.</param>
+        /// <param name="i">Starting index (0 to take every plugin into account).</param>
         void IncrementBitArray( int i )
         {
             if( !_mappingArray[i].Locked )
