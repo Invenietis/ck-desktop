@@ -50,7 +50,7 @@ namespace Injection
         public void Start()
         {
             Assert.That( ServiceWrapped != null );
-            Assert.That( ServiceWrapped.Status == RunningStatus.Started );
+            Assert.That( ServiceWrapped.Status == InternalRunningStatus.Started );
 
             IObjectPluginConfig config = Configuration[ServiceWrapped.Service.SomeObject];
             Assert.That( (string)config["testKey"] == "testValue" );

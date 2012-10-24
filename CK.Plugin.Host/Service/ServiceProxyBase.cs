@@ -52,14 +52,14 @@ namespace CK.Plugin.Hosting
         PluginProxyBase _impl;
         object _unavailableImpl;
         ServiceHost _serviceHost;
-        RunningStatus _status;
+        InternalRunningStatus _status;
         bool _isExternalService;
 
 		protected ServiceProxyBase( object unavailableImpl, Type typeInterface, IList<MethodInfo> mRefs, IList<EventInfo> eRefs )
 		{
             Debug.Assert( mRefs.All( r => r != null ) && mRefs.Distinct().SequenceEqual( mRefs ) );
             _typeInterface = typeInterface;
-            _status = RunningStatus.Disabled;
+            _status = InternalRunningStatus.Disabled;
             RawImpl = _unavailableImpl = unavailableImpl;
             _mRefs = new MEntry[mRefs.Count];
             for( int i = 0; i < mRefs.Count; i++ )
@@ -77,7 +77,7 @@ namespace CK.Plugin.Hosting
         {
             _serviceHost = serviceHost;
             _isExternalService = isExternalService;
-            if( isExternalService ) _status = RunningStatus.Started;
+            if( isExternalService ) _status = InternalRunningStatus.Started;
         }
 
         internal MEntry[] MethodEntries
@@ -90,15 +90,15 @@ namespace CK.Plugin.Hosting
             get { return _eRefs; }
         }
 
-        internal void SetStatusChanged( RunningStatus newOne )
+        internal void SetStatusChanged( InternalRunningStatus newOne )
         {
             SetStatusChanged( newOne, false );
         }
 
-        internal void SetStatusChanged( RunningStatus newOne, bool allowErrorTransition )
+        internal void SetStatusChanged( InternalRunningStatus newOne, bool allowErrorTransition )
 		{
             Debug.Assert( _status.IsValidTransition( newOne, allowErrorTransition ) );
-            RunningStatus previous = _status;
+            InternalRunningStatus previous = _status;
             _status = newOne;
             ConfigureRawImplFromPlugin();
             var h = ServiceStatusChanged;
@@ -111,7 +111,7 @@ namespace CK.Plugin.Hosting
 
 		public event EventHandler<ServiceStatusChangedEventArgs> ServiceStatusChanged;
 
-		public RunningStatus Status
+		public InternalRunningStatus Status
 		{
             get { return _status; }
 		}
@@ -143,13 +143,13 @@ namespace CK.Plugin.Hosting
         {
             if( _isExternalService ) throw new CKException( R.ServiceIsAlreadyExternal, _typeInterface, implementation.GetType().AssemblyQualifiedName ); 
             _impl = implementation;
-            Debug.Assert( _impl == null || (_impl.RealPlugin != null || _impl.Status == RunningStatus.Disabled), "Plugin.RealPlugin == null ==> Plugin.Status == Disabled" );
+            Debug.Assert( _impl == null || (_impl.RealPlugin != null || _impl.Status == InternalRunningStatus.Disabled), "Plugin.RealPlugin == null ==> Plugin.Status == Disabled" );
             ConfigureRawImplFromPlugin();
         }
 
         void ConfigureRawImplFromPlugin()
         {
-            if( _impl == null || _status == RunningStatus.Disabled )
+            if( _impl == null || _status == InternalRunningStatus.Disabled )
             {
                 RawImpl = _unavailableImpl;
             }
@@ -167,11 +167,11 @@ namespace CK.Plugin.Hosting
         [DebuggerNonUserCodeAttribute]
         protected ServiceLogMethodOptions GetLoggerForRunningCall( int iMethodMRef, out LogMethodEntry logger )
         {
-            if( _impl == null || _impl.Status == RunningStatus.Disabled )
+            if( _impl == null || _impl.Status == InternalRunningStatus.Disabled )
             {
                 throw new ServiceNotAvailableException( _typeInterface );
             }
-            if( _impl.Status == RunningStatus.Stopped )
+            if( _impl.Status == InternalRunningStatus.Stopped )
             {
                 throw new ServiceStoppedException( _typeInterface );
             }
@@ -189,7 +189,7 @@ namespace CK.Plugin.Hosting
         [DebuggerNonUserCodeAttribute]
         protected ServiceLogMethodOptions GetLoggerForNotDisabledCall( int iMethodMRef, out LogMethodEntry logger )
         {
-            if( _impl == null || _impl.Status == RunningStatus.Disabled )
+            if( _impl == null || _impl.Status == InternalRunningStatus.Disabled )
             {
                 throw new ServiceNotAvailableException( _typeInterface );
             }
@@ -254,8 +254,8 @@ namespace CK.Plugin.Hosting
         {
             EEntry e = _eRefs[iEventMRef];
             logOptions = e.LogOptions;
-            bool isDisabled = _impl == null || _impl.Status == RunningStatus.Disabled;
-            if( isDisabled || _impl.Status == RunningStatus.Stopped )
+            bool isDisabled = _impl == null || _impl.Status == InternalRunningStatus.Disabled;
+            if( isDisabled || _impl.Status == InternalRunningStatus.Stopped )
             {
                 if( (logOptions & ServiceLogEventOptions.SilentEventRunningStatusError) != 0 )
                 {
@@ -277,7 +277,7 @@ namespace CK.Plugin.Hosting
         {
             EEntry e = _eRefs[iEventMRef];
             logOptions = e.LogOptions & ServiceLogEventOptions.CreateEntryMask;
-            if( _impl == null || _impl.Status == RunningStatus.Disabled )
+            if( _impl == null || _impl.Status == InternalRunningStatus.Disabled )
             {
                 if( (logOptions & ServiceLogEventOptions.SilentEventRunningStatusError) != 0 )
                 {

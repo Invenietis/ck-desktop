@@ -134,11 +134,11 @@ namespace CK.Plugin.Host.Tests.TestEmits
 			Assert.AreEqual( ia+1, i );
 			//i = i - "1";
 			
-			RunningStatus s = RunningStatus.Stopping;
+			InternalRunningStatus s = InternalRunningStatus.Stopping;
 
 			Console.WriteLine( s.ToString() );
 
-			s = RunningStatus.Starting;
+			s = InternalRunningStatus.Starting;
 
 			Console.WriteLine( s.ToString() );
 

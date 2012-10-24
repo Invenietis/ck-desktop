@@ -38,10 +38,10 @@ namespace CK.Plugin.Hosting
 
         internal PluginProxyBase()
         {
-            Status = RunningStatus.Disabled;
+            Status = InternalRunningStatus.Disabled;
         }
 
-        public RunningStatus Status { get; set; }
+        public InternalRunningStatus Status { get; set; }
 
         /// <summary>
         /// Gets the implemented service.
@@ -59,7 +59,7 @@ namespace CK.Plugin.Hosting
         { 
             get 
             {
-                Debug.Assert( _instance != null || Status == RunningStatus.Disabled, "_instance == null ==> Status == Disabled" );
+                Debug.Assert( _instance != null || Status == InternalRunningStatus.Disabled, "_instance == null ==> Status == Disabled" );
                 return _loadError; 
             } 
         }
@@ -88,7 +88,7 @@ namespace CK.Plugin.Hosting
         { 
             get 
             { 
-                Debug.Assert( _instance != null || Status == RunningStatus.Disabled, "_instance == null ==> Status == Disabled" ); 
+                Debug.Assert( _instance != null || Status == InternalRunningStatus.Disabled, "_instance == null ==> Status == Disabled" ); 
                 return _instance; 
             } 
         }
@@ -101,7 +101,7 @@ namespace CK.Plugin.Hosting
         /// </summary>
         internal void DisposeIfDisposable()
         {
-            Debug.Assert( Status == RunningStatus.Disabled, "Status has already been set to Disabled." );
+            Debug.Assert( Status == InternalRunningStatus.Disabled, "Status has already been set to Disabled." );
             if( _instance != null )
             {
                 IDisposable di = _instance as IDisposable;

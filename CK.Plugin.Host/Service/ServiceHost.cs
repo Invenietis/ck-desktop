@@ -391,7 +391,7 @@ namespace CK.Plugin.Hosting
         {
             ServiceProxyBase proxy;
             if( _proxies.TryGetValue( interfaceType, out proxy ) 
-                && (!interfaceType.IsGenericType && proxy.Status == RunningStatus.Disabled) )
+                && (!interfaceType.IsGenericType && proxy.Status == InternalRunningStatus.Disabled) )
             {
                 proxy = null;
             }
@@ -401,7 +401,7 @@ namespace CK.Plugin.Hosting
         object IServiceHost.GetRunningProxy( Type interfaceType )
         {
             ServiceProxyBase proxy;
-            if( _proxies.TryGetValue( interfaceType, out proxy ) && proxy.Status <= RunningStatus.Stopped )
+            if( _proxies.TryGetValue( interfaceType, out proxy ) && proxy.Status <= InternalRunningStatus.Stopped )
             {
                 proxy = null;
             }

@@ -33,32 +33,34 @@ namespace CK.Plugin
     public enum SolvedConfigStatus
     {
         /// <summary>
-        /// Plugin is optional.
+        /// Plugin or service is optional.
         /// </summary>
-        Optional = 0,
+        Optional = RunningRequirement.Optional,
 
         /// <summary>
-        /// Plugin is optional, but if it exists it should be started.
+        /// Plugin or service is optional, if it exists it should be started if possible.
         /// </summary>
-        OptionalTryStart = 1,
+        OptionalTryStart = RunningRequirement.OptionalTryStart,
 
         /// <summary>
-        /// Plugin must exist.
+        /// Plugin or service must exist and be runnable (but not necessarily started).
+        /// It is guaranteed to be runnable.
         /// </summary>
-        MustExist = 2,
+        MustExist = RunningRequirement.MustExist,
 
         /// <summary>
-        /// Plugin must exist and we should try to start it.
+        /// Plugin or service must exist and be runnable.
+        /// It is always guaranteed to be runnable (and will be initially started if possible) but it can be stopped later.
         /// </summary>
-        MustExistTryStart = 2 + 1,
+        MustExistTryStart = RunningRequirement.MustExistTryStart,
 
         /// <summary>
-        /// Plugin must exist and must be started.
+        /// Plugin or service must exist and must be started.
         /// </summary>
-        MustExistAndRun = 2 + 4,
+        MustExistAndRun = RunningRequirement.MustExistAndRun,
 
         /// <summary>
-        /// Plugin is disabled.
+        /// Plugin or service is disabled.
         /// </summary>
         Disabled = 8
     }

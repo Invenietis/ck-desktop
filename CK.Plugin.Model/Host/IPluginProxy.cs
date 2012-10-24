@@ -57,7 +57,7 @@ namespace CK.Plugin
         /// <summary>
         /// Current running status of the plugin.
         /// </summary>
-        RunningStatus Status { get; }
+        InternalRunningStatus Status { get; }
 
     }
 }

@@ -125,8 +125,8 @@ namespace CK.Plugin.Hosting
         /// <returns></returns>
         public bool Apply( bool stopLaunchedOptionals )
         {
-            if( _planCalculator != null ) throw new InvalidOperationException( Runner.R.ReentrantApplyCall );
-            if( _contextObject == null ) throw new InvalidOperationException( Runner.R.InitializeRequired );
+            if( _planCalculator != null ) throw new InvalidOperationException( R.ReentrantApplyCall );
+            if( _contextObject == null ) throw new InvalidOperationException( R.InitializeRequired );
             
             bool errorWhileApplying = false;
             if( _runningConfig.IsDirty )

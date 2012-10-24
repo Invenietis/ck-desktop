@@ -84,7 +84,8 @@ namespace CK.Plugin.Discoverer.Runner
         {
             if( this == other ) return 0;
             int cmp = Owner.CompareTo( other.Owner );
-            if( cmp == 0 ) cmp = _propertyName.CompareTo( other.PropertyName );
+            if( cmp == 0 ) cmp = _propertyName.CompareTo( other._propertyName );
+            if( cmp == 0 ) cmp = _reference.CompareTo( other._reference );
             return cmp;
         }
 

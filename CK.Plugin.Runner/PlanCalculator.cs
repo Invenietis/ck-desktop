@@ -111,7 +111,6 @@ namespace CK.Plugin.Hosting
             }
         }
 
-
         IPluginDiscoverer _discoverer;
         List<PluginData> _mappingArray;
         Dictionary<IPluginInfo, PluginData> _pluginDic;
@@ -168,20 +167,6 @@ namespace CK.Plugin.Hosting
                     continue;
                 }
 
-                //// If the plugin implements a Service...
-                //ServiceData serviceData = null;
-                //if( pI.Service != null )
-                //{
-                //    SolvedConfigStatus serviceStatus = _finalConfig.GetValueWithDefault( pI.Service, SolvedConfigStatus.Optional );
-                //    if( serviceStatus == SolvedConfigStatus.Disabled )
-                //    {
-                //        // If the Service implemented by a Plugin is disabled, the plugin is skipped (just as it was disabled).
-                //        disabledCount++;
-                //        continue;
-                //    }
-                //    serviceData = 
-                //}
-
                 // SolvedConfigStatus of the implemented service if any.
                 SolvedConfigStatus serviceStatus = pI.Service != null 
                     ? _finalConfig.GetValueWithDefault( pI.Service, SolvedConfigStatus.Optional ) 
@@ -216,8 +201,7 @@ namespace CK.Plugin.Hosting
                     // The cost function gives a cost to the stop or the start of a plugin. When a plugin is independant like in this case, we lock its 
                     // status by taking into account the requirement (should it run? MustExistTryStart/OptionalTryStart) and its current status (IsPluginRunning) 
                     // and the stopLaunchedOptionals boolean.
-                    if( (pluginStatus != SolvedConfigStatus.MustExistTryStart || pluginStatus != SolvedConfigStatus.OptionalTryStart) 
-                        && ( !pluginData.IsRunning || stopLaunchedOptionals ))
+                    if( pluginStatus != SolvedConfigStatus.OptionalTryStart && ( !pluginData.IsRunning || stopLaunchedOptionals ))
                     {
                         // If a plugin has no service references and does not implement any services as well, 
                         // and that it is not asked to be started AND it is not running, we lock its value to false;
@@ -391,7 +375,7 @@ namespace CK.Plugin.Hosting
                     cost += 1;
                 }
                 // Increase cost if we this plugin SHOULD be started (TryStart)... 
-                if( status == SolvedConfigStatus.MustExistTryStart || status == SolvedConfigStatus.OptionalTryStart )
+                if( status == SolvedConfigStatus.OptionalTryStart )
                 {
                     cost += 10;
                 }
@@ -452,7 +436,6 @@ namespace CK.Plugin.Hosting
                                 break;
                             // the plugin is started and we want it -> +0 (its what we want)
                             case RunningRequirement.OptionalTryStart:
-                            case RunningRequirement.MustExistTryStart:
                             case RunningRequirement.MustExistAndRun:
                                 break;
                         }
@@ -471,7 +454,6 @@ namespace CK.Plugin.Hosting
                                 cost += 10;
                                 break;
                             // the plugin is stopped but we absolutely needs it -> impossible.
-                            case RunningRequirement.MustExistTryStart:
                             case RunningRequirement.MustExistAndRun:
                                 isPossible = false;
                                 break;

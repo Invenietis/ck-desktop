@@ -39,9 +39,9 @@ namespace CK.Plugin
         T Service { get; }
 
         /// <summary>
-        /// Gets the current <see cref="RunningStatus"/> of the service.
+        /// Gets the current <see cref="InternalRunningStatus"/> of the service.
         /// </summary>
-        RunningStatus Status { get; }
+        InternalRunningStatus Status { get; }
 
         /// <summary>
         /// Fires whenever the <see cref="Status"/> changed.

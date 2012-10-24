@@ -8,7 +8,7 @@
     <ProjectGuid>{9C5F6F2E-D921-4D98-BAA3-CBED45EC3A4C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CK.Plugin.Runner</RootNamespace>
+    <RootNamespace>CK.Plugin.Hosting</RootNamespace>
     <AssemblyName>CK.Plugin.Runner</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -48,6 +48,41 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Planner\Alternative\AlternativeManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\Alternative\AlternativeManager.IDriver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\Alternative\AlternativeManager.PurePluginDriver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\Alternative\AlternativeManager.ServiceDriver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\Alternative\AlternativeManager.ServiceRootDriver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\Alternative\AlternativeManager.ServiceSingleImplementationDriver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\Alternative\AlternativeManager.ServiceLockedDriver.cs" />
+    <Compile Include="Planner\Alternative\AlternativeManager.RPlugin.cs" />
+    <Compile Include="Planner\ConfigurationSolver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\PlanCalculatorStrategy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\PluginData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\PluginDisabledReason.cs" />
+    <Compile Include="Planner\PluginRunningRequirementReason.cs" />
+    <Compile Include="Planner\ServiceData.cs" />
+    <Compile Include="Planner\ServiceRootData.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PluginRunner.ConfigAccessor.cs" />
     <Compile Include="PluginConfigAccessor.cs" />
     <Compile Include="R.Designer.cs">
@@ -104,6 +139,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
