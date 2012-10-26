@@ -65,8 +65,6 @@ namespace CK.Windows.Demo
             this.AddAction( "Add a Profile", () => { Profiles.Add( "Profile - " + DateTime.Now ); } );
 
             this.AddAction( "Remove a profile", () => { if ( Profiles.Count > 0 ) Profiles.Remove( Profiles.First() ); } );
-
-            //this.AddLink( ProfilesAutoSetVM );
         }
     }
 }

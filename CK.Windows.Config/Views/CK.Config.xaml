@@ -154,7 +154,7 @@
             </DataTemplate>
         </ck:TypeDataTemplateSelector>
 
-        <ck:TypeDataTemplateSelector Type="{ck:Type local:ConfigItemAction}" >
+        <ck:TypeDataTemplateSelector Type="{ck:Type local:ConfigItemAction}">
             <DataTemplate>
                 <Button Style="{StaticResource CK.Config.Link}" HorizontalContentAlignment="Stretch" Command="{Binding ActionCommand}">
                     <DockPanel LastChildFill="False"> 

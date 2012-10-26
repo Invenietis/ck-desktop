@@ -72,6 +72,22 @@ namespace CK.Plugin.Hosting
         /// </summary>
         public Action<IReadOnlyCollection<IPluginProxy>> ServiceReferencesBinder { get; set; }
 
+        /// <summary>
+        /// Gets the <see cref="IPluginProxy"/> corresponding to the <see cref="IPluginInfo"/>.
+        /// </summary>
+        /// <param name="pluginInfo">Plugin info (typically provided by the <see cref="IDiscoverer"/>.</param>
+        /// <returns>The plugin proxy (may be stopped or even not loaded).</returns>
+        public IPluginProxy FindPluginProxy( IPluginInfo pluginInfo )
+        {
+            return _plugins.GetValueWithDefault( pluginInfo, null );
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IPluginProxy"/> corresponding to the Plugin Guid set as parameter.
+        /// </summary>
+        /// <param name="pluginId">The Guid of the plugin</param>
+        /// <param name="checkCurrentlyLoading">set to yes if you want to look for the right IPluginProxy in the plugin currently being loaded</param>
+        /// <returns>The plugin proxy (may be stopped or even not loaded).</returns>
         public IPluginProxy FindLoadedPlugin( Guid pluginId, bool checkCurrentlyLoading )
         {
             var p = _loadedPlugins.GetValueWithDefault( pluginId, null );
@@ -83,16 +99,6 @@ namespace CK.Plugin.Hosting
         /// Gets the loaded plugins. This contains also the plugins that are currently disabled but have been loaded at least once.
         /// </summary>
         public IReadOnlyCollection<IPluginProxy> LoadedPlugins { get { return _loadedPluginsEx; } }
-
-        /// <summary>
-        /// Used for white tests only.
-        /// </summary>
-        internal PluginProxy FindPluginProxy( IPluginInfo key )
-        {
-            PluginProxy result;
-            _plugins.TryGetValue( key, out result );
-            return result;
-        }
 
         public bool IsPluginRunning( IPluginInfo key )
         {

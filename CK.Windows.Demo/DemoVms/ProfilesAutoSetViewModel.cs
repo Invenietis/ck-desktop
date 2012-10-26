@@ -35,7 +35,7 @@ namespace CK.Windows.Demo
     public class CustomProfile
     {
         public string Name { get; set; }
-        public CustomProfile(string name)
+        public CustomProfile( string name )
         {
             Name = name;
         }
@@ -48,7 +48,7 @@ namespace CK.Windows.Demo
     {
 
         ProfilesNoNotifyViewModel _profilesAutoSetVM;
-        public ProfilesNoNotifyViewModel ProfilesNoNotifyVM { get { return _profilesAutoSetVM ?? (_profilesAutoSetVM = new ProfilesNoNotifyViewModel( ConfigManager )); } }
+        public ProfilesNoNotifyViewModel ProfilesNoNotifyVM { get { return _profilesAutoSetVM ?? ( _profilesAutoSetVM = new ProfilesNoNotifyViewModel( ConfigManager ) ); } }
 
         public ObservableCollection<CustomProfile> Profiles { get; set; }
 
@@ -74,9 +74,9 @@ namespace CK.Windows.Demo
 
             this.AddProperty( "Selected Profile", "The selected profile", this, p => p.SelectedProfile );
 
-            this.AddAction( "Add a Profile", () => { Profiles.Add( new CustomProfile( "Profile - " + DateTime.Now) ); } );
+            this.AddAction( "Add a Profile", () => { Profiles.Add( new CustomProfile( "Profile - " + DateTime.Now ) ); } );
 
-            this.AddAction( "Remove a profile", () => { if ( Profiles.Count > 0 ) Profiles.Remove( Profiles.First() ); } );
+            this.AddAction( "Remove a profile", () => { if( Profiles.Count > 0 ) Profiles.Remove( Profiles.First() ); } );
 
             //this.AddLink( ProfilesNoNotifyVM );
         }

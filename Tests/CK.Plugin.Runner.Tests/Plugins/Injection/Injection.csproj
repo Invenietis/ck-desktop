@@ -35,6 +35,8 @@
     <Compile Include="CircleReferences\Plugin03.cs" />
     <Compile Include="CircleReferences\Plugin02.cs" />
     <Compile Include="CircleReferences\Plugin01.cs" />
+    <Compile Include="EditedPluginStopped.cs" />
+    <Compile Include="AccessingStoppedPlugin.cs" />
     <Compile Include="Plugin02.cs" />
     <Compile Include="Plugin01.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

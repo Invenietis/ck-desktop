@@ -44,15 +44,16 @@ namespace CK.Plugin.Hosting
         }
 
         PluginConfigAccessor GetConfigAccessor( INamedVersionedUniqueId idEdited )
-        {
+        {            
             Debug.Assert( idEdited != null );
             Debug.Assert( _contextObject != null );
-            
-            // Switch from whatever INamedVersionedUniqueId is to IPluginProxy... if it is loaded.
+
+            // Switch from whatever INamedVersionedUniqueId is to IPluginProxy... whether it is loaded or not.
             IPluginProxy p = idEdited as IPluginProxy;
             if( p == null )
             {
-                p = (IPluginProxy)_host.FindLoadedPlugin( idEdited.UniqueId, true );
+                IPluginInfo pluginInfo = _discoverer.FindPlugin( idEdited.UniqueId );
+                p = _host.FindPluginProxy( pluginInfo );
                 if( p == null )
                 {
                     _configAccessors.Remove( idEdited );

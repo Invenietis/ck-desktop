@@ -135,7 +135,7 @@ namespace CK.Plugin.Host.Tests
 
         public PluginHost PluginHost { get; private set; }
 
-        public PluginProxyBase PluginProxy { get { return PluginHost.FindPluginProxy( PluginPluginId ); } }
+        public PluginProxyBase PluginProxy { get { return PluginHost.FindPluginProxy( PluginPluginId ) as PluginProxy; } }
         
         public ServiceProxyBase ServiceProxyBase { get { return (ServiceProxyBase)Service; } }
         
@@ -143,7 +143,7 @@ namespace CK.Plugin.Host.Tests
 
         public IService<IChoucrouteService> Service { get { return (IService<IChoucrouteService>)ServiceHost.EnsureProxyForDynamicService( typeof(IChoucrouteService) ); } }
 
-        public PluginProxyBase ConsumerPluginProxy { get { return PluginHost.FindPluginProxy( PluginConsumerId ); } }
+        public PluginProxyBase ConsumerPluginProxy { get { return PluginHost.FindPluginProxy( PluginConsumerId ) as PluginProxy; } }
         
         public ConsumerPlugin ConsumerPlugin { get; private set; }
 

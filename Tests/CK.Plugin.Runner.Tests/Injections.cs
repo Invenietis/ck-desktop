@@ -108,6 +108,19 @@ namespace CK.Plugin.Runner.Apply
             CheckStartStop( null, afterStart, null, null, true, id );
         }
 
+        [Test]
+        public void CheckInjectionOnNotLoadedPlugin()
+        {
+            //Id of the plugin that will try to get access to the not loadded plugin
+            Guid id = new Guid( "{AAF30018-197F-4FF9-BE5C-4127E57167E8}" );
+
+            TestBase.CopyPluginToTestDir( "Injection.dll" );
+
+            PluginRunner.Discoverer.Discover( TestBase.TestFolderDir, true );
+
+            CheckStartStop( null, null, null, null, true, id );
+        }
+
         /// <summary>
         /// P1 needs S2 implemented by P2, that needs S3 implemented by P3, that needs S1 implemented by P1 :)
         /// </summary>
