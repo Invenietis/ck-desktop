@@ -15,13 +15,13 @@ namespace CK.Plugin.Hosting
         /// <summary>
         /// Sets by ServiceData.RetrieveTheOnlyPlugin.
         /// </summary>
-        FromServiceConfigToSingleImplementation,
-
+        FromServiceConfigToSinglePlugin,
 
         /// <summary>
         /// Sets by ServiceData.RetrieveTheOnlyPlugin and ServiceData.SetRunningRequirement.
         /// </summary>
-        FromServiceToSingleImplementation
+        FromServiceToSinglePlugin,
+
     }
 
 }

@@ -6,13 +6,13 @@ using System.Diagnostics;
 
 namespace CK.Plugin.Hosting
 {
-    class ServiceRootData : ServiceData
+    partial class ServiceRootData : ServiceData
     {
         ServiceData _mustExistService;
         PluginData _mustExistPluginByConfig;
 
-        internal ServiceRootData( IServiceInfo s, SolvedConfigStatus serviceStatus )
-            : base( s, null, serviceStatus )
+        internal ServiceRootData( Dictionary<IServiceInfo,ServiceData> allServices, IServiceInfo s, SolvedConfigStatus serviceStatus )
+            : base( allServices, s, null, serviceStatus )
         {
         }
 
@@ -38,6 +38,16 @@ namespace CK.Plugin.Hosting
             if( _mustExistService == null && ServiceSolvedStatus >= SolvedConfigStatus.MustExist ) _mustExistService = this;
         }
 
+        internal override void OnAllPluginsAdded()
+        {
+            Debug.Assert( !Disabled );
+            base.OnAllPluginsAdded();
+            if( !Disabled && _mustExistPluginByConfig != null )
+            {
+                _mustExistPluginByConfig.Service.SetAsMustExistService();
+            }
+        }
+
         internal override void SetDisabled( ServiceDisabledReason r )
         {
             base.SetDisabled( r );
@@ -51,6 +61,11 @@ namespace CK.Plugin.Hosting
             _mustExistService = s;
         }
 
+        /// <summary>
+        /// Called by ServiceData.PluginData during plugin registration.
+        /// This does not immediatly call ServiceData.SetAsMustExistService() in order to offer PluginDisabledReason.AnotherPluginAlreadyExistForTheSameService reason
+        /// rather than PluginDisabledReason.ServiceSpecializationMustExist for next conflicting plugins.
+        /// </summary>
         internal void SetMustExistPluginByConfig( PluginData p )
         {
             Debug.Assert( !Disabled );

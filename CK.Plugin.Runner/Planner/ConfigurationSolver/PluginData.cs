@@ -6,18 +6,19 @@ using System.Diagnostics;
 
 namespace CK.Plugin.Hosting
 {
-    class PluginData
+    partial class PluginData
     {
         readonly Dictionary<IServiceInfo,ServiceData> _allServices;
         PluginDisabledReason _disabledReason;
         RunningRequirement _runningRequirement;
         PluginRunningRequirementReason _runningRequirementReason;
 
-        internal PluginData( Dictionary<IServiceInfo,ServiceData> allServices, IPluginInfo p, ServiceData service, bool isRunning, SolvedConfigStatus pluginStatus )
+        internal static readonly PluginData[] EmptyArray = new PluginData[0];
+
+        internal PluginData( Dictionary<IServiceInfo,ServiceData> allServices, IPluginInfo p, ServiceData service, SolvedConfigStatus pluginStatus )
         {
             _allServices = allServices;
             PluginInfo = p;
-            IsRunning = isRunning;
             // Updates disabled state first so that AddPlugin can take disabled state into account.
             if( (PluginSolvedStatus = pluginStatus) == SolvedConfigStatus.Disabled )
             {
@@ -74,12 +75,36 @@ namespace CK.Plugin.Hosting
         /// </summary>
         public readonly ServiceData Service;
 
+
         /// <summary>
-        /// True if this plunning is currently running. This is used to impact cost (starting a stopped plugin costs a little bit more 
-        /// than keeping a running plugin that satisfies the same condition).
+        /// True if this plunning should try to run thanks to its own configuration (<see cref="PluginSolvedStatus"/> or because
+        /// of the service it implements (if any) is configured to try to run.
         /// </summary>
-        public readonly bool IsRunning;
-        
+        public bool IsTryStartByConfig
+        {
+            get
+            {
+                return PluginSolvedStatus == SolvedConfigStatus.OptionalTryStart
+                        || PluginSolvedStatus == SolvedConfigStatus.MustExistTryStart
+                        || (Service != null && Service.IsTryStartByConfig);
+            }
+        }
+
+        /// <summary>
+        /// True if this plunning is <see cref="IsTryStartByConfig"/> or if its Service (if any) should try to run because of any of 
+        /// the plugins that reference it.
+        /// </summary>
+        public bool IsTryStartByConfigOrReference
+        {
+            get
+            {
+                 return IsTryStartByConfig
+                        || MinimalRunningRequirement == RunningRequirement.OptionalTryStart
+                        || MinimalRunningRequirement == RunningRequirement.MustExistTryStart
+                        || (Service != null && (Service.MinimalRunningRequirement == RunningRequirement.OptionalTryStart || Service.MinimalRunningRequirement == RunningRequirement.MustExistTryStart));
+            }
+        }
+
         /// <summary>
         /// The SolvedConfigStatus of the plugin itself.
         /// </summary>
@@ -87,8 +112,7 @@ namespace CK.Plugin.Hosting
 
         /// <summary>
         /// Gets whether this plugin must exist or run. It is initialized by the configuration, but may evolve
-        /// if this plugin is the only one available for a service and that the service must exist or run because a must exist or run
-        /// plugin references the service with an "optional try start", "must exist" or "must exist and run" requirement.
+        /// if this plugin implements a service.
         /// </summary>
         public RunningRequirement MinimalRunningRequirement
         {
@@ -109,11 +133,11 @@ namespace CK.Plugin.Hosting
         public PluginData NextPluginForService;
 
         /// <summary>
-        /// Gets whether this service is disabled. 
+        /// Gets whether this plugin is disabled. 
         /// </summary>
         public bool Disabled
         {
-            get { return _disabledReason == PluginDisabledReason.None; }
+            get { return _disabledReason != PluginDisabledReason.None; }
         }
 
         /// <summary>
@@ -132,6 +156,12 @@ namespace CK.Plugin.Hosting
             if( Service != null ) Service.OnPluginDisabled( this );
         }
 
+        /// <summary>
+        /// Called by ServiceData.RetrieveTheOnlyPlugin and ServiceData.SetRunningRequirement.
+        /// In both cases, it is to propagate the current service requirement to the plugin.
+        /// When called by RetrieveTheOnlyPlugin, it when the plugin became the only plugin.
+        /// When called by SetRunningRequirement, it is because this plugin is the only plugin.
+        /// </summary>
         internal bool SetRunningRequirement( RunningRequirement r, PluginRunningRequirementReason reason )
         {
             if( r <= _runningRequirement )
@@ -140,25 +170,32 @@ namespace CK.Plugin.Hosting
                 return true;
             }
             // New requirement is stronger than the previous one.
+            _runningRequirement = r;
             // Is it compliant with a Disabled plugin? If yes, it is always satisfied.
             if( r < RunningRequirement.MustExist )
             {
-                // The new requirement is OptionalTryStart.
-                // This can always be satisfied.
-                _runningRequirement = r;
                 _runningRequirementReason = reason;
+                // The new requirement is OptionalTryStart. This can always be satisfied.
                 return true;
             }
             // The new requirement is at least MustExist.
             // If this is already disabled, there is nothing to do.
             if( Disabled ) return false;
 
-            _runningRequirement = r;
             _runningRequirementReason = reason;
+
+            // We are always called by our service: it is useless to upgrade the running
+            // requirement of our service here: once the plugin is created, its MustExist configuration
+            // is immediately taken into account => this plugin requirement never "pops up" without beeing 
+            // driven by one of its Services.
 
             return CheckReferencesWhenMustExist();
         }
 
+        /// <summary>
+        /// This is called by SetRunningRequirement and by ConfigurationSolver.
+        /// </summary>
+        /// <returns></returns>
         internal bool CheckReferencesWhenMustExist()
         {
             Debug.Assert( !Disabled && _runningRequirement >= RunningRequirement.MustExist );
@@ -168,7 +205,7 @@ namespace CK.Plugin.Hosting
                 if( _runningRequirement < propagation ) propagation = _runningRequirement;
 
                 ServiceData sr = _allServices[sRef.Reference];
-                if( !sr.SetRunningRequirement( _runningRequirement, ServiceRunningRequirementReason.FromMustExistReference ) )
+                if( !sr.SetRunningRequirement( propagation, ServiceRunningRequirementReason.FromMustExistReference ) )
                 {
                     if( !Disabled ) SetDisabled( PluginDisabledReason.RequirementPropagationToReferenceFailed );
                     break;
@@ -176,6 +213,7 @@ namespace CK.Plugin.Hosting
             }
             return !Disabled;
         }
+
     }
 
 }

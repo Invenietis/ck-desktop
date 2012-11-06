@@ -6,67 +6,20 @@ using System.Diagnostics;
 
 namespace CK.Plugin.Hosting
 {
-    enum ServiceDisabledReason
+   
+    internal partial class ServiceData
     {
-        None,
-
-        /// <summary>
-        /// Initialized by ServiceData constructor.
-        /// </summary>
-        Config,
-        
-        /// <summary>
-        /// Initialized by ServiceData constructor.
-        /// </summary>
-        ServiceInfoHasError,
-        
-        /// <summary>
-        /// Initialized by ServiceData constructor.
-        /// </summary>
-        GeneralizationIsDisabledByConfig,
-        
-        /// <summary>
-        /// Sets by ServiceData.SetRunningRequirement method.
-        /// </summary>
-        RequirementPropagationToSingleImplementationFailed,
-
-        MultipleSpecializationsMustExistByConfig,
-        AnotherSpecializationMustExistByConfig,
-        AnotherSpecializationHasPluginThatMustExistByConfig,
-        DirectGeneralizationHasPluginThatMustExistByConfig,
-        GeneralizationIsDisabled,
-        AnotherSpecializationMustExist,
-        MustExistSpecializationIsDisabled,
-        NoPlugin,
-        AllPluginsAreDisabled,
-        MultiplePluginsMustExistByConfig,
-    }
-
-    enum ServiceRunningRequirementReason
-    {
-        /// <summary>
-        /// Initialized by ServiceData constructor.
-        /// </summary>
-        Config,
-        FromSingleImplementationConfig,
-        FromMustExistReference,
-        FromSpecialization,
-        FromGeneralization,
-    }
-    
-    internal class ServiceData
-    {
+        readonly Dictionary<IServiceInfo,ServiceData> _allServices;
         ServiceDisabledReason _disabledReason;
         RunningRequirement _runningRequirement;
         ServiceRunningRequirementReason _runningRequirementReason;
         ServiceData _mustExistSpecialization;
         ServiceData _directMustExistSpecialization;
-        // This is internal for ServiceRootData to expose it.
-        internal PluginData _theOnlyPlugin;
         List<PluginData> _mustExistReferencer;
         
-        internal ServiceData( IServiceInfo s, ServiceData generalization, SolvedConfigStatus serviceStatus )
+        internal ServiceData( Dictionary<IServiceInfo,ServiceData> allServices, IServiceInfo s, ServiceData generalization, SolvedConfigStatus serviceStatus )
         {
+            _allServices = allServices;
             ServiceInfo = s;
             if( generalization != null )
             {
@@ -99,6 +52,20 @@ namespace CK.Plugin.Hosting
         public readonly IServiceInfo ServiceInfo;
 
         /// <summary>
+        /// True if this service should try to run thanks to its own configuration (<see cref="ServiceSolvedStatus"/> or because
+        /// of any <see cref="Generalization"/> (if any) is configured to try to run.
+        /// </summary>
+        public bool IsTryStartByConfig
+        {
+            get
+            {
+                return ServiceSolvedStatus == SolvedConfigStatus.OptionalTryStart
+                        || ServiceSolvedStatus == SolvedConfigStatus.MustExistTryStart
+                        || (Generalization != null && Generalization.IsTryStartByConfig);
+            }
+        }
+
+        /// <summary>
         /// The direct generalization if any.
         /// When null, this instance is a <see cref="ServiceRootData"/>.
         /// </summary>
@@ -119,7 +86,7 @@ namespace CK.Plugin.Hosting
         /// </summary>
         public bool Disabled
         {
-            get { return _disabledReason == ServiceDisabledReason.None; }
+            get { return _disabledReason != ServiceDisabledReason.None; }
         }
 
         public ServiceData MustExistSpecialization
@@ -166,7 +133,7 @@ namespace CK.Plugin.Hosting
                 if( !plugin.Disabled ) plugin.SetDisabled( PluginDisabledReason.ServiceIsDisabled );
                 plugin = plugin.NextPluginForService;
             }
-            Debug.Assert( _theOnlyPlugin == null, "Disabling all plugins must have set it to null." );
+            Debug.Assert( _theOnlyPlugin == null && _commonReferences == null, "Disabling all plugins must have set them to null." );
             // The _mustExistReferencer list contains plugins that has at least a MustExist reference to this service
             // and have been initialized when this Service was not yet disabled.
             if( _mustExistReferencer != null )
@@ -233,94 +200,109 @@ namespace CK.Plugin.Hosting
                 return true;
             }
             // New requirement is stronger than the previous one.
+            // We now try to honor the requirement at the service level.
+            // If we fail, this service will be disabled, but we set the requirement to prevent reentrancy.
+            // Reentrancy can nevertheless be caused by subsequent requirements MustExistTryStart or MustExistAndRun:
+            // we allow this (there will be at most 3 reentrant calls to this method). 
+            // Note that we capture the reason only on the first call, not on each failing call: the reason is not necessarily 
+            // associated to the running requirement.
+            var current = _runningRequirement;
+            _runningRequirement = r;
             // Is it compliant with a Disabled service? If yes, it is always satisfied.
             if( r < RunningRequirement.MustExist )
             {
-                // The new requirement is OptionalTryStart.
-                // This can always be satisfied.
-                _runningRequirement = r;
                 _runningRequirementReason = reason;
-                // Propagate TryStart to the only plugin if it exists.
-                if( _theOnlyPlugin != null ) _theOnlyPlugin.SetRunningRequirement( r, PluginRunningRequirementReason.FromServiceToSingleImplementation );
+                // Propagate TryStart.
+                PropagateRunningRequirementToOnlyPluginOrCommonReferences();
+                Debug.Assert( !Disabled, "The new requirement is OptionalTryStart. This can always be satisfied" );
                 return true;
             }
             // The new requirement is at least MustExist.
             // If this is already disabled, there is nothing to do.
             if( Disabled ) return false;
 
-            // This service is not yet disabled. We now try to honor the MustExist requirement at the service level.
-            // If we fail, this service will be disabled, but we set the requirement to prevent reentrancy.
-            // Reentrancy can nevertheless be caused by subsequent requirements MustExistTryStart or MustExistAndRun:
-            // we allow this (there will be at most 3 reentrant calls to this method). 
-            var current = _runningRequirement;
-            _runningRequirement = r;
             _runningRequirementReason = reason;
+
             if( current < RunningRequirement.MustExist )
             {
-                // From a non running requirement to a running requirement.
-                var mustExist = GeneralizationRoot.MustExistService;
-                //
-                // Only 2 possible cases here:
-                //
-                // - There is no current MustExist Service for our Generalization.
-                // - We specialize the current one.
-                //
-                Debug.Assert( mustExist == null || mustExist.IsGeneralizationOf( this ) );
-                // Note: The other cases would be:
-                //    - We are a Generalization of the current one. This is not possible since SetRunningRequirement is routed to the _mustExistSpecialization if it exists.
-                //    - we are the current one... We would necessarily already be MustExist.
-                //    - a specialization exists and we are not a specialization nor a generalization of it: this is not possible since we would have been disabled.
-                //
-                if( mustExist != null )
-                {
-                    // If we are specializing, the requirement of the current one may be stronger than our: we update it.
-                    if( r < mustExist._runningRequirement )
-                    {
-                        _runningRequirement = mustExist._runningRequirement;
-                        _runningRequirementReason = mustExist._runningRequirementReason;
-                    }
-                }
-                // We must disable all sibling services (and plugins) from this up to mustExist (when mustExist is null, up to the root).
-                var g = Generalization;
-                if( g != null )
-                {
-                    // If we are the root, there is nothing to do, except updating the MustExistService (done below).
-                    var specThatMustExist = this;
-                    do
-                    {
-                        g._mustExistSpecialization = this;
-                        g._directMustExistSpecialization = specThatMustExist;
-                        var spec = g.FirstSpecialization;
-                        while( spec != null )
-                        {
-                            if( spec != specThatMustExist && !spec.Disabled ) spec.SetDisabled( ServiceDisabledReason.AnotherSpecializationMustExist );
-                            spec = spec.NextSpecialization;
-                        }
-                        PluginData p = g.FirstPlugin;
-                        while( p != null )
-                        {
-                            if( !p.Disabled ) p.SetDisabled( PluginDisabledReason.ServiceSpecializationMustExist );
-                            p = p.NextPluginForService;
-                        }
-                        specThatMustExist = g;
-                        g = g.Generalization;
-                    }
-                    while( g != mustExist );
-                }
-                if( Disabled ) return false;
-                GeneralizationRoot.MustExistServiceChanged( this );
+                if( !SetAsMustExistService() ) return false;
             }
             Debug.Assert( !Disabled );
-            // Now, if the OnlyPlugin exists, propagate the MustExist requirement to it.
+            // Now, if the OnlyPlugin exists, propagate the MustExist (or more) requirement to it.
             // MustExist requirement triggers MustExist on MustExist plugins to services requirements.
-            // (This can be propagated if there is one and only one plugin for the service.)
-            if( _theOnlyPlugin != null
-                && !_theOnlyPlugin.SetRunningRequirement( r, PluginRunningRequirementReason.FromServiceToSingleImplementation )
-                && !Disabled ) 
-            {
-                SetDisabled( ServiceDisabledReason.RequirementPropagationToSingleImplementationFailed );
-            }
+            // (This can be easily propagated if there is one and only one plugin for the service.)
+            //
+            // If more than one plugin exist, we can actually propagate requirements to all the Services that are shared 
+            // by all our non-disabled plugins: we initialize our CommonServiceReferences object.
+            //
+            if( TotalAvailablePluginCount > 1 ) InitializePropagation( TotalAvailablePluginCount, fromConfig:false );
+            PropagateRunningRequirementToOnlyPluginOrCommonReferences();
             return !Disabled;
+        }
+
+        /// <summary>
+        /// Called by SetRunningRequirement whenever the Requirement becomes MustExist, or by ServiceRootData.OnAllPluginsAdded
+        /// if a MustExistPluginByConfig exists for the root.
+        /// </summary>
+        /// <returns></returns>
+        internal bool SetAsMustExistService()
+        {
+            Debug.Assert( _runningRequirement >= RunningRequirement.MustExist );
+            // From a non running requirement to a running requirement.
+            var currentMustExist = GeneralizationRoot.MustExistService;
+            //
+            // Only 2 possible cases here:
+            //
+            // - There is no current MustExist Service for our Generalization.
+            // - We specialize the current one.
+            //
+            Debug.Assert( currentMustExist == null || currentMustExist.IsGeneralizationOf( this ) );
+            // Note: The other cases would be:
+            //    - We are a Generalization of the current one. This is not possible since SetRunningRequirement is routed to the _mustExistSpecialization if it exists.
+            //    - we are the current one... We would necessarily already be MustExist.
+            //    - a specialization exists and we are not a specialization nor a generalization of it: this is not possible since we would have been disabled.
+            //
+            // When a MustExist appears below a current one, the requirement of the current one (the generalization) may be stronger than
+            // the new one: the new one must be updated to honor the generalization's requirement.
+            //
+            // Once a MustExist is set, the _mustExistSpecialization is used to reroute the call to SetRunningRequirement and the MinimalRunningRequirement property:
+            // it is useless to propagate Requirement up to the MustExist branch.
+            //
+            if( currentMustExist != null && currentMustExist._runningRequirement > _runningRequirement )
+            {
+                _runningRequirement = currentMustExist._runningRequirement;
+                _runningRequirementReason = currentMustExist._runningRequirementReason;
+            }
+
+            // We must disable all sibling services (and plugins) from this up to mustExist (when mustExist is null, up to the root).
+            var g = Generalization;
+            if( g != null )
+            {
+                var specThatMustExist = this;
+                do
+                {
+                    g._mustExistSpecialization = this;
+                    g._directMustExistSpecialization = specThatMustExist;
+                    var spec = g.FirstSpecialization;
+                    while( spec != null )
+                    {
+                        if( spec != specThatMustExist && !spec.Disabled ) spec.SetDisabled( ServiceDisabledReason.AnotherSpecializationMustExist );
+                        spec = spec.NextSpecialization;
+                    }
+                    PluginData p = g.FirstPlugin;
+                    while( p != null )
+                    {
+                        if( !p.Disabled ) p.SetDisabled( PluginDisabledReason.ServiceSpecializationMustExist );
+                        p = p.NextPluginForService;
+                    }
+                    specThatMustExist = g;
+                    g = g.Generalization;
+                }
+                while( g != currentMustExist );
+            }
+            if( Disabled ) return false;
+            GeneralizationRoot.MustExistServiceChanged( this );
+            return true;
         }
 
         /// <summary>
@@ -344,14 +326,22 @@ namespace CK.Plugin.Hosting
         public PluginData FirstPlugin;
 
         /// <summary>
-        /// Number of plugins for this service.
+        /// Number of plugins for this exact service.
         /// </summary>
         public int PluginCount;
 
         /// <summary>
-        /// Number of plugins for this service that are disabled.
+        /// Number of plugins for this exact service that are disabled.
         /// </summary>
         public int DisabledPluginCount;
+
+        /// <summary>
+        /// Gets the number of available plugins for this exact service ((<see cref="PluginCount"/> - <see cref="DisabledPluginCount"/>).
+        /// </summary>
+        public int AvailablePluginCount
+        {
+            get { return PluginCount - DisabledPluginCount; }
+        }
 
         /// <summary>
         /// Number of total plugins (the ones for this service and for any of our specializations).
@@ -364,7 +354,8 @@ namespace CK.Plugin.Hosting
         public int TotalDisabledPluginCount;
 
         /// <summary>
-        /// Gets the number of available plugins (<see cref="TotalPluginCount"/> - <see cref="TotalDisabledPluginCount"/>).
+        /// Gets the number of available plugins (<see cref="TotalPluginCount"/> - <see cref="TotalDisabledPluginCount"/>)
+        /// for this service and its specializations.
         /// </summary>
         public int TotalAvailablePluginCount
         {
@@ -457,15 +448,17 @@ namespace CK.Plugin.Hosting
         internal void AddPlugin( PluginData p )
         {
             // Consider its RunningRequirements to detect trivial case: the fact that another plugin 
-            // must exist for the same Generalization service (or less trivially that 
-            // this must exist plugin conflicts with some MustExist at the services level).
+            // must exist for the same Generalization service.
+            // The less trivially case when this must exist plugin conflicts with some MustExist at the services level
+            // is already handled in PluginData constructor thanks to service.MustExistSpecialization beeing not null that 
+            // immediately disables the plugin.
             if( p.MinimalRunningRequirement >= RunningRequirement.MustExist )
             {
                 Debug.Assert( !p.Disabled );
                 GeneralizationRoot.SetMustExistPluginByConfig( p );
             }
             // Adds the plugin, taking its disabled state into account.
-            FirstPlugin.NextPluginForService = FirstPlugin;
+            if( FirstPlugin != null ) FirstPlugin.NextPluginForService = FirstPlugin;
             FirstPlugin = p;
             ++PluginCount;
             if( p.Disabled ) ++DisabledPluginCount;
@@ -486,10 +479,20 @@ namespace CK.Plugin.Hosting
             _mustExistReferencer.Add( plugin );
         }
 
-        internal void OnAllPluginsAdded()
+        internal virtual void OnAllPluginsAdded()
         {
             Debug.Assert( !Disabled, "Must NOT be called on already disabled service." );
             Debug.Assert( MustExistSpecialization == null || PluginCount == DisabledPluginCount, "If there is a must exist specialization, all our plugins are disabled." );
+
+            // Recursive call: the only plugin or the CommonServiceReferences are
+            // updated bottom up, so that this Generalization can reuse them.
+            ServiceData spec = FirstSpecialization;
+            while( spec != null )
+            {
+                if( !spec.Disabled ) OnAllPluginsAdded();
+                spec = spec.NextSpecialization;
+            }
+
             // Handle the case where TotalPluginCount is zero (there is no implementation).
             // or where TotalDisabledPluginCount is the same as TotalPluginCount.
             if( TotalPluginCount == 0 )
@@ -501,10 +504,7 @@ namespace CK.Plugin.Hosting
             {
                 SetDisabled( ServiceDisabledReason.AllPluginsAreDisabled );
             }
-            else if( nbAvailable == 1 )
-            {
-                RetrieveTheOnlyPlugin( fromConfig: true );
-            }
+            else InitializePropagation( nbAvailable, fromConfig: true );
         }
 
         internal void OnPluginDisabled( PluginData p )
@@ -520,42 +520,14 @@ namespace CK.Plugin.Hosting
                 if( nbAvailable == 0 )
                 {
                     _theOnlyPlugin = null;
+                    _commonReferences = null;
                     if( !g.Disabled ) SetDisabled( ServiceDisabledReason.AllPluginsAreDisabled );
                 }
-                if( nbAvailable == 1 )
-                {
-                    RetrieveTheOnlyPlugin( fromConfig: false );
-                }
+                else InitializePropagation( nbAvailable, fromConfig: false ); 
                 g = g.Generalization;
             }
         }
 
-        private void RetrieveTheOnlyPlugin( bool fromConfig )
-        {
-            Debug.Assert( _theOnlyPlugin == null && TotalAvailablePluginCount == 1 );
-            if( DisabledPluginCount == PluginCount )
-            {
-                ServiceData spec = FirstSpecialization;
-                while( spec != null )
-                {
-                    if( spec._theOnlyPlugin != null )
-                    {
-                        _theOnlyPlugin = spec._theOnlyPlugin;
-                        break;
-                    }
-                    spec = spec.NextSpecialization;
-                }
-            }
-            else
-            {
-                _theOnlyPlugin = FirstPlugin;
-                while( _theOnlyPlugin.Disabled ) _theOnlyPlugin = _theOnlyPlugin.NextPluginForService;
-            }
-            Debug.Assert( _theOnlyPlugin != null );
-            // As soon as the only plugin appears, propagate our requirement to it.
-            var reason = fromConfig ? PluginRunningRequirementReason.FromServiceConfigToSingleImplementation : PluginRunningRequirementReason.FromServiceToSingleImplementation;
-            _theOnlyPlugin.SetRunningRequirement( MinimalRunningRequirement, reason );
-        }
 
     }
 }

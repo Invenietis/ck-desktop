@@ -56,3 +56,4 @@ namespace CK.Plugin
 		RunningRequirement Requirements { get; }
 	}
 }
+    

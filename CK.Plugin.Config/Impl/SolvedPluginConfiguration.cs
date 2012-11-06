@@ -119,33 +119,31 @@ namespace CK.Plugin.Config
             ConfigPluginStatus finalStatus = ConfigPluginStatus.Manual;
             ConfigUserAction userAction = ConfigUserAction.None;
 
+            // Gets the SystemStatus, if any.
+            ConfigPluginStatus systemStatus = _cfg.GetSystemConfiguration( false ).PluginStatusCollection.GetStatus( pluginId, finalStatus );
+            // Sets it if more restrictive.
+            if( systemStatus > finalStatus || systemStatus == ConfigPluginStatus.Disabled )
+            {
+                finalStatus = systemStatus;
+            }
+
             if( finalStatus != ConfigPluginStatus.Disabled )
             {
-                // Gets the systemStatus, if any.
-                ConfigPluginStatus systemStatus = _cfg.GetSystemConfiguration( false ).PluginStatusCollection.GetStatus( pluginId, finalStatus );
-                // Sets it if more restrictive
-                if( systemStatus > finalStatus || systemStatus == ConfigPluginStatus.Disabled )
+                // Gets the user status, if any.
+                ConfigPluginStatus userStatus = _cfg.GetUserConfiguration( false ).PluginStatusCollection.GetStatus( pluginId, finalStatus );
+                // Sets it if more restrictive.
+                if( userStatus > finalStatus || userStatus == ConfigPluginStatus.Disabled )
                 {
-                    finalStatus = systemStatus;
+                    finalStatus = userStatus;
                 }
 
                 if( finalStatus != ConfigPluginStatus.Disabled )
                 {
-                    // Gets the user status, if any.
-                    ConfigPluginStatus userStatus = _cfg.GetUserConfiguration( false ).PluginStatusCollection.GetStatus( pluginId, finalStatus );
-                    // Sets it if more restrictive.
-                    if( userStatus > finalStatus || userStatus == ConfigPluginStatus.Disabled )
-                    {
-                        finalStatus = userStatus;
-                    }
-
-                    if( finalStatus != ConfigPluginStatus.Disabled )
-                    {
-                        // Gets the UserAction, if any.
-                        userAction = _cfg.GetUserConfiguration( false ).LiveUserConfiguration.GetAction( pluginId );
-                    }
+                    // Gets the UserAction, if any.
+                    userAction = _cfg.GetUserConfiguration( false ).LiveUserConfiguration.GetAction( pluginId );
                 }
             }
+
             // Solves UserAction and finalStatus
             SolvedConfigStatus solvedStatus = finalStatus == ConfigPluginStatus.Disabled ? SolvedConfigStatus.Disabled : SolvedConfigStatus.Optional;
 
@@ -163,8 +161,7 @@ namespace CK.Plugin.Config
         public SolvedConfigStatus GetStatus( Guid pluginId )
         {
             SolvedPluginConfigElement e;
-            _dic.TryGetValue( pluginId, out e );
-            return e != null ? e.Status : SolvedConfigStatus.Optional;
+            return _dic.TryGetValue( pluginId, out e ) ? e.Status : SolvedConfigStatus.Optional;
         }
 
         public SolvedPluginConfigElement Find( Guid pluginId )

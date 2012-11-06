@@ -36,8 +36,6 @@ namespace CK.Tests.Plugin
 	{
 		bool _started;
 
-        //public ICVKLivePluginProxy Proxy { get; set; }
-
 		public bool CanStart( out string message )
 		{
 			message = null;

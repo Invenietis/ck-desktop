@@ -35,10 +35,10 @@ namespace CK.Plugin
         ServiceRequirementCollection _serviceRequirements;
 
         /// <summary>
-        /// Name of these requirements. This is an optional name that identifies this layer.
+        /// Gets the name of this requirement layer. This is an optional name that identifies this layer.
         /// It is not intended to be used as a unique key.
         /// </summary>
-        public string LayerName { get; set; }
+        public string LayerName { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="PluginRequirementCollection"/> that describes plugins requirements.

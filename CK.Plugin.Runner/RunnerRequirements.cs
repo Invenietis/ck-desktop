@@ -160,7 +160,7 @@ namespace CK.Plugin.Hosting
                 Debug.Assert( r.FinalStatus == r.RunningStatus, "At creation time, they both are Optional." );
                 if( r.UpdatePlugin( c.PluginId, _runnerDisabled, _runner.ConfigManager.SolvedPluginConfiguration, _layers, _runner.Discoverer ) )
                 {
-                    Debug.Assert( r.FinalStatus != r.RunningStatus, "If FinalStatus changed, then it necessarily differs from RunningStatus." );
+                    Debug.Assert( r.FinalStatus != r.RunningStatus, "If FinalStatus changed, then it necessarily differs from Status." );
                     ++_nbFinalDifferFromRunning;
                 }
             }
