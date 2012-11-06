@@ -55,9 +55,19 @@ namespace CK.Windows
 
         protected override void OnSourceInitialized( EventArgs e )
         {
-            CK.Windows.Interop.Win.Functions.SetWindowLong( _interopHelper.Handle, CK.Windows.Interop.Win.WindowLongIndex.GWL_EXSTYLE, (uint)CK.Windows.Interop.Win.WS_EX.NOACTIVATE );
+            Win.Functions.SetWindowLong(
+                _interopHelper.Handle,
+                Win.WindowLongIndex.GWL_EXSTYLE,
+                (uint)Win.Functions.GetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE ) | 
+                (uint)Win.WS_EX.NOACTIVATE );
 
-            HwndSource mainWindowSrc = HwndSource.FromHwnd( _interopHelper.Handle );
+            HwndSourceParameters parameters = new HwndSourceParameters();
+            //HwndSource mainWindowSrc = HwndSource.FromHwnd( _interopHelper.Handle );
+            parameters.ExtendedWindowStyle = (int)(Win.WS_EX.TOPMOST | Win.WS_EX.TOOLWINDOW | Win.WS_EX.NOACTIVATE);
+            //parameters.RestoreFocusMode = System.Windows.Input.RestoreFocusMode.None;
+            //parameters.AcquireHwndFocusInMenuMode = true;
+
+            var mainWindowSrc = new HwndSource( parameters );
 
             mainWindowSrc.CompositionTarget.BackgroundColor = Color.FromArgb( 0, 0, 0, 0 );
             mainWindowSrc.CompositionTarget.RenderMode = RenderMode.Default;
@@ -106,8 +116,10 @@ namespace CK.Windows
         {
             switch( (CK.Windows.Interop.Win.WM)msg )
             {
+                case Win.WM.MOUSEACTIVATE:
+                    return (IntPtr)0x0003;
                 case CK.Windows.Interop.Win.WM.SETFOCUS:
-                    _lastFocused = wParam;
+                    _lastFocused = hWnd;
                     break;
                 case CK.Windows.Interop.Win.WM.NCLBUTTONDOWN:
                     _ncbuttondown = true;
@@ -131,12 +143,12 @@ namespace CK.Windows
         }
 
         #region WindowPlacement methods
-       
+
         public void SetPlacement( WINDOWPLACEMENT placement )
         {
             placement.length = Marshal.SizeOf( typeof( WINDOWPLACEMENT ) );
             placement.flags = 0;
-            placement.showCmd = ( placement.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : placement.showCmd );
+            placement.showCmd = (placement.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : placement.showCmd);
             SetWindowPlacement( _interopHelper.Handle, ref placement );
         }
 
@@ -154,51 +166,51 @@ namespace CK.Windows
         private static extern bool GetWindowPlacement( IntPtr hWnd, out WINDOWPLACEMENT lpwndpl );
     }
     // RECT structure required by WINDOWPLACEMENT structure
-        [Serializable]
-        [StructLayout( LayoutKind.Sequential )]
-        public struct RECT
+    [Serializable]
+    [StructLayout( LayoutKind.Sequential )]
+    public struct RECT
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+
+        public RECT( int left, int top, int right, int bottom )
         {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
-
-            public RECT( int left, int top, int right, int bottom )
-            {
-                this.Left = left;
-                this.Top = top;
-                this.Right = right;
-                this.Bottom = bottom;
-            }
+            this.Left = left;
+            this.Top = top;
+            this.Right = right;
+            this.Bottom = bottom;
         }
+    }
 
-        // POINT structure required by WINDOWPLACEMENT structure
-        [Serializable]
-        [StructLayout( LayoutKind.Sequential )]
-        public struct POINT
+    // POINT structure required by WINDOWPLACEMENT structure
+    [Serializable]
+    [StructLayout( LayoutKind.Sequential )]
+    public struct POINT
+    {
+        public int X;
+        public int Y;
+
+        public POINT( int x, int y )
         {
-            public int X;
-            public int Y;
-
-            public POINT( int x, int y )
-            {
-                this.X = x;
-                this.Y = y;
-            }
+            this.X = x;
+            this.Y = y;
         }
+    }
 
-        // WINDOWPLACEMENT stores the position, size, and state of a window
-        [Serializable]
-        [StructLayout( LayoutKind.Sequential )]
-        public struct WINDOWPLACEMENT
-        {
-            public int length;
-            public int flags;
-            public int showCmd;
-            public POINT minPosition;
-            public POINT maxPosition;
-            public RECT normalPosition;
-        }
+    // WINDOWPLACEMENT stores the position, size, and state of a window
+    [Serializable]
+    [StructLayout( LayoutKind.Sequential )]
+    public struct WINDOWPLACEMENT
+    {
+        public int length;
+        public int flags;
+        public int showCmd;
+        public POINT minPosition;
+        public POINT maxPosition;
+        public RECT normalPosition;
+    }
 
         #endregion
 }
