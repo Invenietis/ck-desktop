@@ -44,7 +44,7 @@ namespace CK.Plugin.Hosting
             base.OnAllPluginsAdded();
             if( !Disabled && _mustExistPluginByConfig != null )
             {
-                _mustExistPluginByConfig.Service.SetAsMustExistService();
+                _mustExistPluginByConfig.Service.SetAsMustExistService( fromMustExistPlugin: true );
             }
         }
 
@@ -70,7 +70,7 @@ namespace CK.Plugin.Hosting
         {
             Debug.Assert( !Disabled );
             Debug.Assert( p.MinimalRunningRequirement >= RunningRequirement.MustExist );
-            Debug.Assert( p.Service.GeneralizationRoot == this );
+            Debug.Assert( p.Service == null || p.Service.GeneralizationRoot == this, "When called from PluginData ctor, Service is not yet set." );
             if( _mustExistPluginByConfig == null )
             {
                 _mustExistPluginByConfig = p;

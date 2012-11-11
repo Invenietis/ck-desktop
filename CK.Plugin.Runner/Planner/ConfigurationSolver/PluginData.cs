@@ -34,7 +34,7 @@ namespace CK.Plugin.Hosting
                 {
                     _disabledReason = PluginDisabledReason.ServiceIsDisabled;
                 }
-                else if( service.MustExistSpecialization != null )
+                else if( service.MustExistSpecialization != null && service.MustExistSpecialization != service )
                 {
                     _disabledReason = PluginDisabledReason.ServiceSpecializationMustExist;
                 }
@@ -212,6 +212,11 @@ namespace CK.Plugin.Hosting
                 }
             }
             return !Disabled;
+        }
+
+        public override string ToString()
+        {
+            return String.Format( "{0} - {1} - {2} => {3}", PluginInfo.PluginFullName, Disabled ? DisabledReason.ToString() : "", MinimalRunningRequirement, _status );
         }
 
     }

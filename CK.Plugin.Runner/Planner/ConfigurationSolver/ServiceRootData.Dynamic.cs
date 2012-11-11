@@ -6,18 +6,25 @@ using System.Diagnostics;
 
 namespace CK.Plugin.Hosting
 {
-    partial class ServiceRootData
+    partial class ServiceRootData : IAlternative
     {
         ServiceData _firstRunnableService;
         ServiceData _lastRunnableService;
 
         PluginData _runningPlugin;
+        int _runningIndex;
         int _runningCount;
         bool _finallyNotRunning;
+
 
         public override PluginData RunningPlugin
         {
             get { return _runningPlugin; }
+        }
+
+        public int RunningCount
+        {
+            get { return _runningCount; }
         }
 
         public new void InitializeDynamicState( PlanCalculatorStrategy strategy )
@@ -37,6 +44,7 @@ namespace CK.Plugin.Hosting
                     _finallyNotRunning = true;
                 }
                 UpdateStatusFromRunningPlugin();
+                _runningIndex = 0;
             }
         }
 
@@ -50,7 +58,16 @@ namespace CK.Plugin.Hosting
             }
         }
 
-        internal void NextRunningPlugin()
+        internal IAlternative NextAlternative;
+
+        bool IAlternative.MoveNext()
+        {
+            if( ThisMoveNext() ) return true;
+            if( NextAlternative != null ) return NextAlternative.MoveNext();
+            return false;
+        }
+
+        private bool ThisMoveNext()
         {
             if( _runningPlugin == null ) _runningPlugin = _allRunnables[0];
             else
@@ -63,6 +80,12 @@ namespace CK.Plugin.Hosting
                 }
             }
             UpdateStatusFromRunningPlugin();
+            if( ++_runningIndex == _runningCount )
+            {
+                _runningIndex = 0;
+                return false;
+            }
+            return true;
         }
 
         private void UpdateStatusFromRunningPlugin()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CK.Core;
 
 namespace CK.Plugin.Hosting
 {
@@ -9,7 +10,15 @@ namespace CK.Plugin.Hosting
     {
         bool ConfigurationSuccess { get; }
 
-        int ConfigurationErrorCount { get; }
+        IReadOnlyCollection<IPluginInfo> BlockingPlugins { get; }
+
+        IReadOnlyCollection<IServiceInfo> BlockingServices { get; }
+
+        IReadOnlyCollection<IPluginInfo> DisabledPlugins { get; }
+
+        IReadOnlyCollection<IPluginInfo> StoppedPlugins { get; }
+
+        IReadOnlyCollection<IPluginInfo> RunningPlugins { get; }
     }
 
 }

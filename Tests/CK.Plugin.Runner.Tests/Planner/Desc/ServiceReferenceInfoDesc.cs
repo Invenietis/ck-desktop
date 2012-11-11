@@ -27,6 +27,12 @@ namespace CK.Plugin.Runner.Tests.Planner
             get { return _service; }
         }
 
+
+        public override string ToString()
+        {
+            return String.Format( "{0} {1} {2}", _plugin, Requirements, _service );
+        }
+
         public string PropertyName { get; set; }
 
         public bool IsIServiceWrapped { get; set; }

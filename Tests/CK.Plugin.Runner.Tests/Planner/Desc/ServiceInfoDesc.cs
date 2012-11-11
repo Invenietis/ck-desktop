@@ -38,6 +38,11 @@ namespace CK.Plugin.Runner.Tests.Planner
             set { _generalization = (ServiceInfoDesc)value; }
         }
 
+        public override string ToString()
+        {
+            return String.Format( "Service: {0}", ServiceFullName );
+        }
+
         string IServiceInfo.AssemblyQualifiedName { get { return null; } }
 
         IReadOnlyCollection<ISimpleMethodInfo> IServiceInfo.MethodsInfoCollection { get { return ReadOnlyListEmpty<ISimpleMethodInfo>.Empty; } }

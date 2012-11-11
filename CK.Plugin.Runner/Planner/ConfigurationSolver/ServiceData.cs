@@ -21,9 +21,9 @@ namespace CK.Plugin.Hosting
         {
             _allServices = allServices;
             ServiceInfo = s;
-            if( generalization != null )
+            if( (Generalization = generalization) != null )
             {
-                GeneralizationRoot = generalization.GeneralizationRoot;
+                GeneralizationRoot = Generalization.GeneralizationRoot;
                 NextSpecialization = Generalization.FirstSpecialization;
                 Generalization.FirstSpecialization = this;
                 ++Generalization.SpecializationCount;
@@ -31,7 +31,6 @@ namespace CK.Plugin.Hosting
             else
             {
                 GeneralizationRoot = (ServiceRootData)this;
-                Generalization = generalization;
             }
             if( (ServiceSolvedStatus = serviceStatus) == SolvedConfigStatus.Disabled )
             {
@@ -190,7 +189,7 @@ namespace CK.Plugin.Hosting
         /// <returns>True if the requirement can be satisfied at this level. False otherwise.</returns>
         internal bool SetRunningRequirement( RunningRequirement r, ServiceRunningRequirementReason reason )
         {
-            if( _mustExistSpecialization != null )
+            if( _mustExistSpecialization != null && _mustExistSpecialization != this )
             {
                 return _mustExistSpecialization.SetRunningRequirement( r, reason );
             }
@@ -245,8 +244,12 @@ namespace CK.Plugin.Hosting
         /// if a MustExistPluginByConfig exists for the root.
         /// </summary>
         /// <returns></returns>
-        internal bool SetAsMustExistService()
+        internal bool SetAsMustExistService( bool fromMustExistPlugin = false )
         {
+            if( fromMustExistPlugin )
+            {
+                _runningRequirement = GeneralizationRoot.MustExistPluginByConfig.MinimalRunningRequirement;
+            }
             Debug.Assert( _runningRequirement >= RunningRequirement.MustExist );
             // From a non running requirement to a running requirement.
             var currentMustExist = GeneralizationRoot.MustExistService;
@@ -275,6 +278,7 @@ namespace CK.Plugin.Hosting
             }
 
             // We must disable all sibling services (and plugins) from this up to mustExist (when mustExist is null, up to the root).
+            _mustExistSpecialization = this;
             var g = Generalization;
             if( g != null )
             {
@@ -416,7 +420,7 @@ namespace CK.Plugin.Hosting
                 if( specMustExist == null )
                 {
                     Debug.Assert( ServiceSolvedStatus != SolvedConfigStatus.Disabled, "Caution: Disabled is greater than MustExist." );
-                    if( ServiceSolvedStatus >= SolvedConfigStatus.MustExist ) specMustExist = this;
+                    if( ServiceSolvedStatus >= SolvedConfigStatus.MustExist ) specMustExist = _mustExistSpecialization = this;
                 }
                 else
                 {
@@ -474,7 +478,7 @@ namespace CK.Plugin.Hosting
 
         internal void AddMustExistReferencer( PluginData plugin )
         {
-            Debug.Assert( !Disabled && !plugin.Disabled );
+            Debug.Assert( !Disabled );
             if( _mustExistReferencer == null ) _mustExistReferencer = new List<PluginData>();
             _mustExistReferencer.Add( plugin );
         }
@@ -482,7 +486,7 @@ namespace CK.Plugin.Hosting
         internal virtual void OnAllPluginsAdded()
         {
             Debug.Assert( !Disabled, "Must NOT be called on already disabled service." );
-            Debug.Assert( MustExistSpecialization == null || PluginCount == DisabledPluginCount, "If there is a must exist specialization, all our plugins are disabled." );
+            Debug.Assert( (MustExistSpecialization == null || MustExistSpecialization == this) || PluginCount == DisabledPluginCount, "If there is a must exist specialization, all our plugins are disabled." );
 
             // Recursive call: the only plugin or the CommonServiceReferences are
             // updated bottom up, so that this Generalization can reuse them.
@@ -528,6 +532,9 @@ namespace CK.Plugin.Hosting
             }
         }
 
-
+        public override string ToString()
+        {
+            return String.Format( "{0} - {1} - {2} => {3}", ServiceInfo.ServiceFullName, Disabled ? DisabledReason.ToString() : "", MinimalRunningRequirement, _status );
+        }
     }
 }

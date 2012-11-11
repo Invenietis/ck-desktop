@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Planner\ConfigurationSolver\ConfigurationSolverResult.cs" />
+    <Compile Include="Planner\ConfigurationSolver\IAlternative.cs" />
     <Compile Include="Planner\ConfigurationSolver\PluginData.Dynamic.cs" />
     <Compile Include="Planner\ConfigurationSolver\PluginServiceRelation.cs" />
     <Compile Include="Planner\ConfigurationSolver\ServiceData.Dynamic.cs" />
@@ -135,9 +136,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Impl\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

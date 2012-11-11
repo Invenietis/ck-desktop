@@ -20,6 +20,11 @@ namespace CK.Plugin.Hosting
             get { return _status; }
         }
 
+        public bool IsRunning
+        {
+            get { return _status >= RunningStatus.Running; }
+        }
+
         internal PluginServiceRelation AddServiceRef( PluginServiceRelation r )
         {
             PluginServiceRelation first = _firstRef;
@@ -69,7 +74,7 @@ namespace CK.Plugin.Hosting
                             // Want first the one that ShouldInitiallyRun.
                             int cmp = p2.ShouldInitiallyRun.CompareTo( p1.ShouldInitiallyRun );
                             // Among them privilegiate the one that is running.
-                            if( cmp == 0 ) cmp = p2.IsRunning.CompareTo( p1.IsRunning );
+                            if( cmp == 0 ) cmp = p2.IsCurrentlyRunning.CompareTo( p1.IsCurrentlyRunning );
                             // Then privilegiate the ones that want to try start by their config.
                             if( cmp == 0 ) cmp = p2.IsTryStartByConfig.CompareTo( p1.IsTryStartByConfig );
                             // Order by their PluginId to be deterministic.

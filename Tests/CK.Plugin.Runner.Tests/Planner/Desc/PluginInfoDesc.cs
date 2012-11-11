@@ -51,6 +51,11 @@ namespace CK.Plugin.Runner.Tests.Planner
             } 
         }
 
+        public override string ToString()
+        {
+            return String.Format( "Plugin: {0}", PluginFullName );
+        }
+
         IReadOnlyList<IPluginConfigAccessorInfo> IPluginInfo.EditorsInfo { get { return ReadOnlyListEmpty<IPluginConfigAccessorInfo>.Empty; } }
 
         IReadOnlyList<IPluginConfigAccessorInfo> IPluginInfo.EditableBy { get { return ReadOnlyListEmpty<IPluginConfigAccessorInfo>.Empty; } }

@@ -67,8 +67,8 @@ namespace CK.Plugin.Hosting
                     p.CheckReferencesWhenMustExist();
                 }
             }
-            List<PluginData> blockingPlugins = null;
-            List<ServiceData> blockingServices = null;
+            List<IPluginInfo> blockingPlugins = null;
+            List<IServiceInfo> blockingServices = null;
             
             // Time to conclude about configuration and to initialize dynamic resolution.
             // Any Plugin that has a PluginSolvedStatus greater or equal to MustExist and is Disabled leads to an impossible configuration.
@@ -78,8 +78,8 @@ namespace CK.Plugin.Hosting
                 {
                     if( p.PluginSolvedStatus != SolvedConfigStatus.Disabled && p.MinimalRunningRequirement >= RunningRequirement.MustExist )
                     {
-                        if( blockingPlugins == null ) blockingPlugins = new List<PluginData>();
-                        blockingPlugins.Add( p );
+                        if( blockingPlugins == null ) blockingPlugins = new List<IPluginInfo>();
+                        blockingPlugins.Add( p.PluginInfo );
                     }
                 }
             }
@@ -90,14 +90,14 @@ namespace CK.Plugin.Hosting
                 {
                     if( s.ServiceSolvedStatus != SolvedConfigStatus.Disabled && s.MinimalRunningRequirement >= RunningRequirement.MustExist )
                     {
-                        if( blockingServices == null ) blockingServices = new List<ServiceData>();
-                        blockingServices.Add( s );
+                        if( blockingServices == null ) blockingServices = new List<IServiceInfo>();
+                        blockingServices.Add( s.ServiceInfo );
                     }
                 }
             }
             if( blockingPlugins != null || blockingServices != null )
             {
-                return new ConfigurationSolverResult( this, blockingPlugins, blockingServices );
+                return new ConfigurationSolverResult( blockingPlugins, blockingServices );
             }
             // Plugin state first: Service plugins state will be updated while 
             // initializing services below.
@@ -162,16 +162,93 @@ namespace CK.Plugin.Hosting
             // to restore the system), the ILiveConfiguration is not updated with the new plan.
             // 
 
+            //
+            List<IPluginInfo> disabledPlugins = new List<IPluginInfo>();
+            List<IPluginInfo> runningPlugins = new List<IPluginInfo>();
+            List<IPluginInfo> stoppedPlugins = new List<IPluginInfo>();
+
+            // (Temporary) brute force to find a valid configuration.
+            List<PluginData> needRunningCheckPlugins = new List<PluginData>();
+            IAlternative alternative = null;
+            long cardinality = 1;
             foreach( PluginData p in _plugins.Values )
             {
                 p.InitializeDynamicState( strategy, _isPluginRunning );
+                if( !p.Disabled )
+                {
+                    needRunningCheckPlugins.Add( p );
+                    if( p.Service == null && p.MinimalRunningRequirement != RunningRequirement.MustExistAndRun )
+                    {
+                        p.NextAlternative = alternative;
+                        alternative = p;
+                        cardinality *= 2;
+                    }
+                }
             }
             foreach( ServiceRootData s in _serviceRoots )
             {
                 s.InitializeDynamicState( strategy );
+                if( !s.Disabled && s.RunningCount > 1 )
+                {
+                    cardinality *= s.RunningCount;
+                    s.NextAlternative = alternative;
+                    alternative = s;
+                }
             }
+            if( cardinality == 1 )
+            {
+                Debug.Assert( alternative == null );
+                Debug.Assert( ComputeCurrentCost( needRunningCheckPlugins ) == 0, "Cost is necessarily optimal." );
+                CollectResult( disabledPlugins, runningPlugins, stoppedPlugins );
+            }
+            else
+            {
+                Debug.Assert( alternative != null );
+                int bestCost = Int32.MaxValue;
+                for( long i = 0; i < cardinality; ++i )
+                {
+                    int cost = ComputeCurrentCost( needRunningCheckPlugins );
+                    if( cost < 0xFFFFFF )
+                    {
+                        if( bestCost > cost )
+                        {
+                            bestCost = cost;
+                            CollectResult( disabledPlugins, runningPlugins, stoppedPlugins );
+                            if( cost == 0 || i > 255*0xFFFF ) break;
+                        }
+                    }
+                    alternative.MoveNext();
+                }
+            }
+            return new ConfigurationSolverResult( disabledPlugins, stoppedPlugins, runningPlugins );
+        }
 
-            return new ConfigurationSolverResult( this );
+        private void CollectResult( List<IPluginInfo> disabledPlugins, List<IPluginInfo> runningPlugins, List<IPluginInfo> stoppedPlugins )
+        {
+            disabledPlugins.Clear();
+            runningPlugins.Clear();
+            stoppedPlugins.Clear();
+            foreach( PluginData p in _plugins.Values )
+            {
+                if( p.Disabled ) disabledPlugins.Add( p.PluginInfo );
+                else if( p.Status >= RunningStatus.Running ) runningPlugins.Add( p.PluginInfo );
+                else stoppedPlugins.Add( p.PluginInfo );
+            }
+        }
+
+        private static int ComputeCurrentCost( List<PluginData> needCheckPlugins )
+        {
+            int cost = 0;
+            foreach( PluginData p in needCheckPlugins )
+            {
+                if( p.Status >= RunningStatus.Running )
+                {
+                    cost += p.ComputeRunningCost();
+                    if( cost >= 0xFFFFFFF ) break;
+                }
+                else if( p.ShouldInitiallyRun ) cost += 10;
+            }
+            return cost;
         }
 
         ServiceData RegisterService( Dictionary<object, SolvedConfigStatus> finalConfig, IServiceInfo s )
