@@ -30,6 +30,7 @@ using CK.Interop;
 using System.Windows.Input;
 using System.Runtime.InteropServices;
 using CK.Windows.Interop;
+using System.Windows.Threading;
 
 namespace CK.Windows
 {
@@ -53,6 +54,30 @@ namespace CK.Windows
         /// </summary>
         public IntPtr LastFocusedWindowHandle { get { return _lastFocused; } }
 
+        bool _hitTestable;
+
+        public void SetHitTestable( bool hitTestable )
+        {
+            _hitTestable = hitTestable;
+        }
+
+        private void DoSetHitTestable()
+        {
+            int windowLong = (int)Win.Functions.GetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE );
+            if( ((windowLong & 0x20) == 0) != _hitTestable )
+            {
+                int num;
+                if( _hitTestable )
+                {
+                    num = windowLong & -33;
+                }
+                else
+                {
+                    num = windowLong | 0x20;
+                }
+                Win.Functions.SetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE, (uint)num );
+            }
+        }
         protected override void OnSourceInitialized( EventArgs e )
         {
             Win.Functions.SetWindowLong(
@@ -67,7 +92,10 @@ namespace CK.Windows
             //parameters.RestoreFocusMode = System.Windows.Input.RestoreFocusMode.None;
             //parameters.AcquireHwndFocusInMenuMode = true;
 
-            var mainWindowSrc = new HwndSource( parameters );
+            DoSetHitTestable();
+            var mainWindowSrc = HwndSource.FromHwnd( _interopHelper.Handle );
+            _wndHook = new HwndSourceHook( WndProc );
+            mainWindowSrc.AddHook( _wndHook );
 
             mainWindowSrc.CompositionTarget.BackgroundColor = Color.FromArgb( 0, 0, 0, 0 );
             mainWindowSrc.CompositionTarget.RenderMode = RenderMode.Default;
@@ -82,22 +110,20 @@ namespace CK.Windows
                 this.Background = new SolidColorBrush( Colors.WhiteSmoke );
             }
 
-            _wndHook = new HwndSourceHook( WndProc );
-            mainWindowSrc.AddHook( _wndHook );
 
             base.OnSourceInitialized( e );
         }
 
         protected override void OnMouseLeftButtonDown( MouseButtonEventArgs e )
         {
-            GetFocus();
+            //GetFocus();
             DragMove();
             base.OnMouseLeftButtonDown( e );
         }
 
         protected override void OnMouseLeftButtonUp( MouseButtonEventArgs e )
         {
-            ReleaseFocus();
+            //ReleaseFocus();
             base.OnMouseLeftButtonUp( e );
         }
 
@@ -112,12 +138,49 @@ namespace CK.Windows
             CK.Windows.Interop.Win.Functions.SetForegroundWindow( _lastFocused );
         }
 
+        private object HandleDeactivateApp( object arg )
+        {
+            //if( !this.StaysOpen )
+            //{
+            //    base.SetCurrentValueInternal( IsOpenProperty, BooleanBoxes.FalseBox );
+            //}
+            //this.FirePopupCouldClose();
+            return null;
+        }
+
         IntPtr WndProc( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
+            var message = (Win.WM)msg;
+            if( message != Win.WM.ACTIVATEAPP )
+            {
+                if( message == Win.WM.MOUSEACTIVATE )
+                {
+                    handled = true;
+                    return new IntPtr( 3 );
+                }
+                if( message != Win.WM.WINDOWPOSCHANGING )
+                {
+                    return IntPtr.Zero;
+                }
+            }
+            else
+            {
+                if( wParam == IntPtr.Zero )
+                {
+                    base.Dispatcher.BeginInvoke( DispatcherPriority.Normal, new DispatcherOperationCallback( this.HandleDeactivateApp ), null );
+                }
+                return IntPtr.Zero;
+            }
+
             switch( (CK.Windows.Interop.Win.WM)msg )
             {
                 case Win.WM.MOUSEACTIVATE:
+<<<<<<< issue-window-focus
                     return (IntPtr)0x0003;
+=======
+                    handled = true;
+                    return new IntPtr( 3 );
+>>>>>>> local
                 case CK.Windows.Interop.Win.WM.SETFOCUS:
                     _lastFocused = hWnd;
                     break;
