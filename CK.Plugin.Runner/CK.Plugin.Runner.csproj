@@ -90,7 +90,6 @@
     <Compile Include="RunnerRequirementsSnapshot.cs" />
     <Compile Include="RunnerRequirements.cs" />
     <Compile Include="RequirementLayerSnapshot.cs" />
-    <Compile Include="PlanCalculator.cs" />
     <Compile Include="ExecutionPlan.cs" />
     <Compile Include="PluginRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

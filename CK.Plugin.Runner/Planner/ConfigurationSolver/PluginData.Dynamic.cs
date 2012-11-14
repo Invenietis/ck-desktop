@@ -100,8 +100,6 @@ namespace CK.Plugin.Hosting
         public int ComputeRunningCost()
         {
             int cost = 0;
-            // If the plugin should not initially run and is not running, this costs a litlle bit to start it.
-            if( !_shouldInitiallyRun && !IsCurrentlyRunning ) cost += 1;
             foreach( var r in _serviceReferences )
             {
                 switch( r.Requirement )
