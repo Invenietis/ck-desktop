@@ -14,7 +14,7 @@ namespace CK.Plugin.Runner.Tests.Planner
         [Test]
         public void BuggyStart()
         {
-            DiscovererDesc d = SkinAndKeyboardStructure();
+            DiscovererStub d = SkinAndKeyboardStructure();
 
             d.SetFinalConfig( "Skin", SolvedConfigStatus.MustExistAndRun );
             {
@@ -71,9 +71,9 @@ namespace CK.Plugin.Runner.Tests.Planner
         //             BasicScroll =MER=> SKeyboardDriver
         // KeyboardTrigger =MER=> SKeyboardDriver
         //
-        private static DiscovererDesc SkinAndKeyboardStructure()
+        private static DiscovererStub SkinAndKeyboardStructure()
         {
-            DiscovererDesc d = new DiscovererDesc();
+            DiscovererStub d = new DiscovererStub();
             d.Service( "SKeyboardTrigger" );
             d.Service( "SKeyboardDriver" );
             d.Service( "SBasicScroll" );

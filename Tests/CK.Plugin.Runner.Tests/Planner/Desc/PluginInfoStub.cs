@@ -6,29 +6,29 @@ using CK.Core;
 
 namespace CK.Plugin.Runner.Tests.Planner
 {
-    public class PluginInfoDesc : IPluginInfo
+    public class PluginInfoStub : IPluginInfo
     {
-        readonly DiscovererDesc _disco;
-        List<ServiceReferenceInfoDesc> _serviceRef;
-        IReadOnlyList<ServiceReferenceInfoDesc> _serviceRefEx;
-        ServiceInfoDesc _service;
+        readonly DiscovererStub _disco;
+        List<ServiceReferenceInfoStub> _serviceRef;
+        IReadOnlyList<ServiceReferenceInfoStub> _serviceRefEx;
+        ServiceInfoStub _service;
 
-        internal PluginInfoDesc( DiscovererDesc disco, string name )
+        internal PluginInfoStub( DiscovererStub disco, string name )
         {
             _disco = disco;
             PluginId = new Guid();
             PluginFullName = name;
-            _serviceRef = new List<ServiceReferenceInfoDesc>();
-            _serviceRefEx = new ReadOnlyListOnIList<ServiceReferenceInfoDesc>( _serviceRef ); 
+            _serviceRef = new List<ServiceReferenceInfoStub>();
+            _serviceRefEx = new ReadOnlyListOnIList<ServiceReferenceInfoStub>( _serviceRef ); 
         }
 
         public Guid PluginId { get; set; }
 
         public string PluginFullName { get; private set; }
 
-        public PluginInfoDesc AddRef( string serviceName, RunningRequirement r )
+        public PluginInfoStub AddRef( string serviceName, RunningRequirement r )
         {
-            _serviceRef.Add( new ServiceReferenceInfoDesc( this, _disco.Services[serviceName], r ) );
+            _serviceRef.Add( new ServiceReferenceInfoStub( this, _disco.Services[serviceName], r ) );
             return this;
         }
 
@@ -45,7 +45,7 @@ namespace CK.Plugin.Runner.Tests.Planner
                 if( _service != value )
                 {
                     if( _service != null ) _service._plugins.Remove( this );
-                    _service = (ServiceInfoDesc)value;
+                    _service = (ServiceInfoStub)value;
                     if( _service != null ) _service._plugins.Add( this );
                 }
             } 

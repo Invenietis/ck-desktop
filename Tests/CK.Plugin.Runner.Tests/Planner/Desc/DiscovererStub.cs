@@ -6,22 +6,22 @@ using System.Diagnostics;
 
 namespace CK.Plugin.Runner.Tests.Planner
 {
-    public class DiscovererDesc
+    public class DiscovererStub
     {
-        public readonly Dictionary<string,PluginInfoDesc> Plugins;
-        public readonly Dictionary<string,ServiceInfoDesc> Services;
+        public readonly Dictionary<string,PluginInfoStub> Plugins;
+        public readonly Dictionary<string,ServiceInfoStub> Services;
         readonly Dictionary<string,SolvedConfigStatus> _configStatus;
 
-        public DiscovererDesc()
+        public DiscovererStub()
         {
-            Plugins = new Dictionary<string, PluginInfoDesc>();
-            Services = new Dictionary<string, ServiceInfoDesc>();
+            Plugins = new Dictionary<string, PluginInfoStub>();
+            Services = new Dictionary<string, ServiceInfoStub>();
             _configStatus = new Dictionary<string, SolvedConfigStatus>();
         }
 
-        public PluginInfoDesc Plugin( string name, string serviceName = null )
+        public PluginInfoStub Plugin( string name, string serviceName = null )
         {
-            PluginInfoDesc p = new PluginInfoDesc( this, name );
+            PluginInfoStub p = new PluginInfoStub( this, name );
             if( serviceName != null )
             {
                 p.Service = Services[serviceName];
@@ -30,9 +30,9 @@ namespace CK.Plugin.Runner.Tests.Planner
             return p;
         }
 
-        public ServiceInfoDesc Service( string serviceName, string generalizationName = null )
+        public ServiceInfoStub Service( string serviceName, string generalizationName = null )
         {
-            ServiceInfoDesc s = new ServiceInfoDesc( this, serviceName );
+            ServiceInfoStub s = new ServiceInfoStub( this, serviceName );
             if( generalizationName != null )
             {
                 s.Generalization = Services[generalizationName];
@@ -68,7 +68,7 @@ namespace CK.Plugin.Runner.Tests.Planner
                 var r = new Dictionary<object, SolvedConfigStatus>();
                 foreach( var k in _configStatus )
                 {
-                    PluginInfoDesc p;
+                    PluginInfoStub p;
                     if( Plugins.TryGetValue( k.Key, out p ) ) r.Add( p, k.Value );
                     else r.Add( Services[k.Key], k.Value );
                 }

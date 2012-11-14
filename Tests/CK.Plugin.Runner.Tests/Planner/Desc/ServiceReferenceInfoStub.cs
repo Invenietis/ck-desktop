@@ -5,12 +5,12 @@ using System.Text;
 
 namespace CK.Plugin.Runner.Tests.Planner
 {
-    public class ServiceReferenceInfoDesc : IServiceReferenceInfo
+    public class ServiceReferenceInfoStub : IServiceReferenceInfo
     {
-        PluginInfoDesc _plugin;
-        ServiceInfoDesc _service;
+        PluginInfoStub _plugin;
+        ServiceInfoStub _service;
 
-        internal ServiceReferenceInfoDesc( PluginInfoDesc p, ServiceInfoDesc s, RunningRequirement r )
+        internal ServiceReferenceInfoStub( PluginInfoStub p, ServiceInfoStub s, RunningRequirement r )
         {
             _plugin = p;
             _service = s;

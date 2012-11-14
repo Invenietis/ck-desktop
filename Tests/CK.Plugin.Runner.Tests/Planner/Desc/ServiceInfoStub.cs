@@ -6,24 +6,25 @@ using CK.Core;
 
 namespace CK.Plugin.Runner.Tests.Planner
 {
-    public class ServiceInfoDesc : IServiceInfo
+    public class ServiceInfoStub : IServiceInfo
     {
-        readonly DiscovererDesc _disco;
-        internal List<PluginInfoDesc> _plugins;
-        IReadOnlyList<PluginInfoDesc> _pluginsEx;
-        ServiceInfoDesc _generalization;
+        readonly DiscovererStub _disco;
+        internal List<PluginInfoStub> _plugins;
+        IReadOnlyList<PluginInfoStub> _pluginsEx;
+        ServiceInfoStub _generalization;
 
-        internal ServiceInfoDesc( DiscovererDesc disco, string name )
+        internal ServiceInfoStub( DiscovererStub disco, string name )
         {
             _disco = disco;
             ServiceFullName = name;
-            _plugins = new List<PluginInfoDesc>();
-            _pluginsEx = new ReadOnlyListOnIList<PluginInfoDesc>( _plugins );
+            _plugins = new List<PluginInfoStub>();
+            _pluginsEx = new ReadOnlyListOnIList<PluginInfoStub>( _plugins );
+            IsDynamicService = true;
         }
 
         public string ServiceFullName  { get; private set; }
 
-        public bool IsDynamicService { get { return true; } }
+        public bool IsDynamicService { get; set; }
 
         public IAssemblyInfo AssemblyInfo  { get; set; }
 
@@ -35,7 +36,7 @@ namespace CK.Plugin.Runner.Tests.Planner
         public IServiceInfo Generalization
         {
             get { return _generalization; }
-            set { _generalization = (ServiceInfoDesc)value; }
+            set { _generalization = (ServiceInfoStub)value; }
         }
 
         public override string ToString()

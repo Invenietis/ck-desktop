@@ -53,10 +53,10 @@
     <Compile Include="Injections.cs" />
     <Compile Include="IsDirty.cs" />
     <Compile Include="MiniContext.cs" />
-    <Compile Include="Planner\Desc\DiscovererDesc.cs" />
-    <Compile Include="Planner\Desc\ServiceInfoDesc.cs" />
-    <Compile Include="Planner\Desc\PluginInfoDesc.cs" />
-    <Compile Include="Planner\Desc\ServiceReferenceInfoDesc.cs" />
+    <Compile Include="Planner\Desc\DiscovererStub.cs" />
+    <Compile Include="Planner\Desc\ServiceInfoStub.cs" />
+    <Compile Include="Planner\Desc\PluginInfoStub.cs" />
+    <Compile Include="Planner\Desc\ServiceReferenceInfoStub.cs" />
     <Compile Include="Planner\SimpleStructure.cs" />
     <Compile Include="PluginNeedsServiceCIdentifiers.cs" />
     <Compile Include="ResolveRequirements.cs" />
