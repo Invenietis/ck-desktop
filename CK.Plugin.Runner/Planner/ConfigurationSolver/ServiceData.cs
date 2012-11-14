@@ -16,8 +16,8 @@ namespace CK.Plugin.Hosting
         ServiceData _mustExistSpecialization;
         ServiceData _directMustExistSpecialization;
         List<PluginData> _mustExistReferencer;
-        
-        internal ServiceData( Dictionary<IServiceInfo,ServiceData> allServices, IServiceInfo s, ServiceData generalization, SolvedConfigStatus serviceStatus )
+
+        internal ServiceData( Dictionary<IServiceInfo, ServiceData> allServices, IServiceInfo s, ServiceData generalization, SolvedConfigStatus serviceStatus, Predicate<IServiceInfo> isExternalServiceAvailable )
         {
             _allServices = allServices;
             ServiceInfo = s;
@@ -43,6 +43,10 @@ namespace CK.Plugin.Hosting
             else if( Generalization != null && Generalization.Disabled )
             {
                 _disabledReason = ServiceDisabledReason.GeneralizationIsDisabledByConfig;
+            }
+            else if( !s.IsDynamicService && !isExternalServiceAvailable( s ) )
+            {
+                _disabledReason = ServiceDisabledReason.ExternalServiceUnavailable;
             }
             if( !Disabled ) _runningRequirement = (RunningRequirement)serviceStatus;
             _runningRequirementReason = ServiceRunningRequirementReason.Config;
@@ -213,7 +217,6 @@ namespace CK.Plugin.Hosting
                 _runningRequirementReason = reason;
                 // Propagate TryStart.
                 PropagateRunningRequirementToOnlyPluginOrCommonReferences();
-                Debug.Assert( !Disabled, "The new requirement is OptionalTryStart. This can always be satisfied" );
                 return true;
             }
             // The new requirement is at least MustExist.
@@ -462,7 +465,7 @@ namespace CK.Plugin.Hosting
                 GeneralizationRoot.SetMustExistPluginByConfig( p );
             }
             // Adds the plugin, taking its disabled state into account.
-            if( FirstPlugin != null ) FirstPlugin.NextPluginForService = FirstPlugin;
+            p.NextPluginForService = FirstPlugin;
             FirstPlugin = p;
             ++PluginCount;
             if( p.Disabled ) ++DisabledPluginCount;
@@ -496,19 +499,26 @@ namespace CK.Plugin.Hosting
                 if( !spec.Disabled ) OnAllPluginsAdded();
                 spec = spec.NextSpecialization;
             }
-
-            // Handle the case where TotalPluginCount is zero (there is no implementation).
-            // or where TotalDisabledPluginCount is the same as TotalPluginCount.
-            if( TotalPluginCount == 0 )
+            // For raw Service (from Service container) we have nothing to do... 
+            // they are available or not (and then they are Disabled).
+            if( ServiceInfo.IsDynamicService )
             {
-                SetDisabled( ServiceDisabledReason.NoPlugin );
+                // Handle the case where TotalPluginCount is zero (there is no implementation).
+                // or where TotalDisabledPluginCount is the same as TotalPluginCount.
+                if( TotalPluginCount == 0 )
+                {
+                    SetDisabled( ServiceDisabledReason.NoPlugin );
+                }
+                else
+                {
+                    int nbAvailable = TotalAvailablePluginCount;
+                    if( nbAvailable == 0 )
+                    {
+                        SetDisabled( ServiceDisabledReason.AllPluginsAreDisabled );
+                    }
+                    else InitializePropagation( nbAvailable, fromConfig: true );
+                }
             }
-            int nbAvailable = TotalAvailablePluginCount;
-            if( nbAvailable == 0 )
-            {
-                SetDisabled( ServiceDisabledReason.AllPluginsAreDisabled );
-            }
-            else InitializePropagation( nbAvailable, fromConfig: true );
         }
 
         internal void OnPluginDisabled( PluginData p )
@@ -534,7 +544,7 @@ namespace CK.Plugin.Hosting
 
         public override string ToString()
         {
-            return String.Format( "{0} - {1} - {2} => {3}", ServiceInfo.ServiceFullName, Disabled ? DisabledReason.ToString() : "", MinimalRunningRequirement, _status );
+            return String.Format( "{0} - {1} - {2} - {4} plugins => ((Dynamic: {3})", ServiceInfo.ServiceFullName, Disabled ? DisabledReason.ToString() : "!Disabled", MinimalRunningRequirement, _status, TotalAvailablePluginCount );
         }
     }
 }

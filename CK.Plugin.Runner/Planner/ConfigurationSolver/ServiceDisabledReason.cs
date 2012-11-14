@@ -72,6 +72,11 @@ namespace CK.Plugin.Hosting
         /// </summary>
         AllPluginsAreDisabled,
 
+        /// <summary>
+        /// The service is not a dynamic service (it does not extend <see cref="IDynamicService"/>) and can not be 
+        /// found in the Service provider. 
+        /// </summary>
+        ExternalServiceUnavailable
     }
 
 }

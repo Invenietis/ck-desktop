@@ -28,7 +28,7 @@ namespace CK.Plugin.Hosting
         internal PluginServiceRelation AddServiceRef( PluginServiceRelation r )
         {
             PluginServiceRelation first = _firstRef;
-            first = r;
+            _firstRef = r;
             return first;
         }
 
@@ -59,6 +59,11 @@ namespace CK.Plugin.Hosting
             if( Disabled ) _status = RunningStatus.Disabled;
             else
             {
+                if( !ServiceInfo.IsDynamicService )
+                {
+                    _status = RunningStatus.RunningLocked;
+                    return null;
+                }
                 if( AvailablePluginCount > 0 )
                 {
                     _runnables = new PluginData[AvailablePluginCount];

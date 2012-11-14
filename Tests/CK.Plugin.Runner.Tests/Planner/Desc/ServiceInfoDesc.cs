@@ -23,7 +23,7 @@ namespace CK.Plugin.Runner.Tests.Planner
 
         public string ServiceFullName  { get; private set; }
 
-        public bool IsDynamicService { get; set; }
+        public bool IsDynamicService { get { return true; } }
 
         public IAssemblyInfo AssemblyInfo  { get; set; }
 

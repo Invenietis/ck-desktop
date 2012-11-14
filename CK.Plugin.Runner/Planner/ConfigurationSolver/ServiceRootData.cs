@@ -11,8 +11,8 @@ namespace CK.Plugin.Hosting
         ServiceData _mustExistService;
         PluginData _mustExistPluginByConfig;
 
-        internal ServiceRootData( Dictionary<IServiceInfo,ServiceData> allServices, IServiceInfo s, SolvedConfigStatus serviceStatus )
-            : base( allServices, s, null, serviceStatus )
+        internal ServiceRootData( Dictionary<IServiceInfo, ServiceData> allServices, IServiceInfo s, SolvedConfigStatus serviceStatus, Predicate<IServiceInfo> isExternalServiceAvailable )
+            : base( allServices, s, null, serviceStatus, isExternalServiceAvailable )
         {
         }
 

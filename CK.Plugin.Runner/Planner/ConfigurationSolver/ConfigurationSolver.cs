@@ -25,6 +25,13 @@ namespace CK.Plugin.Hosting
             _plugins = new Dictionary<IPluginInfo, PluginData>();
         }
 
+        /// <summary>
+        /// Fields that stores the fact that something changed during an apply of the <see cref="LastBestPlan"/> and
+        /// that a new plan must be computed. This is stored here since the life time of this PlanCalculator is
+        /// bound to the global PluginRunner.Apply method execution and can be reused if necessary (by calling ObtainBestPlan again).
+        /// </summary>
+        public bool ReapplyNeeded;
+
         public IConfigurationSolverResult Initialize( Dictionary<object, SolvedConfigStatus> finalConfig, PlanCalculatorStrategy strategy, IEnumerable<IServiceInfo> services, IEnumerable<IPluginInfo> plugins )
         {
             // Registering all Services.
@@ -266,13 +273,13 @@ namespace CK.Plugin.Hosting
             Debug.Assert( (s.Generalization == null) == (dataGen == null) );
             if( dataGen == null )
             {
-                var dataRoot = new ServiceRootData( _services, s, serviceStatus );
+                var dataRoot = new ServiceRootData( _services, s, serviceStatus, externalService => true );
                 _serviceRoots.Add( dataRoot );
                 data = dataRoot;
             }
             else
             {
-                data = new ServiceData( _services, s, dataGen, serviceStatus );
+                data = new ServiceData( _services, s, dataGen, serviceStatus, externalService => true );
             }
             _services.Add( s, data );
             return data;

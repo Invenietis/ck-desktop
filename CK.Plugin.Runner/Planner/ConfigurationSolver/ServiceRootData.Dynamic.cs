@@ -30,7 +30,7 @@ namespace CK.Plugin.Hosting
         public new void InitializeDynamicState( PlanCalculatorStrategy strategy )
         {
             _runningPlugin = base.InitializeDynamicState( strategy );
-            if( !Disabled )
+            if( !Disabled && ServiceInfo.IsDynamicService )
             {
                 for( int i = 0; i < _allRunnables.Length; ++i )
                 {
@@ -90,6 +90,7 @@ namespace CK.Plugin.Hosting
 
         private void UpdateStatusFromRunningPlugin()
         {
+            Debug.Assert( ServiceInfo.IsDynamicService );
             // Mark all services as stopped if they are not RunningLocked.
             ServiceData s = _firstRunnableService;
             do

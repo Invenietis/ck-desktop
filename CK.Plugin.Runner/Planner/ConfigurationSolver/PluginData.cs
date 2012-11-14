@@ -216,7 +216,7 @@ namespace CK.Plugin.Hosting
 
         public override string ToString()
         {
-            return String.Format( "{0} - {1} - {2} => {3}", PluginInfo.PluginFullName, Disabled ? DisabledReason.ToString() : "", MinimalRunningRequirement, _status );
+            return String.Format( "{0} - {1} - {2} => (Dynamic: {3})", PluginInfo.PluginFullName, Disabled ? DisabledReason.ToString() : "!Disabled", MinimalRunningRequirement, _status );
         }
 
     }
