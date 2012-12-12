@@ -49,7 +49,14 @@ namespace CK.Plugin.Hosting
             StrongNameKeyPair kp;
             using( Stream stream = Assembly.GetAssembly( typeof( ProxyFactory ) ).GetManifestResourceStream( "CK.Plugin.DynamicKeyPair.DynamicKeyPair.snk" ) )
             {
-                //PublicKey : 00240000048000009400000006020000002400005253413100040000010001009fbf2868f04bdf33df4c8c0517bb4c3d743b5b27fcd94009d42d6607446c1887a837e66545221788ecfff8786e85564c839ff56267fe1a3225cd9d8d9caa5aae3ba5d8f67f86ff9dbc5d66f16ba95bacde6d0e02f452fae20022edaea26d31e52870358d0dda69e592ea5cef609a054dac4dbbaa02edc32fb7652df9c0e8e9cd
+                // This is the public key of DynamicKeyPair.snk.
+                //
+                // PublicKey : 00240000048000009400000006020000002400005253413100040000010001009fbf2868f04bdf33df4c8c0517bb4c3d743b5b27fcd94009d42d6607446c1887a837e66545221788ecfff8786e85564c839ff56267fe1a3225cd9d8d9caa5aae3ba5d8f67f86ff9dbc5d66f16ba95bacde6d0e02f452fae20022edaea26d31e52870358d0dda69e592ea5cef609a054dac4dbbaa02edc32fb7652df9c0e8e9cd
+                //
+                // ServiceProxyBase (defined in CK.Plugin.Host) is internal. 
+                // The CK.Plugin.Host assembly has an [assembly: InternalsVisibleTo( "CKProxyAssembly, PublicKey=..." )] attribute that allows 
+                // the dynamic CKProxyAssembly to make use of the ServiceProxyBase as the base class for all the proxies it generates.
+                //
                 byte[] result = new byte[stream.Length]; 
                 stream.Read(result,0,(int)stream.Length);
                 kp = new StrongNameKeyPair( result );
