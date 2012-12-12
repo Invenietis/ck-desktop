@@ -39,21 +39,24 @@ namespace CK.Plugin.Hosting
                     _disabledReason = PluginDisabledReason.ServiceSpecializationMustExist;
                 }
             }
-            // Register MustExist references to Services from this plugin.
-            foreach( var sRef in PluginInfo.ServiceReferences )
+            if( !Disabled )
             {
-                if( sRef.Requirements >= RunningRequirement.MustExist )
+                // Register MustExist references to Services from this plugin.
+                foreach( var sRef in PluginInfo.ServiceReferences )
                 {
-                    // If the required service is already disabled, we immediately disable this plugin.
-                    // If the required service is not yet disabled, we register this plugin data:
-                    // whenever the service is disabled, it will disable the plugin.
-                    ServiceData sr = allServices[sRef.Reference];
-                    if( sr.Disabled )
+                    if( sRef.Requirements >= RunningRequirement.MustExist )
                     {
-                        SetDisabled( PluginDisabledReason.MustExistReferenceIsDisabled );
-                        break;
+                        // If the required service is already disabled, we immediately disable this plugin.
+                        // If the required service is not yet disabled, we register this plugin data:
+                        // whenever the service is disabled, it will disable the plugin.
+                        ServiceData sr = allServices[sRef.Reference];
+                        if( sr.Disabled )
+                        {
+                            SetDisabled( PluginDisabledReason.MustExistReferenceIsDisabled );
+                            break;
+                        }
+                        sr.AddMustExistReferencer( this );
                     }
-                    sr.AddMustExistReferencer( this );
                 }
             }
             // Updates RunningRequirement so that AddPlugin can take MustExist into account.

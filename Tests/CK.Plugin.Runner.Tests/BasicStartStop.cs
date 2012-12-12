@@ -82,6 +82,29 @@ namespace CK.Plugin.Runner
 
         [Test]
         /// <summary>
+        /// Starts a very simple plugin.
+        /// </summary>
+        public void SimplePluginStartAndDisabledRunner()
+        {
+            Guid id2 = new Guid( PluginNeedsServiceCIdentifiers.NakedService_MEAR );
+
+            TestBase.CleanupTestDir();
+            TestBase.CopyPluginToTestDir( "SimplePlugin.dll" );
+            TestBase.CopyPluginToTestDir( "ServiceC.Model.dll" );
+            TestBase.CopyPluginToTestDir( "ServiceC.dll" );
+            TestBase.CopyPluginToTestDir( "PluginNeedsServiceC.dll" );
+            
+            PluginRunner.Discoverer.Discover( TestBase.TestFolderDir, true );
+
+            PluginRunner.Disabled = true;
+            PluginRunner.ConfigManager.SystemConfiguration.PluginsStatus.SetStatus( id2, ConfigPluginStatus.Disabled );
+            PluginRunner.Apply();
+
+            Assert.That( PluginRunner.IsPluginRunning( PluginRunner.Discoverer.FindPlugin( id2 ) ), Is.False );
+        }
+
+        [Test]
+        /// <summary>
         /// Start stop a very simple plugin.
         /// Just check if the plugin can be started and stopped.
         /// </summary>
