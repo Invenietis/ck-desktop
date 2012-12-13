@@ -8,7 +8,7 @@
     <ProjectGuid>{9C5F6F2E-D921-4D98-BAA3-CBED45EC3A4C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CK.Plugin.Runner</RootNamespace>
+    <RootNamespace>CK.Plugin.Hosting</RootNamespace>
     <AssemblyName>CK.Plugin.Runner</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -48,6 +48,38 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Planner\ConfigurationSolver\ConfigurationSolverResult.cs" />
+    <Compile Include="Planner\ConfigurationSolver\IAlternative.cs" />
+    <Compile Include="Planner\ConfigurationSolver\PluginData.Dynamic.cs" />
+    <Compile Include="Planner\ConfigurationSolver\PluginServiceRelation.cs" />
+    <Compile Include="Planner\ConfigurationSolver\ServiceData.Dynamic.cs" />
+    <Compile Include="Planner\ConfigurationSolver\ServiceRootData.Dynamic.cs" />
+    <Compile Include="Planner\IConfigurationSolverResult.cs" />
+    <Compile Include="Planner\ILiveConfiguration.cs" />
+    <Compile Include="Planner\Impl\LiveObjectBase.cs" />
+    <Compile Include="Planner\Impl\LiveConfiguration.cs" />
+    <Compile Include="Planner\Impl\LivePlugin.cs" />
+    <Compile Include="Planner\ILiveServiceInfo.cs" />
+    <Compile Include="Planner\ILivePluginInfo.cs" />
+    <Compile Include="Planner\ConfigurationSolver\ConfigurationSolver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\Impl\LiveService.cs" />
+    <Compile Include="Planner\PlanCalculatorStrategy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\ConfigurationSolver\PluginData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\ConfigurationSolver\PluginDisabledReason.cs" />
+    <Compile Include="Planner\ConfigurationSolver\PluginRunningRequirementReason.cs" />
+    <Compile Include="Planner\ConfigurationSolver\ServiceData.StaticPropagation.cs" />
+    <Compile Include="Planner\ConfigurationSolver\ServiceData.cs" />
+    <Compile Include="Planner\ConfigurationSolver\ServiceDisabledReason.cs" />
+    <Compile Include="Planner\ConfigurationSolver\ServiceRootData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Planner\ConfigurationSolver\ServiceRunningRequirementReason.cs" />
     <Compile Include="PluginRunner.ConfigAccessor.cs" />
     <Compile Include="PluginConfigAccessor.cs" />
     <Compile Include="R.Designer.cs">
@@ -58,7 +90,6 @@
     <Compile Include="RunnerRequirementsSnapshot.cs" />
     <Compile Include="RunnerRequirements.cs" />
     <Compile Include="RequirementLayerSnapshot.cs" />
-    <Compile Include="PlanCalculator.cs" />
     <Compile Include="ExecutionPlan.cs" />
     <Compile Include="PluginRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,6 +135,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

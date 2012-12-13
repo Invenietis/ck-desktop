@@ -149,7 +149,7 @@ namespace CK.Plugin.Host.Tests
                     && typeof( IService<IChoucrouteService> ).IsAssignableFrom( oWrapped.GetType() ) );
 
                 IService<IChoucrouteService> s = (IService<IChoucrouteService>)oWrapped;
-                Assert.That( s.Status == RunningStatus.Started );
+                Assert.That( s.Status == InternalRunningStatus.Started );
                 Assert.That( s.Service.Div( 12, 4 ) == 3 );
             }
             {
@@ -165,7 +165,7 @@ namespace CK.Plugin.Host.Tests
                     && typeof( IChoucrouteService ).IsAssignableFrom( oWrapped.GetType() )
                     && typeof( IService<IChoucrouteService> ).IsAssignableFrom( oWrapped.GetType() ) );
                 IService<IChoucrouteService> s = (IService<IChoucrouteService>)oWrapped;
-                Assert.That( s.Status == RunningStatus.Disabled );
+                Assert.That( s.Status == InternalRunningStatus.Disabled );
                 
                 Assert.Throws<ServiceNotAvailableException>( () => s.Service.Div( 12, 4 ) );
             }
@@ -200,10 +200,10 @@ namespace CK.Plugin.Host.Tests
                 // Test 2: Plugin started and then disabled.
                 TestContext c = new TestContext( handMadeProxy, false );
                 c.EnsureStoppedService();
-                Assert.That( c.Service.Status == RunningStatus.Stopped );
+                Assert.That( c.Service.Status == InternalRunningStatus.Stopped );
                 Assert.That( c.ServiceProxyBase.Implementation != null );
                 c.PluginHost.Execute( new[] { TestContext.PluginPluginId }, ReadOnlyListEmpty<IPluginInfo>.Empty, ReadOnlyListEmpty<IPluginInfo>.Empty );
-                Assert.That( c.Service.Status == RunningStatus.Disabled );
+                Assert.That( c.Service.Status == InternalRunningStatus.Disabled );
                 c.ConsumerPlugin.RunWhileNotAvailableService();
             }
         }

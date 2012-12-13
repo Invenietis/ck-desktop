@@ -74,7 +74,7 @@ namespace CK.Plugin.Host.Tests
 
 		public void NormalRun()
 		{
-            Assert.That( _c.Service.Status == RunningStatus.Started, "This method must be run whith a running service." );
+            Assert.That( _c.Service.Status == InternalRunningStatus.Started, "This method must be run whith a running service." );
 
             CS.CallFunc();
 			Assert.That( CS.Div( 30, 2 ) == 15 );
@@ -114,7 +114,7 @@ namespace CK.Plugin.Host.Tests
 
         public void RunWhileNotAvailableService()
         {
-            Assert.That( _c.Service.Status == RunningStatus.Disabled, "This method must be run with a disabled service or non existing plugin. Behavior must be exactly the same" );
+            Assert.That( _c.Service.Status == InternalRunningStatus.Disabled, "This method must be run with a disabled service or non existing plugin. Behavior must be exactly the same" );
 
             // This one has IgnoreServiceRunningStatus
             Assert.Throws<ServiceNotAvailableException>( delegate() { CS.Div( 300, 10 ); } );
@@ -131,7 +131,7 @@ namespace CK.Plugin.Host.Tests
 
 		public void RunWhileStoppedService()
 		{
-            Assert.That( _c.Service.Status == RunningStatus.Stopped, "This method must be run with a stopped service." );
+            Assert.That( _c.Service.Status == InternalRunningStatus.Stopped, "This method must be run with a stopped service." );
 
 			Assert.Throws<ServiceStoppedException>( delegate(){ CS.CallFunc(); } );
 
@@ -171,7 +171,7 @@ namespace CK.Plugin.Host.Tests
 
         public void RunAnEventBuggyHandlerWithNoProtection()
         {
-            Assert.That( _c.Service.Status == RunningStatus.Started, "This method must be run whith a running service." );
+            Assert.That( _c.Service.Status == InternalRunningStatus.Started, "This method must be run whith a running service." );
 
             _anEventFired = false;
             CS.AnEvent += CS_AnEvent;
@@ -190,7 +190,7 @@ namespace CK.Plugin.Host.Tests
 
         public void RunAnEventProtectedBuggyHandler()
         {
-            Assert.That( _c.Service.Status == RunningStatus.Started, "This method must be run whith a running service." );
+            Assert.That( _c.Service.Status == InternalRunningStatus.Started, "This method must be run whith a running service." );
             Assert.That( (_c.GetEventLogOptions( "AnEvent") & ServiceLogEventOptions.SilentEventError) != 0, "Dispatch protection is on." );
 
             _anEventFired = false;

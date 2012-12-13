@@ -41,7 +41,7 @@ namespace CK.Plugin.Hosting
         PluginHost _host;
         IServiceProvider _externalServiceProvider;
         object _contextObject;
-        PlanCalculator _planCalculator;
+        ConfigurationSolver _cs;
 
         public event EventHandler<ApplyDoneEventArgs> ApplyDone;
 
@@ -125,14 +125,14 @@ namespace CK.Plugin.Hosting
         /// <returns></returns>
         public bool Apply( bool stopLaunchedOptionals )
         {
-            if( _planCalculator != null ) throw new InvalidOperationException( Runner.R.ReentrantApplyCall );
-            if( _contextObject == null ) throw new InvalidOperationException( Runner.R.InitializeRequired );
+            if( _cs != null ) throw new InvalidOperationException( R.ReentrantApplyCall );
+            if( _contextObject == null ) throw new InvalidOperationException( R.InitializeRequired );
             
             bool errorWhileApplying = false;
             if( _runningConfig.IsDirty )
             {
                 // Allocates a new PlanCalculator and reuses it as long as reapplying is needed.
-                _planCalculator = new PlanCalculator( _discoverer, _host.IsPluginRunning );
+                _cs = new ConfigurationSolver( _host.IsPluginRunning );
                 try
                 {
                     do
@@ -140,19 +140,26 @@ namespace CK.Plugin.Hosting
                         RunnerRequirementsSnapshot requirements = new RunnerRequirementsSnapshot( _requirements );
                         SolvedPluginConfigurationSnapshot configSnapshot = new SolvedPluginConfigurationSnapshot( _config.SolvedPluginConfiguration );
 
-                        // During call to ObtainBestPlan, no reentrancy can occur (ObtainBestPlan does not call
-                        // any external functions or objects nor does it raise any event).
-                        // Once obtained, the best plan is also available through _planCalculator.LastBestPlan property.
-                        ExecutionPlan bestPlan = _planCalculator.ObtainBestPlan( requirements.FinalConfigSnapshot, stopLaunchedOptionals );
-                        if( bestPlan.Impossible )
+                        PlanCalculatorStrategy strategy = PlanCalculatorStrategy.HonorConfigAndReferenceTryStart;
+                        if( stopLaunchedOptionals ) strategy  = PlanCalculatorStrategy.Minimal;
+                        IConfigurationSolverResult csr = _cs.Initialize( requirements.FinalConfigSnapshot, strategy, _discoverer.Services, _discoverer.Plugins );
+                        if( !csr.ConfigurationSuccess )
                         {
                             errorWhileApplying = true;
                         }
+                        //// During call to ObtainBestPlan, no reentrancy can occur (ObtainBestPlan does not call
+                        //// any external functions or objects nor does it raise any event).
+                        //// Once obtained, the best plan is also available through _planCalculator.LastBestPlan property.
+                        //ExecutionPlan bestPlan = _planCalculator.ObtainBestPlan( requirements.FinalConfigSnapshot, stopLaunchedOptionals );
+                        //if( bestPlan.Impossible )
+                        //{
+                        //    errorWhileApplying = true;
+                        //}
                         else
                         {
                             // Here is where rentrancy may occur.
                             // Starting/stopping any plugin may start/stop others or enable/disable this runner.
-                            var result = _host.Execute( bestPlan.PluginsToDisable, bestPlan.PluginsToStop, bestPlan.PluginsToStart );
+                            var result = _host.Execute( csr.DisabledPlugins, csr.StoppedPlugins, csr.RunningPlugins );
                             if( result.Status != ExecutionPlanResultStatus.Success )
                             {
                                 Debug.Assert( result.Culprit != null, "An error is necessarily associated to a plugin." );
@@ -161,19 +168,19 @@ namespace CK.Plugin.Hosting
                             }
                             else
                             {
-                                _planCalculator.ReapplyNeeded = false;
+                                _cs.ReapplyNeeded = false;
                                 _requirements.UpdateRunningStatus( requirements.FinalConfigSnapshot );
                                 _runningConfig.Apply( configSnapshot, requirements );
                             }
                         }
                     }
-                    while( _planCalculator.ReapplyNeeded && !errorWhileApplying );
+                    while( _cs.ReapplyNeeded && !errorWhileApplying );
                     
                     if( ApplyDone != null ) ApplyDone( this, new ApplyDoneEventArgs( !errorWhileApplying ) );
                 }
                 finally
                 {
-                    _planCalculator = null;
+                    _cs = null;
                 }                
             }
             return !errorWhileApplying;
@@ -255,9 +262,9 @@ namespace CK.Plugin.Hosting
 
         internal void SetDirty( bool dirty )
         {
-            if( _planCalculator != null && dirty )
+            if( _cs != null && dirty )
             {
-                _planCalculator.ReapplyNeeded = true;
+                _cs.ReapplyNeeded = true;
             }
             else
             {

@@ -251,6 +251,16 @@ namespace CK.Plugin.Discoverer
         {
             internal class EditorKey
             {
+                public readonly Guid PluginId;
+
+                public readonly Guid EditedPluginId;
+
+                public EditorKey( Guid pluginId, Guid editedId )
+                {
+                    PluginId = pluginId;
+                    EditedPluginId = editedId;
+                }
+
                 public override int GetHashCode()
                 {
                     return EditedPluginId.GetHashCode() ^ PluginId.GetHashCode();
@@ -263,19 +273,9 @@ namespace CK.Plugin.Discoverer
                             && o.EditedPluginId == EditedPluginId
                             && o.PluginId == PluginId;
                 }
-
-                public Guid PluginId { get; private set; }
-
-                public Guid EditedPluginId { get; private set; }
-
-                public EditorKey( Guid pluginId, Guid editedId )
-                {
-                    PluginId = pluginId;
-                    EditedPluginId = editedId;
-                }
             }
 
-            PluginDiscoverer _discoverer;
+            public readonly PluginDiscoverer Discoverer;
 
             HashSet<DiscoveredInfo> _hasBeenDiscovered;
 
@@ -325,12 +325,19 @@ namespace CK.Plugin.Discoverer
 
             public Merger( PluginDiscoverer discoverer )
             {
-                _discoverer = discoverer;
+                Discoverer = discoverer;
                 _hasBeenDiscovered = new HashSet<DiscoveredInfo>();
 
                 _newAssemblies = new List<PluginAssemblyInfo>();
                 _changedAssemblies = new List<PluginAssemblyInfo>();
                 _deletedAssemblies = new List<PluginAssemblyInfo>();
+
+                _newMissingAssemblies = new List<string>();
+                _deletedMissingAssemblies = new List<string>();
+
+                _newServices = new List<ServiceInfo>();
+                _changedServices = new List<ServiceInfo>();
+                _deletedServices = new List<ServiceInfo>();
 
                 _newPlugins = new List<PluginInfo>();
                 _changedPlugins = new List<PluginInfo>();
@@ -343,57 +350,41 @@ namespace CK.Plugin.Discoverer
                 _newOldPlugins = new List<PluginInfo>();
                 _deletedOldPlugins = new List<PluginInfo>();
 
-                _newMissingAssemblies = new List<string>();
-                _deletedMissingAssemblies = new List<string>();
-
-                _newServices = new List<ServiceInfo>();
-                _changedServices = new List<ServiceInfo>();
-                _deletedServices = new List<ServiceInfo>();
-
                 NewAssemblies = new ReadOnlyListOnIList<PluginAssemblyInfo>( _newAssemblies );
                 ChangedAssemblies = new ReadOnlyListOnIList<PluginAssemblyInfo>( _changedAssemblies );
                 DeletedAssemblies = new ReadOnlyListOnIList<PluginAssemblyInfo>( _deletedAssemblies );
-                NewPlugins = new ReadOnlyListOnIList<PluginInfo>( _newPlugins );
-                ChangedPlugins = new ReadOnlyListOnIList<PluginInfo>( _changedPlugins );
-                DeletedPlugins = new ReadOnlyListOnIList<PluginInfo>( _deletedPlugins );
-                NewEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _newEditors );
-                ChangedEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _changedEditors );
-                DeletedEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _deletedEditors );
-                NewServices = new ReadOnlyListOnIList<ServiceInfo>( _newServices );
-                ChangedServices = new ReadOnlyListOnIList<ServiceInfo>( _changedServices );
-                DeletedServices = new ReadOnlyListOnIList<ServiceInfo>( _deletedServices );
-                NewOldPlugins = new ReadOnlyListOnIList<PluginInfo>( _newOldPlugins );
-                DeletedOldPlugins = new ReadOnlyListOnIList<PluginInfo>( _deletedOldPlugins );
-                NewAssemblies = new ReadOnlyListOnIList<PluginAssemblyInfo>( _newAssemblies );
-                ChangedAssemblies = new ReadOnlyListOnIList<PluginAssemblyInfo>( _changedAssemblies );
-                DeletedAssemblies = new ReadOnlyListOnIList<PluginAssemblyInfo>( _deletedAssemblies );
-                NewPlugins = new ReadOnlyListOnIList<PluginInfo>( _newPlugins );
-                ChangedPlugins = new ReadOnlyListOnIList<PluginInfo>( _changedPlugins );
-                DeletedPlugins = new ReadOnlyListOnIList<PluginInfo>( _deletedPlugins );
-                NewEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _newEditors );
-                ChangedEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _changedEditors );
-                DeletedEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _deletedEditors );
-                NewServices = new ReadOnlyListOnIList<ServiceInfo>( _newServices );
-                ChangedServices = new ReadOnlyListOnIList<ServiceInfo>( _changedServices );
-                DeletedServices = new ReadOnlyListOnIList<ServiceInfo>( _deletedServices );
-                NewOldPlugins = new ReadOnlyListOnIList<PluginInfo>( _newOldPlugins );
-                DeletedOldPlugins = new ReadOnlyListOnIList<PluginInfo>( _deletedOldPlugins );
+
                 NewMissingAssemblies = new ReadOnlyListOnIList<string>( _newMissingAssemblies );
                 DeletedMissingAssemblies = new ReadOnlyListOnIList<string>( _deletedMissingAssemblies );
 
+                NewServices = new ReadOnlyListOnIList<ServiceInfo>( _newServices );
+                ChangedServices = new ReadOnlyListOnIList<ServiceInfo>( _changedServices );
+                DeletedServices = new ReadOnlyListOnIList<ServiceInfo>( _deletedServices );
+
+                NewPlugins = new ReadOnlyListOnIList<PluginInfo>( _newPlugins );
+                ChangedPlugins = new ReadOnlyListOnIList<PluginInfo>( _changedPlugins );
+                DeletedPlugins = new ReadOnlyListOnIList<PluginInfo>( _deletedPlugins );
+                
+                NewEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _newEditors );
+                ChangedEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _changedEditors );
+                DeletedEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _deletedEditors );
+                
+                NewOldPlugins = new ReadOnlyListOnIList<PluginInfo>( _newOldPlugins );
+                DeletedOldPlugins = new ReadOnlyListOnIList<PluginInfo>( _deletedOldPlugins );
+                
                 _dicAssemblies = new Dictionary<string, PluginAssemblyInfo>();
-                foreach( PluginAssemblyInfo item in _discoverer._allAssemblies )
+                foreach( PluginAssemblyInfo item in Discoverer._allAssemblies )
                     _dicAssemblies.Add( item.AssemblyFileName, item );
 
                 _dicEditors = new Dictionary<EditorKey, PluginConfigAccessorInfo>();
                 _dicPlugins = new Dictionary<KeyValuePair<Guid, Version>, PluginInfo>();
-                foreach( PluginInfo item in _discoverer._allPlugins )
+                foreach( PluginInfo item in Discoverer._allPlugins )
                 {
                     foreach( PluginConfigAccessorInfo editor in item.EditorsInfo )
                         _dicEditors.Add( new EditorKey( editor.Plugin.PluginId, editor.Source ), editor );
                     _dicPlugins.Add( new KeyValuePair<Guid, Version>( item.PluginId, item.Version ), item );
                 }
-                foreach( PluginInfo item in _discoverer._oldPlugins )
+                foreach( PluginInfo item in Discoverer._oldPlugins )
                 {
                     foreach( PluginConfigAccessorInfo editor in item.EditorsInfo )
                         _dicEditors.Add( new EditorKey( editor.Plugin.PluginId, editor.Source ), editor );
@@ -401,9 +392,9 @@ namespace CK.Plugin.Discoverer
                 }
 
                 _dicServices = new Dictionary<string, ServiceInfo>();
-                Debug.Assert( _discoverer._allServices.Intersect( _discoverer._notFoundServices ).Count() == _discoverer._notFoundServices.Count,
+                Debug.Assert( Discoverer._allServices.Intersect( Discoverer._notFoundServices ).Count() == Discoverer._notFoundServices.Count,
                     "Not found services are includes into the all services collection." );
-                foreach( ServiceInfo service in _discoverer._allServices )
+                foreach( ServiceInfo service in Discoverer._allServices )
                     _dicServices.Add( service.AssemblyQualifiedName, service );
             }
 
@@ -442,15 +433,15 @@ namespace CK.Plugin.Discoverer
                 Debug.Assert( runnerAllServices.IsSortedStrict(), "No duplicate." );
                 Debug.Assert( runnerAllEditors.IsSortedStrict(), "No duplicate." );
 
-                GenericMergeLists( _discoverer._allAssemblies, data.AllAssemblies, FindOrCreate, _deletedAssemblies );
-                GenericMergeLists( _discoverer._allPlugins, runnerAllPlugins, FindOrCreate, OnDelete, _deletedPlugins );
-                GenericMergeLists( _discoverer._allServices, runnerAllServices, FindOrCreate, _deletedServices );
-                GenericMergeLists( _discoverer._allEditors, runnerAllEditors, FindOrCreate, _deletedEditors );
+                GenericMergeLists( Discoverer._allAssemblies, data.AllAssemblies, FindOrCreate, _deletedAssemblies );
+                GenericMergeLists( Discoverer._allPlugins, runnerAllPlugins, FindOrCreate, OnDelete, _deletedPlugins );
+                GenericMergeLists( Discoverer._allServices, runnerAllServices, FindOrCreate, _deletedServices );
+                GenericMergeLists( Discoverer._allEditors, runnerAllEditors, FindOrCreate, _deletedEditors );
 
-                GenericMergeLists( _discoverer._oldPlugins, data.OldPlugins, FindOrCreate, _deletedOldPlugins );
-                GenericMergeLists( _discoverer._notFoundServices, data.NotFoundServices, FindOrCreate, null );
+                GenericMergeLists( Discoverer._oldPlugins, data.OldPlugins, FindOrCreate, _deletedOldPlugins );
+                GenericMergeLists( Discoverer._notFoundServices, data.NotFoundServices, FindOrCreate, null );
 
-                foreach( var e in _dicEditors.Values ) e.BindEditedPlugin( _discoverer );
+                foreach( var e in _dicEditors.Values ) e.BindEditedPlugin( Discoverer );
             }
 
             #region FindOrCreate
@@ -461,17 +452,17 @@ namespace CK.Plugin.Discoverer
                 PluginAssemblyInfo f;
                 if( !_dicAssemblies.TryGetValue( assembly.AssemblyFileName, out f ) )
                 {
-                    f = new PluginAssemblyInfo( _discoverer );
+                    f = new PluginAssemblyInfo( Discoverer );
                     _dicAssemblies.Add( assembly.AssemblyFileName, f );
                     _hasBeenDiscovered.Add( f );
                     f.Initialize( this, assembly );
                     _newAssemblies.Add( f );
-                    if( assembly.HasPluginsOrServices ) _discoverer._pluginOrServiceAssemblies.Add( f );
+                    if( assembly.HasPluginsOrServices ) Discoverer._pluginOrServiceAssemblies.Add( f );
                 }
                 else
                 {
-                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != _discoverer.CurrentVersion ) ) );
-                    if( f.LastChangedVersion != _discoverer.CurrentVersion
+                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != Discoverer.CurrentVersion ) ) );
+                    if( f.LastChangedVersion != Discoverer.CurrentVersion
                         && !_hasBeenDiscovered.Contains( f ) )
                     {
                         _hasBeenDiscovered.Add( f );
@@ -490,10 +481,10 @@ namespace CK.Plugin.Discoverer
                 if( !_dicPlugins.TryGetValue( new KeyValuePair<Guid, Version>( plugin.PluginId, plugin.Version ), out f ) )
                 {
                     if( plugin.IsOldVersion
-                        || !_discoverer._pluginsById.TryGetValue( plugin.PluginId, out f )
+                        || !Discoverer._pluginsById.TryGetValue( plugin.PluginId, out f )
                         || f.Version > plugin.Version )
                     {
-                        f = new PluginInfo( _discoverer );
+                        f = new PluginInfo( Discoverer );
                         _dicPlugins.Add( new KeyValuePair<Guid, Version>( plugin.PluginId, plugin.Version ), f );
                         _hasBeenDiscovered.Add( f );
                         f.Initialize( this, plugin );
@@ -505,13 +496,15 @@ namespace CK.Plugin.Discoverer
 
                         if( !plugin.HasError && !plugin.IsOldVersion )
                         {
-                            _discoverer._plugins.Add( f );
-                            if( !_discoverer._pluginsById.ContainsKey( f.PluginId ) )
+                            Discoverer._plugins.Add( f );
+                            if( !Discoverer._pluginsById.ContainsKey( f.PluginId ) )
                             {
-                                _discoverer._pluginsById.Add( f.PluginId, f );
+                                Discoverer._pluginsById.Add( f.PluginId, f );
                             }
                             else
-                                _discoverer._pluginsById[f.PluginId] = f;
+                            {
+                                Discoverer._pluginsById[f.PluginId] = f;
+                            }
                         }
                     }
                     else
@@ -533,9 +526,9 @@ namespace CK.Plugin.Discoverer
                 }
                 else
                 {
-                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != _discoverer.CurrentVersion ) ) );
+                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != Discoverer.CurrentVersion ) ) );
 
-                    if( f.LastChangedVersion != _discoverer.CurrentVersion
+                    if( f.LastChangedVersion != Discoverer.CurrentVersion
                         && !_hasBeenDiscovered.Contains( f ) )
                     {
                         _hasBeenDiscovered.Add( f );
@@ -551,7 +544,7 @@ namespace CK.Plugin.Discoverer
 
             internal void OnDelete( IPluginInfo plugin )
             {
-                _discoverer._pluginsById.Remove( plugin.PluginId );
+                Discoverer._pluginsById.Remove( plugin.PluginId );
             }
 
             internal ServiceInfo FindOrCreate( Runner.ServiceInfo service )
@@ -559,18 +552,18 @@ namespace CK.Plugin.Discoverer
                 ServiceInfo f = null;
                 if( !_dicServices.TryGetValue( service.AssemblyQualifiedName, out f ) )
                 {
-                    f = new ServiceInfo( _discoverer );
+                    f = new ServiceInfo( Discoverer );
                     _dicServices.Add( service.AssemblyQualifiedName, f );
                     _newServices.Add( f );
                     _hasBeenDiscovered.Add( f );
                     f.Initialize( this, service );
-                    if( !service.HasError ) _discoverer._services.Add( f );
-                    _discoverer._servicesByAssemblyQualifiedName[f.AssemblyQualifiedName] = f;
+                    if( !service.HasError ) Discoverer._services.Add( f );
+                    Discoverer._servicesByAssemblyQualifiedName[f.AssemblyQualifiedName] = f;
                 }
                 else
                 {
-                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != _discoverer.CurrentVersion ) ) );
-                    if( f.LastChangedVersion != _discoverer.CurrentVersion
+                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != Discoverer.CurrentVersion ) ) );
+                    if( f.LastChangedVersion != Discoverer.CurrentVersion
                         && !_hasBeenDiscovered.Contains( f ) )
                     {
                         _hasBeenDiscovered.Add( f );
@@ -582,7 +575,7 @@ namespace CK.Plugin.Discoverer
 
             internal void OnDelete( IServiceInfo service )
             {
-                _discoverer._servicesByAssemblyQualifiedName.Remove( service.AssemblyQualifiedName );
+                Discoverer._servicesByAssemblyQualifiedName.Remove( service.AssemblyQualifiedName );
             }
 
             internal PluginConfigAccessorInfo FindOrCreate( Runner.PluginConfigAccessorInfo editor )
@@ -591,7 +584,7 @@ namespace CK.Plugin.Discoverer
                 EditorKey key = new EditorKey( editor.Plugin.PluginId, editor.Source );
                 if( !_dicEditors.TryGetValue( key, out f ) )
                 {
-                    f = new PluginConfigAccessorInfo( _discoverer );
+                    f = new PluginConfigAccessorInfo( Discoverer );
                     _dicEditors.Add( key, f );
                     _newEditors.Add( f );
                     _hasBeenDiscovered.Add( f );
@@ -599,8 +592,8 @@ namespace CK.Plugin.Discoverer
                 }
                 else
                 {
-                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != _discoverer.CurrentVersion ) ) );
-                    if( f.LastChangedVersion != _discoverer.CurrentVersion
+                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != Discoverer.CurrentVersion ) ) );
+                    if( f.LastChangedVersion != Discoverer.CurrentVersion
                         && !_hasBeenDiscovered.Contains( f ) )
                     {
                         _hasBeenDiscovered.Add( f );

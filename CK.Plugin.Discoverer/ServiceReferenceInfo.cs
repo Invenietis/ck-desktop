@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace CK.Plugin.Discoverer
 {
@@ -59,30 +60,23 @@ namespace CK.Plugin.Discoverer
             get { return _isServiceWrapped; } 
         }
 
-        internal ServiceReferenceInfo( PluginDiscoverer discoverer )
-            : base( discoverer )
-        {
-        }
-
-        internal void Initialize( PluginDiscoverer.Merger merger, Runner.ServiceReferenceInfo r )
+        internal ServiceReferenceInfo( PluginDiscoverer.Merger merger, PluginInfo owner, Runner.ServiceReferenceInfo r )
+            : base( merger.Discoverer )
         {
             base.Initialize( r );
             _propertyName = r.PropertyName;
             _requirements = r.Requirements;
             _reference = merger.FindOrCreate( r.Reference );
-            _owner = merger.FindOrCreate( r.Owner );
+            _owner = owner;
             _isServiceWrapped = r.IsIServiceWrapped;
         }
 
         internal bool Merge( PluginDiscoverer.Merger merger, Runner.ServiceReferenceInfo r )
         {
-            bool hasChanged = false;
+            Debug.Assert( r.Owner.PluginId == _owner.PluginId );
+            Debug.Assert( r.PropertyName == PropertyName );
             
-            if( _propertyName != r.PropertyName )
-            {
-                _propertyName = r.PropertyName;
-                hasChanged = true;
-            }
+            bool hasChanged = false;           
             if( _requirements != r.Requirements )
             {
                 _requirements = r.Requirements;
@@ -100,13 +94,6 @@ namespace CK.Plugin.Discoverer
                 hasChanged = true;
             }
 
-            PluginInfo newPlugin = merger.FindOrCreate( r.Owner );
-            if( _owner != newPlugin )
-            {
-                _owner = newPlugin;
-                hasChanged = true;
-            }
-
             return Merge( r, hasChanged );
         }
 
@@ -116,7 +103,8 @@ namespace CK.Plugin.Discoverer
         {
             if( this == other ) return 0;
             int cmp = _owner.CompareTo( other._owner );
-            if( cmp == 0 ) cmp = _propertyName.CompareTo( other.PropertyName );
+            if( cmp == 0 ) cmp = _propertyName.CompareTo( other._propertyName );
+            if( cmp == 0 ) cmp = _reference.CompareTo( other._reference );
             return cmp;
         }
 

@@ -109,6 +109,7 @@
     <Compile Include="Requirements\RequirementLayer.cs" />
     <Compile Include="Requirements\ServiceRequirement.cs" />
     <Compile Include="Requirements\ServiceRequirementCollection.cs" />
+    <Compile Include="RunningStatus.cs" />
     <Compile Include="ServiceNotAvailableException.cs" />
     <Compile Include="IDynamicService.cs" />
     <Compile Include="IgnoreExceptionAttribute.cs" />
@@ -118,7 +119,7 @@
     <Compile Include="IService.cs" />
     <Compile Include="Requirements\IPluginRequirementCollection.cs" />
     <Compile Include="Requirements\IServiceRequirementCollection.cs" />
-    <Compile Include="RunningStatus.cs" />
+    <Compile Include="InternalRunningStatus.cs" />
     <Compile Include="ServiceStoppedException.cs" />
     <Compile Include="ServiceStatusChangedEventArgs.cs" />
     <Compile Include="DynamicServiceAttribute.cs" />

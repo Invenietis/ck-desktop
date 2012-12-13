@@ -165,7 +165,7 @@ namespace CK.Plugin.Discoverer.Runner
                         case "Version": _version = new Version( (string)a.TypedValue.Value ); break;
                         case "RefUrl": _url = a.TypedValue.Value != null ? new Uri( (string)a.TypedValue.Value ) : null; break;
                         case "IconUri": _iconUri = a.TypedValue.Value != null ? new Uri( (string)a.TypedValue.Value, UriKind.RelativeOrAbsolute ) : null; break;
-                        case "Categories": _categories = ReadStringArray( a.TypedValue.Value ); break;
+                        case "Categories": _categories = ReadStringArray( (ReadOnlyCollection<CustomAttributeTypedArgument>)a.TypedValue.Value ); break;
                     }
                 }
             }
@@ -180,11 +180,12 @@ namespace CK.Plugin.Discoverer.Runner
             Debug.Assert( _categories.IsSortedStrict( StringComparer.Ordinal.Compare ) );
             _serviceReferences.Sort();
             _editableBy.Sort();
+            _editors.Sort();
         }
 
-        static internal string[] ReadStringArray( object values )
+        static internal string[] ReadStringArray( ReadOnlyCollection<CustomAttributeTypedArgument> values )
         {
-            ReadOnlyCollection<CustomAttributeTypedArgument> v = (ReadOnlyCollection<CustomAttributeTypedArgument>)values;
+            ReadOnlyCollection<CustomAttributeTypedArgument> v = values;
             return v.Select( a => (string)a.Value ).Distinct( StringComparer.Ordinal ).OrderBy( Util.FuncIdentity, StringComparer.Ordinal ).ToArray();
         }
 

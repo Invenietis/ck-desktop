@@ -52,13 +52,11 @@ namespace CK.Plugin.Discoverer
         IServiceInfo _service;
 
         IReadOnlyList<string> _categories;
-        IReadOnlyList<IServiceReferenceInfo> _serviceReferences;
         IReadOnlyList<IPluginConfigAccessorInfo> _editorsInfo;
         IReadOnlyList<IPluginConfigAccessorInfo> _editableBy;
 
         string[] _categoriesCollection;
-        Dictionary<Runner.ServiceReferenceInfo, ServiceReferenceInfo> _dicServiceReferences;
-        List<ServiceReferenceInfo> _servicesReferencesCollection;
+        SortedArrayKeyList<ServiceReferenceInfo,string> _servicesReferences;
         List<PluginConfigAccessorInfo> _editorsCollection;
         List<PluginConfigAccessorInfo> _editableByCollection;
 
@@ -123,7 +121,7 @@ namespace CK.Plugin.Discoverer
 
         public IReadOnlyList<IServiceReferenceInfo> ServiceReferences
         {
-            get { return _serviceReferences; }
+            get { return _servicesReferences; }
         }
 
         public IServiceInfo Service
@@ -162,30 +160,35 @@ namespace CK.Plugin.Discoverer
             _categoriesCollection = r.Categories;
             _categories = new ReadOnlyListOnIList<string>( _categoriesCollection );
 
-            if( r.EditorsInfo != null )
-            {
-                _editorsCollection = new List<PluginConfigAccessorInfo>();
-                foreach( Runner.PluginConfigAccessorInfo editor in r.EditorsInfo )
-                    _editorsCollection.Add( merger.FindOrCreate( editor ) );
-            }
-
-            _servicesReferencesCollection = new List<ServiceReferenceInfo>();
-            _dicServiceReferences = new Dictionary<Runner.ServiceReferenceInfo, ServiceReferenceInfo>();
-            foreach( Runner.ServiceReferenceInfo service in r.ServiceReferences )
-                _servicesReferencesCollection.Add( FindOrCreate( merger, service ) );
-
             if( r.Service != null )
             {
                 _service = merger.FindOrCreate( r.Service );
             }
-            _editableByCollection = new List<PluginConfigAccessorInfo>();
-            foreach( Runner.PluginConfigAccessorInfo editor in r.EditableBy )
-                _editableByCollection.Add( merger.FindOrCreate( editor ) );
 
-            _serviceReferences = new ReadOnlyListOnIList<ServiceReferenceInfo>( _dicServiceReferences.Values.ToList() );
+            _servicesReferences = new SortedArrayKeyList<ServiceReferenceInfo, string>( serviceRef => serviceRef.PropertyName );
+            if( r.ServiceReferences != null )
+            {
+                foreach( Runner.ServiceReferenceInfo service in r.ServiceReferences )
+                {
+                    _servicesReferences.Add( new ServiceReferenceInfo( merger, this, service ) );
+                }
+            }
+
+            _editorsCollection = new List<PluginConfigAccessorInfo>();
+            if( r.EditorsInfo != null )
+            {
+                foreach( Runner.PluginConfigAccessorInfo editor in r.EditorsInfo )
+                    _editorsCollection.Add( merger.FindOrCreate( editor ) );
+            }
+
+            _editableByCollection = new List<PluginConfigAccessorInfo>();
+            if( r.EditableBy != null )
+            {
+                foreach( Runner.PluginConfigAccessorInfo editor in r.EditableBy )
+                    _editableByCollection.Add( merger.FindOrCreate( editor ) );
+            }
             _editorsInfo = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _editorsCollection );
             _editableBy = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _editableByCollection );
-            _serviceReferences = new ReadOnlyListOnIList<ServiceReferenceInfo>( _dicServiceReferences.Values.ToList() );
             _editorsInfo = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _editorsCollection );
         }
 
@@ -249,7 +252,7 @@ namespace CK.Plugin.Discoverer
                 hasChanged = true;
             }
 
-            if( PluginDiscoverer.Merger.GenericMergeLists( _servicesReferencesCollection, r.ServiceReferences, ( s ) => { return FindOrCreate( merger, s ); }, null ) )
+            if( PluginDiscoverer.Merger.GenericMergeLists( _servicesReferences, r.ServiceReferences, s => FindOrCreate( merger, s ), null ) )
             {
                 hasChanged = true;
             }
@@ -273,7 +276,7 @@ namespace CK.Plugin.Discoverer
                 }
             }
 
-            if ( PluginDiscoverer.Merger.GenericMergeLists( _editorsCollection, r.EditorsInfo, merger.FindOrCreate, null ) )
+            if( PluginDiscoverer.Merger.GenericMergeLists( _editorsCollection, r.EditorsInfo, merger.FindOrCreate, null ) )
             {
                 hasChanged = true;
             }
@@ -289,23 +292,6 @@ namespace CK.Plugin.Discoverer
         internal PluginInfo Clone()
         {
             return (PluginInfo)MemberwiseClone();
-        }
-
-        internal ServiceReferenceInfo FindOrCreate( PluginDiscoverer.Merger merger, Runner.ServiceReferenceInfo serviceRef )
-        {
-            ServiceReferenceInfo f;
-            if( !_dicServiceReferences.TryGetValue( serviceRef, out f ) )
-            {
-                f = new ServiceReferenceInfo( Discoverer );
-                _dicServiceReferences.Add( serviceRef, f );
-                f.Initialize( merger, serviceRef );
-            }
-            else
-            {
-                if( f.LastChangedVersion != Discoverer.CurrentVersion )
-                    f.Merge( merger, serviceRef );
-            }
-            return f;
         }
 
         public override string ToString()
@@ -330,5 +316,24 @@ namespace CK.Plugin.Discoverer
         {
             get { return _pluginId; }
         }
+
+        ServiceReferenceInfo FindOrCreate( PluginDiscoverer.Merger merger, Runner.ServiceReferenceInfo serviceRef )
+        {
+            ServiceReferenceInfo r = _servicesReferences.GetByKey( serviceRef.PropertyName );
+            if( r == null )
+            {
+                r = new ServiceReferenceInfo( merger, this, serviceRef );
+                _servicesReferences.Add( r );
+            }
+            else
+            {
+                if( r.LastChangedVersion != Discoverer.CurrentVersion )
+                {
+                    r.Merge( merger, serviceRef );
+                }
+            }
+            return r;
+        }
+
     }
 }

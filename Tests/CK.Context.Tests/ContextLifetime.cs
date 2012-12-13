@@ -91,20 +91,20 @@ namespace CK.Context.Tests
                 Assert.That( e.PluginProxy.PluginKey.PluginId, Is.EqualTo( simplePluginId ) );
                 if( eventPhasis == 0 )
                 {
-                    Assert.That( e.Previous, Is.EqualTo( RunningStatus.Started ) );
-                    Assert.That( e.PluginProxy.Status, Is.EqualTo( RunningStatus.Stopping ) );
+                    Assert.That( e.Previous, Is.EqualTo( InternalRunningStatus.Started ) );
+                    Assert.That( e.PluginProxy.Status, Is.EqualTo( InternalRunningStatus.Stopping ) );
                     eventPhasis = 1;
                 }
                 else if( eventPhasis == 1 )
                 {
-                    Assert.That( e.Previous, Is.EqualTo( RunningStatus.Stopping ) );
-                    Assert.That( e.PluginProxy.Status, Is.EqualTo( RunningStatus.Stopped ) );
+                    Assert.That( e.Previous, Is.EqualTo( InternalRunningStatus.Stopping ) );
+                    Assert.That( e.PluginProxy.Status, Is.EqualTo( InternalRunningStatus.Stopped ) );
                     eventPhasis = 2;
                 }
                 else if( eventPhasis == 2 )
                 {
-                    Assert.That( e.Previous, Is.EqualTo( RunningStatus.Stopped ) );
-                    Assert.That( e.PluginProxy.Status, Is.EqualTo( RunningStatus.Disabled ) );
+                    Assert.That( e.Previous, Is.EqualTo( InternalRunningStatus.Stopped ) );
+                    Assert.That( e.PluginProxy.Status, Is.EqualTo( InternalRunningStatus.Disabled ) );
                     eventPhasis = 3;
                 }
             };

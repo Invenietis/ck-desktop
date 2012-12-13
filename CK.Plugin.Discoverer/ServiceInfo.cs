@@ -92,6 +92,11 @@ namespace CK.Plugin.Discoverer
             get { return _isDynamicService; }
         }
 
+        public IServiceInfo Generalization 
+        { 
+            get { return null; } 
+        }
+
         internal ServiceInfo( PluginDiscoverer discoverer )
             : base( discoverer )
         {

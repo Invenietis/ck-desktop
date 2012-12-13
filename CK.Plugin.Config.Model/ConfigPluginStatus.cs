@@ -34,10 +34,10 @@ namespace CK.Plugin.Config
 	/// Even if the running state of a plugin is more a "declared state" in a cooperative 
 	/// environment than a true process/thread state in a preemptive multi-task system, the possible cyclic references 
 	/// forces us to design a "2 phase starting" API (and the corresponding status Starting and Stopping).
-    /// See <see cref="RunningStatus"/>.
+    /// See <see cref="InternalRunningStatus"/>.
 	/// </remarks>
 	/// </summary>
-    /// <seealso cref="RunningStatus"/>
+    /// <seealso cref="InternalRunningStatus"/>
 	[Flags]
 	public enum ConfigPluginStatus
 	{
