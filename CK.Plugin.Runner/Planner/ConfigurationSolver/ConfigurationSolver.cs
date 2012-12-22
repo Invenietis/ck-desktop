@@ -137,7 +137,7 @@ namespace CK.Plugin.Hosting
             // There is 2 ways to apply TryStart: 
             //   1) - we apply them in order (actually transforming TryStart into "start commands"), but the order is meaningless: the result is not deterministic.
             //   2) - we dynamically compute a "best solution" that maximizes TryStart satisfaction.
-            // Practically, my (current) feeling is that 2) should be the way to go at the start of the system, but 1) will be enough as soon as we have some "commands" to honor.
+            // Practically, my (current) feeling is that 2) should be the way to go at the start of the system, but 1) will be enough as soon as we have some (enough) "commands" to honor.
             //
             // What is a "start command" ? How are they managed ?
             // - A command is nothing more than bool (start or stop) associated to a PluginId xor a ServiceFullName.
