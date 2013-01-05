@@ -47,6 +47,7 @@ namespace CK.Windows.Demo
         {
             try
             {
+
                 // Crash logs upload and updater availability is managed during this initialization.
                 using( var init = CKApp.Initialize( new CKAppParameters( "CK-Windows", "Demo" ) ) )
                 {

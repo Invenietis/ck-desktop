@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Caliburn\StackConductor.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converter\NullImageConverter.cs" />
     <Compile Include="DataTemplateSelector\TemplatedDataTemplateSelector.cs" />
     <Compile Include="DependencyObjectExtensions.cs" />
     <Compile Include="Helpers\ScreenHelper.cs" />

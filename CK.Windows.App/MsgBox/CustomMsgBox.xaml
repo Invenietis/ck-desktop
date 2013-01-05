@@ -38,7 +38,7 @@
             <ListBox Background="Transparent" ItemsSource="{Binding Buttons}" BorderBrush="Transparent" Grid.IsSharedSizeScope="True"  x:Name="buttongrid">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"/>
+                        <WrapPanel HorizontalAlignment="Right" Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>

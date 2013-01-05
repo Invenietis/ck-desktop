@@ -45,7 +45,7 @@
                 <DockPanel>
                     <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding DisplayName}"/>
                     <Label DockPanel.Dock="Left" FontWeight="DemiBold" Visibility="{Binding ShowOne}" Content="{Binding Values.CurrentItem.Name}"></Label>
-                    <Image DockPanel.Dock="Right" Stretch="None" Source="{Binding ImagePath}" Margin="0 0 5 0" />
+                    <Image DockPanel.Dock="Right" Stretch="None" Source="{Binding ImagePath, Converter={StaticResource notnullimgconv}}" Margin="0 0 5 0" />
                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0 0 5 0"/>
                     <ComboBox Visibility="{Binding ShowMultiple}" FontSize="12" Margin="3" ItemsSource="{Binding Values}" IsSynchronizedWithCurrentItem="True">
                         <ComboBox.ItemTemplate>

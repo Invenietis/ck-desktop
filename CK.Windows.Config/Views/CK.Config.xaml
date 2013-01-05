@@ -5,6 +5,8 @@
                     xmlns:local="clr-namespace:CK.Windows.Config"
                     xmlns:res="clr-namespace:CK.Windows.Config.Resources">
 
+    <ck:NullImageConverter x:Key="notnullimgconv" />
+    
     <Style TargetType="Border" x:Key="CK.Config.RoundBox">
         <Setter Property="Background" Value="White"></Setter>
         <Setter Property="BorderBrush" Value="Gray"></Setter>
@@ -137,7 +139,7 @@
                 <DockPanel LastChildFill="False" Margin="3">
                     <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center" IsChecked="{Binding Value}" Margin="0 0 3 0"/>
                     <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{Binding DisplayName}"/>
-                    <Image DockPanel.Dock="Left" Stretch="None" Source="{Binding ImagePath}" />
+                    <Image DockPanel.Dock="Left" Stretch="None" Source="{Binding ImagePath, Converter={StaticResource notnullimgconv}}" />
                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
                 </DockPanel>
             </DataTemplate>
@@ -148,7 +150,7 @@
                 <DockPanel LastChildFill="False" Margin="3">
                     <TextBox DockPanel.Dock="Right" Text="{Binding Path=Value, Mode=TwoWay}" Width="50" Margin="0 0 3 0"/>
                     <TextBlock DockPanel.Dock="Left" Text="{Binding DisplayName}" VerticalAlignment="Center"/>
-                    <Image DockPanel.Dock="Left" Stretch="None" Source="{Binding ImagePath}" />
+                    <Image DockPanel.Dock="Left" Stretch="None" Source="{Binding ImagePath, Converter={StaticResource notnullimgconv}}" />
                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
                 </DockPanel>
             </DataTemplate>
@@ -203,7 +205,7 @@
                     <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding DisplayName}"/>
                     <Label DockPanel.Dock="Left" FontWeight="DemiBold" Visibility="{Binding ShowOne}" Content="{Binding Values.CurrentItem}"></Label>
                     <!-- Then comes, on the right, the description and the image. -->
-                    <Image DockPanel.Dock="Right" Stretch="None" Source="{Binding ImagePath}" Margin="0 0 5 0" />
+                    <Image DockPanel.Dock="Right" Stretch="None" Source="{Binding ImagePath, Converter={StaticResource notnullimgconv}}" Margin="0 0 5 0" />
                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0 0 5 0"/>
                     <ComboBox Visibility="{Binding ShowMultiple}" FontSize="12" Margin="3" ItemsSource="{Binding Values}" IsSynchronizedWithCurrentItem="True" />
                 </DockPanel>

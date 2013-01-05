@@ -55,12 +55,12 @@ namespace CK.Windows
                 if( ExactTypeMatch )
                 {
                     success = Type.IsAssignableFrom( itemType );
-                    CompositeDataTemplateSelector.Log.Debug( log => log( "Exact type {0} match: {1} for type {2}.", Type.Name, success, itemType ) );
+                    //CompositeDataTemplateSelector.Log.Debug( log => log( "Exact type {0} match: {1} for type {2}.", Type.Name, success, itemType ) );
                 }
                 else
                 {
                     success = CK.Reflection.ReflectionHelper.CovariantMatch( Type, itemType );
-                    CompositeDataTemplateSelector.Log.Debug( log => log( "Covariant type {0} match: {1} for type {2}.", Type.Name, success, itemType ) );
+                    //CompositeDataTemplateSelector.Log.Debug( log => log( "Covariant type {0} match: {1} for type {2}.", Type.Name, success, itemType ) );
                 }
             }
             else CompositeDataTemplateSelector.Log.Debug( log => log( "Unitialized rule (no Type nor TypeDescriptor set). Rule failed." ) );
