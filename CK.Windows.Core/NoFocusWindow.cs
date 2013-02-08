@@ -175,12 +175,10 @@ namespace CK.Windows
             switch( (CK.Windows.Interop.Win.WM)msg )
             {
                 case Win.WM.MOUSEACTIVATE:
-<<<<<<< issue-window-focus
                     return (IntPtr)0x0003;
-=======
                     handled = true;
                     return new IntPtr( 3 );
->>>>>>> local
+
                 case CK.Windows.Interop.Win.WM.SETFOCUS:
                     _lastFocused = hWnd;
                     break;

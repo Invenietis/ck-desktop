@@ -43,22 +43,22 @@ namespace CK.Windows.Tests
             p.Children.Add( bt );
             p.Children.Add( new TextBox() { Text = "abc azeaze aze aze" } );
 
-            w2 = new Popup();
-            w2.Child = p;
-            w2.Width = 200;
-            w2.Height = 100;
-            //w2.Topmost = true;
-            w2.StaysOpen = true;
-            w2.Focusable = false;
-            w2.CustomPopupPlacementCallback = GetPopupPlacement;
-            w2.Placement = PlacementMode.Absolute;
-            HeaderedItemsControl
-            //w2.Activated += w2_Activated;
-            //bt.PreviewGotKeyboardFocus += w2_PreviewGotKeyboardFocus;
-            //tb.PreviewGotKeyboardFocus += w2_PreviewGotKeyboardFocus;
-            //bt.PreviewLostKeyboardFocus += w2_PreviewLostKeyboardFocus;
-            //tb.PreviewLostKeyboardFocus += w2_PreviewLostKeyboardFocus;
-            w2.IsOpen = true;
+            //w2 = new Popup();
+            //w2.Child = p;
+            //w2.Width = 200;
+            //w2.Height = 100;
+            ////w2.Topmost = true;
+            //w2.StaysOpen = true;
+            //w2.Focusable = false;
+            //w2.CustomPopupPlacementCallback = GetPopupPlacement;
+            //w2.Placement = PlacementMode.Absolute;
+            //HeaderedItemsControl
+            ////w2.Activated += w2_Activated;
+            ////bt.PreviewGotKeyboardFocus += w2_PreviewGotKeyboardFocus;
+            ////tb.PreviewGotKeyboardFocus += w2_PreviewGotKeyboardFocus;
+            ////bt.PreviewLostKeyboardFocus += w2_PreviewLostKeyboardFocus;
+            ////tb.PreviewLostKeyboardFocus += w2_PreviewLostKeyboardFocus;
+            //w2.IsOpen = true;
             
             w3 = new Window();
             w3.Title = "FOCUS WINDOW";
