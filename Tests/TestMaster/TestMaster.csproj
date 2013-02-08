@@ -83,9 +83,21 @@
       <Project>{0BEFACC1-7CF4-4634-BD78-AACA73B3224F}</Project>
       <Name>CK.SharedDic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\CK.Windows.App\CK.Windows.App.csproj">
+      <Project>{22048282-dbe5-4e6a-ae1b-bb74af5cc86b}</Project>
+      <Name>CK.Windows.App</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CK.Windows.Config\CK.Windows.Config.csproj">
+      <Project>{739010d0-1211-453a-b3f3-0ff1afc8cc14}</Project>
+      <Name>CK.Windows.Config</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CK.Windows.Core\CK.Windows.Core.csproj">
       <Project>{9F3F9332-6CAD-413D-BF7C-580228D62FCD}</Project>
       <Name>CK.Windows.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CK.Windows.Interop\CK.Windows.Interop.csproj">
+      <Project>{fc440a2d-a82e-4587-88c2-5484bd9ac2d2}</Project>
+      <Name>CK.Windows.Interop</Name>
     </ProjectReference>
     <ProjectReference Include="..\CK.Context.Tests\CK.Context.Tests.csproj">
       <Project>{57015573-9E25-4A4C-8E6A-3BF6CA97FB33}</Project>
