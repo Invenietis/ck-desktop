@@ -32,7 +32,6 @@ namespace CK.Tests.Plugin.EditorsOfPlugins
     [Plugin( "{84EA06CD-9E2D-4656-9BFE-88B1173D2806}", PublicName = "EditorOfUnknownPlugin", Categories = new string[] { "Test", "MySuperEditor", "Other", "Advanced" }, Version = "1.1.0")]
 	public class EditorOfUnknownPlugin : IPlugin
 	{
-        //public ICVKLivePluginProxy Proxy { get; set; }
 
         [ConfigurationAccessor( "{B2E39E6E-B875-4715-B0E6-4943A27FC403}" )]
         public IPluginConfigAccessor Configuration { get; set; }

@@ -104,7 +104,7 @@ namespace CK.Plugin.Hosting
         {
             PluginProxy result;
             if( !_plugins.TryGetValue( key, out result ) ) return false;
-            return result.Status == RunningStatus.Started;
+            return result.Status == InternalRunningStatus.Started;
         }
 
         /// <summary>
@@ -134,10 +134,10 @@ namespace CK.Plugin.Hosting
             foreach( IPluginInfo k in disabledPluginKeys )
             {
                 PluginProxy p = EnsureProxy( k );
-                if( p.Status != RunningStatus.Disabled )
+                if( p.Status != InternalRunningStatus.Disabled )
                 {
                     toDisable.Add( p );
-                    if( p.Status != RunningStatus.Stopped )
+                    if( p.Status != InternalRunningStatus.Stopped )
                     {
                         toStop.Add( p );
                     }
@@ -146,7 +146,7 @@ namespace CK.Plugin.Hosting
             foreach( IPluginInfo k in stoppedPluginKeys )
             {
                 PluginProxy p = EnsureProxy( k );
-                if( p.Status != RunningStatus.Stopped )
+                if( p.Status != InternalRunningStatus.Stopped )
                 {
                     toStop.Add( p );
                 }
@@ -169,10 +169,10 @@ namespace CK.Plugin.Hosting
                         return new ExecutionPlanResult() { Culprit = p.PluginKey, Status = ExecutionPlanResultStatus.LoadError, Error = p.LoadError };
                     }
                     Debug.Assert( p.LoadError == null );
-                    Debug.Assert( p.Status == RunningStatus.Disabled );
+                    Debug.Assert( p.Status == InternalRunningStatus.Disabled );
                     _newlyLoadedPlugins.Add( p );
                 }
-                if( p.Status != RunningStatus.Started )
+                if( p.Status != InternalRunningStatus.Started )
                 {
                     toStart.Add( p );
                 }
@@ -183,11 +183,11 @@ namespace CK.Plugin.Hosting
             // Their "stop" methods will be called.
             foreach( PluginProxy p in toStop )
             {
-                if( p.Status > RunningStatus.Stopped )
+                if( p.Status > InternalRunningStatus.Stopped )
                 {
                     try
                     {
-                        SetPluginStatus( p, RunningStatus.Stopping );
+                        SetPluginStatus( p, InternalRunningStatus.Stopping );
                         p.RealPlugin.Stop();
                         _log.Debug( String.Format( "The {0} plugin has been successfully stopped.", p.PublicName ) );
                     }
@@ -206,9 +206,9 @@ namespace CK.Plugin.Hosting
             {
                 try
                 {
-                    if( p.Status > RunningStatus.Stopped )
+                    if( p.Status > InternalRunningStatus.Stopped )
                     {
-                        SetPluginStatus( p, RunningStatus.Stopped );
+                        SetPluginStatus( p, InternalRunningStatus.Stopped );
                         p.RealPlugin.Teardown();
                         _log.Debug( String.Format( "The {0} plugin has been successfully torn down.", p.PublicName ) );
                     }
@@ -219,7 +219,7 @@ namespace CK.Plugin.Hosting
                     _serviceHost.LogMethodError( p.GetImplMethodInfoTeardown(), ex );
                 }
             }
-            Debug.Assert( toStop.All( p => p.Status <= RunningStatus.Stopped ) );
+            Debug.Assert( toStop.All( p => p.Status <= InternalRunningStatus.Stopped ) );
 
 
             // Prepares the plugins to start so that they become the implementation
@@ -232,18 +232,18 @@ namespace CK.Plugin.Hosting
                 // since we necessarily stopped the previous implementation (if any) above.
                 if( service != null )
                 {
-                    Debug.Assert( service.Status <= RunningStatus.Stopped );
+                    Debug.Assert( service.Status <= InternalRunningStatus.Stopped );
                     service.SetPluginImplementation( p );
                 }
                 // This call will trigger an update of the service status.
-                if( p.Status == RunningStatus.Disabled ) SetPluginStatus( p, RunningStatus.Stopped );
+                if( p.Status == InternalRunningStatus.Disabled ) SetPluginStatus( p, InternalRunningStatus.Stopped );
             }
 
             // Now that services have been associated to their new implementation (in Stopped status), we
             // can disable the plugins that must be disabled.
             foreach( PluginProxy p in toDisable )
             {
-                SetPluginStatus( p, RunningStatus.Disabled );
+                SetPluginStatus( p, InternalRunningStatus.Disabled );
                 try
                 {
                     p.DisposeIfDisposable();
@@ -262,7 +262,7 @@ namespace CK.Plugin.Hosting
                 // We configure plugin's edition properties.
                 if( PluginConfigurator != null ) PluginConfigurator( p );
 
-                SetPluginStatus( p, RunningStatus.Starting );
+                SetPluginStatus( p, InternalRunningStatus.Starting );
                 IPluginSetupInfo info = new IPluginSetupInfo();
                 try
                 {
@@ -276,7 +276,7 @@ namespace CK.Plugin.Hosting
                     _serviceHost.LogMethodError( p.GetImplMethodInfoSetup(), ex );
 
                     // Revoking the call to Setup for all plugins that haven't been started yet.
-                    //Will pass the plugin to states : Stopping and then Stopped
+                    // Will pass the plugin to states : Stopping and then Stopped
                     for( int j = 0; j <= i; j++ )
                     {
                         RevokeSetupCall( toStart[j] );
@@ -310,7 +310,7 @@ namespace CK.Plugin.Hosting
                 PluginProxy p = toStart[i];
                 try
                 {
-                    SetPluginStatus( p, RunningStatus.Started );
+                    SetPluginStatus( p, InternalRunningStatus.Started );
                     p.RealPlugin.Start();
                     _log.Debug( String.Format( "The {0} plugin has been successfully started.", p.PublicName ) );
                 }
@@ -357,7 +357,7 @@ namespace CK.Plugin.Hosting
         private void RevokeSetupCall( PluginProxy p )
         {
             // 2 - Stops the plugin status.
-            SetPluginStatus( p, RunningStatus.Stopping, true );
+            SetPluginStatus( p, InternalRunningStatus.Stopping, true );
             // 3 - Safe call to TearDown.
             try
             {
@@ -368,7 +368,7 @@ namespace CK.Plugin.Hosting
                 // 2.1 - Should be emitted as an external log event.
                 _serviceHost.LogMethodError( p.GetImplMethodInfoTeardown(), exTeardown );
             }
-            SetPluginStatus( p, RunningStatus.Stopped, true );
+            SetPluginStatus( p, InternalRunningStatus.Stopped, true );
         }
 
         /// <summary>
@@ -393,14 +393,14 @@ namespace CK.Plugin.Hosting
 
         public event EventHandler<PluginStatusChangedEventArgs> StatusChanged;
 
-        void SetPluginStatus( PluginProxy plugin, RunningStatus newOne )
+        void SetPluginStatus( PluginProxy plugin, InternalRunningStatus newOne )
         {
             SetPluginStatus( plugin, newOne, false );
         }
 
-        void SetPluginStatus( PluginProxy plugin, RunningStatus newOne, bool allowErrorTransition )
+        void SetPluginStatus( PluginProxy plugin, InternalRunningStatus newOne, bool allowErrorTransition )
         {
-            RunningStatus previous = plugin.Status;
+            InternalRunningStatus previous = plugin.Status;
             Debug.Assert( previous != newOne );
             if( newOne > previous )
             {
@@ -409,7 +409,7 @@ namespace CK.Plugin.Hosting
                 DoSetPluginStatus( plugin, newOne, previous );
                 if( plugin.IsCurrentServiceImplementation )
                 {
-                    if( newOne == RunningStatus.Stopped && plugin.Service.Status == RunningStatus.Stopped )
+                    if( newOne == InternalRunningStatus.Stopped && plugin.Service.Status == InternalRunningStatus.Stopped )
                     {
                         // This is an consequence of the fact that we disable plugins after 
                         // starting the new ones.
@@ -427,7 +427,7 @@ namespace CK.Plugin.Hosting
             }
         }
 
-        private void DoSetPluginStatus( PluginProxy plugin, RunningStatus newOne, RunningStatus previous )
+        private void DoSetPluginStatus( PluginProxy plugin, InternalRunningStatus newOne, InternalRunningStatus previous )
         {
             plugin.Status = newOne;
             var h = StatusChanged;

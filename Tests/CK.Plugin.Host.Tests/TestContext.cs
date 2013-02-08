@@ -117,15 +117,15 @@ namespace CK.Plugin.Host.Tests
             Assert.That( Service is IChoucrouteService );
             Assert.That( Service is ServiceProxyBase );
             // We check the Running attribute.
-            Assert.That( Service.Status == RunningStatus.Disabled );
+            Assert.That( Service.Status == InternalRunningStatus.Disabled );
 
             Assert.That( PluginProxy == null );
 
             if( startPlugin )
             {
                 PluginHost.Execute( ReadOnlyListEmpty<IPluginInfo>.Empty, ReadOnlyListEmpty<IPluginInfo>.Empty, new[] { PluginPluginId } );
-                Assert.That( PluginProxy.Status == RunningStatus.Started );
-                Assert.That( Service.Status == RunningStatus.Started );
+                Assert.That( PluginProxy.Status == InternalRunningStatus.Started );
+                Assert.That( Service.Status == InternalRunningStatus.Started );
             }
         }
 
@@ -201,12 +201,12 @@ namespace CK.Plugin.Host.Tests
 
         internal void EnsureStoppedService()
         {
-            if( ServiceProxyBase.Status == RunningStatus.Disabled )
+            if( ServiceProxyBase.Status == InternalRunningStatus.Disabled )
             {
                 PluginHost.Execute( ReadOnlyListEmpty<IPluginInfo>.Empty, ReadOnlyListEmpty<IPluginInfo>.Empty, new[] { PluginPluginId } );
                 PluginHost.Execute( ReadOnlyListEmpty<IPluginInfo>.Empty, new[] { PluginPluginId }, ReadOnlyListEmpty<IPluginInfo>.Empty );
             }
-            Assert.That( ServiceProxyBase.Status == RunningStatus.Stopped );
+            Assert.That( ServiceProxyBase.Status == InternalRunningStatus.Stopped );
         }
     }
 }

@@ -71,5 +71,10 @@ namespace CK.Plugin
         /// Gets the collection of <see cref="ISimplePropertyInfo"/> that this service exposes.
         /// </summary>
         IReadOnlyCollection<ISimplePropertyInfo> PropertiesInfoCollection { get; }
+
+        /// <summary>
+        /// Gets the <see cref="IServiceInfo"/> that generalizes this one if it exists.
+        /// </summary>
+        IServiceInfo Generalization { get; }
     }
 }

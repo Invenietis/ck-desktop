@@ -39,128 +39,128 @@ namespace Discoverer
         public void LighterAndGreaterTests()
         {
             //-- Disabled
-            Assert.That( RunningStatus.Disabled < RunningStatus.Stopped );
-            Assert.That( RunningStatus.Disabled < RunningStatus.Starting );
-            Assert.That( RunningStatus.Disabled < RunningStatus.Stopping );
-            Assert.That( RunningStatus.Disabled < RunningStatus.Started );
+            Assert.That( InternalRunningStatus.Disabled < InternalRunningStatus.Stopped );
+            Assert.That( InternalRunningStatus.Disabled < InternalRunningStatus.Starting );
+            Assert.That( InternalRunningStatus.Disabled < InternalRunningStatus.Stopping );
+            Assert.That( InternalRunningStatus.Disabled < InternalRunningStatus.Started );
 
-            Assert.False( RunningStatus.Disabled > RunningStatus.Stopped );
-            Assert.False( RunningStatus.Disabled > RunningStatus.Starting );
-            Assert.False( RunningStatus.Disabled > RunningStatus.Stopping );
-            Assert.False( RunningStatus.Disabled > RunningStatus.Started );
+            Assert.False( InternalRunningStatus.Disabled > InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Disabled > InternalRunningStatus.Starting );
+            Assert.False( InternalRunningStatus.Disabled > InternalRunningStatus.Stopping );
+            Assert.False( InternalRunningStatus.Disabled > InternalRunningStatus.Started );
 
             //-- Stopped
-            Assert.False( RunningStatus.Stopped < RunningStatus.Disabled );
-            Assert.That( RunningStatus.Stopped < RunningStatus.Started );
-            Assert.That( RunningStatus.Stopped < RunningStatus.Starting );
-            Assert.That( RunningStatus.Stopped < RunningStatus.Stopping );
+            Assert.False( InternalRunningStatus.Stopped < InternalRunningStatus.Disabled );
+            Assert.That( InternalRunningStatus.Stopped < InternalRunningStatus.Started );
+            Assert.That( InternalRunningStatus.Stopped < InternalRunningStatus.Starting );
+            Assert.That( InternalRunningStatus.Stopped < InternalRunningStatus.Stopping );
 
-            Assert.That( RunningStatus.Stopped > RunningStatus.Disabled );
-            Assert.False( RunningStatus.Stopped > RunningStatus.Started );
-            Assert.False( RunningStatus.Stopped > RunningStatus.Starting );
-            Assert.False( RunningStatus.Stopped > RunningStatus.Stopping );
+            Assert.That( InternalRunningStatus.Stopped > InternalRunningStatus.Disabled );
+            Assert.False( InternalRunningStatus.Stopped > InternalRunningStatus.Started );
+            Assert.False( InternalRunningStatus.Stopped > InternalRunningStatus.Starting );
+            Assert.False( InternalRunningStatus.Stopped > InternalRunningStatus.Stopping );
 
             //--Stopping
-            Assert.False( RunningStatus.Stopping < RunningStatus.Disabled );
-            Assert.False( RunningStatus.Stopping < RunningStatus.Stopped );
-            Assert.False( RunningStatus.Stopping < RunningStatus.Starting );
-            Assert.That( RunningStatus.Stopping < RunningStatus.Started );
+            Assert.False( InternalRunningStatus.Stopping < InternalRunningStatus.Disabled );
+            Assert.False( InternalRunningStatus.Stopping < InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Stopping < InternalRunningStatus.Starting );
+            Assert.That( InternalRunningStatus.Stopping < InternalRunningStatus.Started );
 
-            Assert.That( RunningStatus.Stopping > RunningStatus.Disabled );
-            Assert.That( RunningStatus.Stopping > RunningStatus.Stopped );
-            Assert.False( RunningStatus.Stopping > RunningStatus.Starting );
-            Assert.False( RunningStatus.Stopping > RunningStatus.Started );
+            Assert.That( InternalRunningStatus.Stopping > InternalRunningStatus.Disabled );
+            Assert.That( InternalRunningStatus.Stopping > InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Stopping > InternalRunningStatus.Starting );
+            Assert.False( InternalRunningStatus.Stopping > InternalRunningStatus.Started );
 
             //-- Starting
-            Assert.False( RunningStatus.Starting < RunningStatus.Disabled );
-            Assert.False( RunningStatus.Starting < RunningStatus.Stopped );
-            Assert.False( RunningStatus.Starting > RunningStatus.Stopping );
-            Assert.That( RunningStatus.Starting < RunningStatus.Started );
+            Assert.False( InternalRunningStatus.Starting < InternalRunningStatus.Disabled );
+            Assert.False( InternalRunningStatus.Starting < InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Starting > InternalRunningStatus.Stopping );
+            Assert.That( InternalRunningStatus.Starting < InternalRunningStatus.Started );
 
-            Assert.That( RunningStatus.Starting > RunningStatus.Disabled );
-            Assert.That( RunningStatus.Starting > RunningStatus.Stopped );
-            Assert.False( RunningStatus.Starting > RunningStatus.Stopping );
-            Assert.False( RunningStatus.Starting > RunningStatus.Started );
+            Assert.That( InternalRunningStatus.Starting > InternalRunningStatus.Disabled );
+            Assert.That( InternalRunningStatus.Starting > InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Starting > InternalRunningStatus.Stopping );
+            Assert.False( InternalRunningStatus.Starting > InternalRunningStatus.Started );
 
             //--Started
-            Assert.That( RunningStatus.Started > RunningStatus.Disabled );
-            Assert.That( RunningStatus.Started > RunningStatus.Stopped );
-            Assert.That( RunningStatus.Started > RunningStatus.Starting );
-            Assert.That( RunningStatus.Started > RunningStatus.Stopping );
+            Assert.That( InternalRunningStatus.Started > InternalRunningStatus.Disabled );
+            Assert.That( InternalRunningStatus.Started > InternalRunningStatus.Stopped );
+            Assert.That( InternalRunningStatus.Started > InternalRunningStatus.Starting );
+            Assert.That( InternalRunningStatus.Started > InternalRunningStatus.Stopping );
 
-            Assert.False( RunningStatus.Started < RunningStatus.Disabled );
-            Assert.False( RunningStatus.Started < RunningStatus.Stopped );
-            Assert.False( RunningStatus.Started < RunningStatus.Starting );
-            Assert.False( RunningStatus.Started < RunningStatus.Stopping );  
+            Assert.False( InternalRunningStatus.Started < InternalRunningStatus.Disabled );
+            Assert.False( InternalRunningStatus.Started < InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Started < InternalRunningStatus.Starting );
+            Assert.False( InternalRunningStatus.Started < InternalRunningStatus.Stopping );  
         }
 
         [Test]
         public void LighterAndGreaterOrEqualTests()
         {
             //-- Disabled
-            Assert.That( RunningStatus.Disabled <= RunningStatus.Disabled );
-            Assert.That( RunningStatus.Disabled <= RunningStatus.Stopped );
-            Assert.That( RunningStatus.Disabled <= RunningStatus.Starting );
-            Assert.That( RunningStatus.Disabled <= RunningStatus.Stopping );
-            Assert.That( RunningStatus.Disabled <= RunningStatus.Started );
+            Assert.That( InternalRunningStatus.Disabled <= InternalRunningStatus.Disabled );
+            Assert.That( InternalRunningStatus.Disabled <= InternalRunningStatus.Stopped );
+            Assert.That( InternalRunningStatus.Disabled <= InternalRunningStatus.Starting );
+            Assert.That( InternalRunningStatus.Disabled <= InternalRunningStatus.Stopping );
+            Assert.That( InternalRunningStatus.Disabled <= InternalRunningStatus.Started );
 
-            Assert.That( RunningStatus.Disabled >= RunningStatus.Disabled );
-            Assert.False( RunningStatus.Disabled >= RunningStatus.Stopped );
-            Assert.False( RunningStatus.Disabled >= RunningStatus.Starting );
-            Assert.False( RunningStatus.Disabled >= RunningStatus.Stopping );
-            Assert.False( RunningStatus.Disabled >= RunningStatus.Started );
+            Assert.That( InternalRunningStatus.Disabled >= InternalRunningStatus.Disabled );
+            Assert.False( InternalRunningStatus.Disabled >= InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Disabled >= InternalRunningStatus.Starting );
+            Assert.False( InternalRunningStatus.Disabled >= InternalRunningStatus.Stopping );
+            Assert.False( InternalRunningStatus.Disabled >= InternalRunningStatus.Started );
 
             //-- Stopped
-            Assert.That( RunningStatus.Stopped <= RunningStatus.Stopped );
-            Assert.False( RunningStatus.Stopped <= RunningStatus.Disabled );
-            Assert.That( RunningStatus.Stopped <= RunningStatus.Started );
-            Assert.That( RunningStatus.Stopped <= RunningStatus.Starting );
-            Assert.That( RunningStatus.Stopped <= RunningStatus.Stopping );
+            Assert.That( InternalRunningStatus.Stopped <= InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Stopped <= InternalRunningStatus.Disabled );
+            Assert.That( InternalRunningStatus.Stopped <= InternalRunningStatus.Started );
+            Assert.That( InternalRunningStatus.Stopped <= InternalRunningStatus.Starting );
+            Assert.That( InternalRunningStatus.Stopped <= InternalRunningStatus.Stopping );
 
-            Assert.That( RunningStatus.Stopped >= RunningStatus.Stopped );
-            Assert.That( RunningStatus.Stopped >= RunningStatus.Disabled );
-            Assert.False( RunningStatus.Stopped >= RunningStatus.Started );
-            Assert.False( RunningStatus.Stopped >= RunningStatus.Starting );
-            Assert.False( RunningStatus.Stopped >= RunningStatus.Stopping );
+            Assert.That( InternalRunningStatus.Stopped >= InternalRunningStatus.Stopped );
+            Assert.That( InternalRunningStatus.Stopped >= InternalRunningStatus.Disabled );
+            Assert.False( InternalRunningStatus.Stopped >= InternalRunningStatus.Started );
+            Assert.False( InternalRunningStatus.Stopped >= InternalRunningStatus.Starting );
+            Assert.False( InternalRunningStatus.Stopped >= InternalRunningStatus.Stopping );
 
             //--Stopping
-            Assert.That( RunningStatus.Stopping <= RunningStatus.Stopping );
-            Assert.False( RunningStatus.Stopping <= RunningStatus.Disabled );
-            Assert.False( RunningStatus.Stopping <= RunningStatus.Stopped );
-            Assert.False( RunningStatus.Stopping <= RunningStatus.Starting );
-            Assert.That( RunningStatus.Stopping <= RunningStatus.Started );
+            Assert.That( InternalRunningStatus.Stopping <= InternalRunningStatus.Stopping );
+            Assert.False( InternalRunningStatus.Stopping <= InternalRunningStatus.Disabled );
+            Assert.False( InternalRunningStatus.Stopping <= InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Stopping <= InternalRunningStatus.Starting );
+            Assert.That( InternalRunningStatus.Stopping <= InternalRunningStatus.Started );
 
-            Assert.That( RunningStatus.Stopping >= RunningStatus.Stopping );
-            Assert.That( RunningStatus.Stopping >= RunningStatus.Disabled );
-            Assert.That( RunningStatus.Stopping >= RunningStatus.Stopped );
-            Assert.False( RunningStatus.Stopping >= RunningStatus.Starting );
-            Assert.False( RunningStatus.Stopping >= RunningStatus.Started );
+            Assert.That( InternalRunningStatus.Stopping >= InternalRunningStatus.Stopping );
+            Assert.That( InternalRunningStatus.Stopping >= InternalRunningStatus.Disabled );
+            Assert.That( InternalRunningStatus.Stopping >= InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Stopping >= InternalRunningStatus.Starting );
+            Assert.False( InternalRunningStatus.Stopping >= InternalRunningStatus.Started );
 
             //-- Starting
-            Assert.That( RunningStatus.Starting <= RunningStatus.Starting );
-            Assert.False( RunningStatus.Starting <= RunningStatus.Disabled );
-            Assert.False( RunningStatus.Starting <= RunningStatus.Stopped );
-            Assert.False( RunningStatus.Starting >= RunningStatus.Stopping );
-            Assert.That( RunningStatus.Starting <= RunningStatus.Started );
+            Assert.That( InternalRunningStatus.Starting <= InternalRunningStatus.Starting );
+            Assert.False( InternalRunningStatus.Starting <= InternalRunningStatus.Disabled );
+            Assert.False( InternalRunningStatus.Starting <= InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Starting >= InternalRunningStatus.Stopping );
+            Assert.That( InternalRunningStatus.Starting <= InternalRunningStatus.Started );
 
-            Assert.That( RunningStatus.Starting >= RunningStatus.Starting );
-            Assert.That( RunningStatus.Starting >= RunningStatus.Disabled );
-            Assert.That( RunningStatus.Starting >= RunningStatus.Stopped );
-            Assert.False( RunningStatus.Starting >= RunningStatus.Stopping );
-            Assert.False( RunningStatus.Starting >= RunningStatus.Started );
+            Assert.That( InternalRunningStatus.Starting >= InternalRunningStatus.Starting );
+            Assert.That( InternalRunningStatus.Starting >= InternalRunningStatus.Disabled );
+            Assert.That( InternalRunningStatus.Starting >= InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Starting >= InternalRunningStatus.Stopping );
+            Assert.False( InternalRunningStatus.Starting >= InternalRunningStatus.Started );
 
             //--Started
-            Assert.That( RunningStatus.Started >= RunningStatus.Started );
-            Assert.That( RunningStatus.Started >= RunningStatus.Disabled );
-            Assert.That( RunningStatus.Started >= RunningStatus.Stopped );
-            Assert.That( RunningStatus.Started >= RunningStatus.Starting );
-            Assert.That( RunningStatus.Started >= RunningStatus.Stopping );
+            Assert.That( InternalRunningStatus.Started >= InternalRunningStatus.Started );
+            Assert.That( InternalRunningStatus.Started >= InternalRunningStatus.Disabled );
+            Assert.That( InternalRunningStatus.Started >= InternalRunningStatus.Stopped );
+            Assert.That( InternalRunningStatus.Started >= InternalRunningStatus.Starting );
+            Assert.That( InternalRunningStatus.Started >= InternalRunningStatus.Stopping );
 
-            Assert.That( RunningStatus.Started <= RunningStatus.Started );
-            Assert.False( RunningStatus.Started <= RunningStatus.Disabled );
-            Assert.False( RunningStatus.Started <= RunningStatus.Stopped );
-            Assert.False( RunningStatus.Started <= RunningStatus.Starting );
-            Assert.False( RunningStatus.Started <= RunningStatus.Stopping );
+            Assert.That( InternalRunningStatus.Started <= InternalRunningStatus.Started );
+            Assert.False( InternalRunningStatus.Started <= InternalRunningStatus.Disabled );
+            Assert.False( InternalRunningStatus.Started <= InternalRunningStatus.Stopped );
+            Assert.False( InternalRunningStatus.Started <= InternalRunningStatus.Starting );
+            Assert.False( InternalRunningStatus.Started <= InternalRunningStatus.Stopping );
         }
 #pragma warning restore 1718
     }
