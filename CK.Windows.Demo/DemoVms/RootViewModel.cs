@@ -41,7 +41,11 @@ namespace CK.Windows.Demo
         {
             DisplayName = "Root view";
 
-            this.AddAction( "Show a popup", () => MessageBox.Show( "Pow!" ) );
+            var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( () => MessageBox.Show( "Pow!" ) ) );
+            action.ImagePath = "Forward.png";
+            action.DisplayName = "Show a popup";
+            this.Items.Add( action );
+
             this.AddAction( "Show another popup", () => MessageBox.Show( "Another Pow!" ) );
             this.AddAction( "Show a custom modal popup", ShowCustomMessageBox );
             this.AddAction( "Show another custom modal popup", ShowOtherCustomMessageBox );
