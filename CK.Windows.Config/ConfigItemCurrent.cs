@@ -40,7 +40,7 @@ using System.Windows;
 namespace CK.Windows.Config
 {
     public class ConfigItemCurrent<T> : ConfigItem, IConfigItemCurrent<T>
-    {        
+    {
         ValueProperty<T> _current;
         INotifyPropertyChanged _monitorCurrent;
         Func<object> _sourceValues;
@@ -75,7 +75,7 @@ namespace CK.Windows.Config
             : base( configManager )
         {
             _current = current;
-            if ( ( _monitorCurrent = monitorCurrent ) != null )
+            if( ( _monitorCurrent = monitorCurrent ) != null )
             {
                 _monitorCurrent.PropertyChanged += new PropertyChangedEventHandler( OnHolderPropertyChanged );
             }
@@ -86,12 +86,12 @@ namespace CK.Windows.Config
 
         void OnHolderPropertyChanged( object sender, PropertyChangedEventArgs e )
         {
-            if ( e.PropertyName == _current.PropertyInfo.Name )
+            if( e.PropertyName == _current.PropertyInfo.Name )
             {
                 //When the Holder's selected element property changes, refresh the collectionView's current element
                 _values.MoveCurrentTo( _current.Get() );
             }
-        }        
+        }
 
         public Visibility ShowMultiple { get { return IsMoreThanOne ? Visibility.Visible : Visibility.Collapsed; } }
 
@@ -102,8 +102,11 @@ namespace CK.Windows.Config
             //if the current should not be auto-set (_ensureCurrentNotNull == false) 
             //and that there is only one item in the collectionView, we should display a combobox, 
             //so that the user can select it as current
-            get { return (Values.SourceCollection.OfType<object>().ElementAtOrDefault( 1 ) != null 
-                || (!_ensureCurrentNotNull && _current.Get() == null && Values.SourceCollection.OfType<object>().ElementAtOrDefault( 0 ) != null)); } 
+            get
+            {
+                return ( Values.SourceCollection.OfType<object>().ElementAtOrDefault( 1 ) != null
+                    || ( !_ensureCurrentNotNull && _current.Get() == null && Values.SourceCollection.OfType<object>().ElementAtOrDefault( 0 ) != null ) );
+            }
         }
 
         public ICollectionView Values
@@ -116,12 +119,12 @@ namespace CK.Windows.Config
                     _values.MoveCurrentTo( _current.Get() );
 
                     //Triggered when the user selects a new item in the combobox or when Values.Refresh() is called
-                    _values.CurrentChanged += (s,e) => OnCurrentChanged();
+                    _values.CurrentChanged += ( s, e ) => OnCurrentChanged();
 
                     //Triggerd by the underlying ObservableCollection or when Values.Refresh() is called
-                    _values.CollectionChanged += (s,e) => OnCollectionChanged();
+                    _values.CollectionChanged += ( s, e ) => OnCollectionChanged();
                 }
-                return _values; 
+                return _values;
             }
         }
 
@@ -130,10 +133,13 @@ namespace CK.Windows.Config
             //if current should be auto-set (_ensureCurrentNotNull == true),
             //that the current is null and that there is at least one element in the collectionView,
             //set the first element as current.
-            if ( _ensureCurrentNotNull && _current.Get() == null && Values.SourceCollection.OfType<object>().ElementAtOrDefault( 0 ) != null )
+            if( _ensureCurrentNotNull && _current.Get() == null && Values.SourceCollection.OfType<object>().ElementAtOrDefault( 0 ) != null )
                 _current.Set( (T)Values.SourceCollection.OfType<object>().ElementAtOrDefault( 0 ) );
 
             this.Refresh();
+
+            NotifyOfPropertyChange( "ShowMultiple" );
+            NotifyOfPropertyChange( "ShowOne" );
         }
 
         void OnCurrentChanged()
@@ -142,7 +148,7 @@ namespace CK.Windows.Config
 
             //When current is not auto-set and current is not null and there is only one element in the collectionView, (which means that the only element of the collection IS the current)
             //then the combobox isn't necessary anymore. Trigger PropertyChanged on ShowMultiple & ShowOne to have the combo replaced by a textblock
-            if ( !_ensureCurrentNotNull && _current.Get() != null && !IsMoreThanOne )
+            if( !_ensureCurrentNotNull && _current.Get() != null && !IsMoreThanOne )
             {
                 NotifyOfPropertyChange( "ShowMultiple" );
                 NotifyOfPropertyChange( "ShowOne" );
@@ -152,13 +158,13 @@ namespace CK.Windows.Config
         //Should only be useful when the model does not implement INotifyPropertyChanged
         public void RefreshCurrent( object o, EventArgs e )
         {
-            Values.MoveCurrentTo( _current.Get() );  
+            Values.MoveCurrentTo( _current.Get() );
         }
 
         //Should be only be useful when the model does not implement INotifyPropertyChanged
         public void RefreshValues( object o, EventArgs e )
-        {             
-            Values.Refresh();         
+        {
+            Values.Refresh();
         }
     }
 }
