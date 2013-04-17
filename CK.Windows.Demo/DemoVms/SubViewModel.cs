@@ -34,14 +34,15 @@ namespace CK.Windows.Demo
     internal class SubViewModel : ConfigPage
     {
         SpecificViewModel _specificVM;
-        public SpecificViewModel SpecificVM { get { return _specificVM ?? (_specificVM = new SpecificViewModel( ConfigManager )); } }
+        public SpecificViewModel SpecificVM { get { return _specificVM ?? ( _specificVM = new SpecificViewModel( ConfigManager ) ); } }
 
         ConfigCurrentItemTestsViewModel _profilesVM;
-        public ConfigCurrentItemTestsViewModel ProfilesVM { get { return _profilesVM ?? (_profilesVM = new ConfigCurrentItemTestsViewModel( ConfigManager )); } }
+        public ConfigCurrentItemTestsViewModel ProfilesVM { get { return _profilesVM ?? ( _profilesVM = new ConfigCurrentItemTestsViewModel( ConfigManager ) ); } }
+
 
         public bool BoolProperty { get; set; }
 
-        public SubViewModel( ConfigManager configManager )
+        public SubViewModel( AppViewModel app, ConfigManager configManager )
             : base( configManager )
         {
             DisplayName = "Sub view";
@@ -51,6 +52,8 @@ namespace CK.Windows.Demo
             this.AddLink( SpecificVM );
 
             this.AddLink( ProfilesVM );
+
+            this.AddLink( new FocusTestsViewModel( app, ConfigManager ) );
         }
     }
 }

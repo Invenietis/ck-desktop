@@ -36,7 +36,7 @@ namespace CK.Windows.Demo
     {
         SubViewModel _subvm;
 
-        public RootViewModel( ConfigManager configManager )
+        public RootViewModel(AppViewModel app, ConfigManager configManager )
             : base( configManager )
         {
             DisplayName = "Root view";
@@ -49,7 +49,7 @@ namespace CK.Windows.Demo
             this.AddAction( "Show another popup", () => MessageBox.Show( "Another Pow!" ) );
             this.AddAction( "Show a custom modal popup", ShowCustomMessageBox );
             this.AddAction( "Show another custom modal popup", ShowOtherCustomMessageBox );
-            this.AddLink( _subvm ?? ( _subvm = new SubViewModel( configManager ) ) );
+            this.AddLink( _subvm ?? ( _subvm = new SubViewModel( app, configManager ) ) );
         }
 
         /// <summary>
