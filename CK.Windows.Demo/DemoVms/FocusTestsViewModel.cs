@@ -41,43 +41,72 @@ namespace CK.Windows.Demo
         {
             DisplayName = "Test the NoFocusWindow";
 
-            var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( () =>
-            {
-                NoFocusWindow sendingWindow = new NoFocusWindow();
-                Button sendingButton = new Button();
-                sendingButton.Content = "Send a Space";
-                sendingButton.Focusable = false;
-                sendingButton.Command = new SimpleCommand( () =>
-                {
-                    KeyEventArgs args = new KeyEventArgs( InputManager.Current.PrimaryKeyboardDevice, PresentationSource.FromVisual( sendingButton ), 0, Key.Space );
-                    args.RoutedEvent = Keyboard.KeyDownEvent;
-                    InputManager.Current.ProcessInput( args );
-                } );
-
-                sendingWindow.Content = sendingButton;
-                sendingWindow.Width = 200;
-                sendingWindow.Height = 100;
-                sendingWindow.WindowStartupLocation = WindowStartupLocation.Manual;
-                sendingWindow.Left = 0;
-                sendingWindow.Top = 0;
-
-                NoFocusWindow receivingWindow = new NoFocusWindow();
-                TextBox receivingTextBox = new TextBox();
-                receivingTextBox.Text = "Blop";
-                receivingWindow.Content = receivingTextBox;
-
-                sendingWindow.Show();
-                receivingWindow.Show();
-                receivingWindow.Width = 200;
-                receivingWindow.Height = 100;
-                receivingWindow.WindowStartupLocation = WindowStartupLocation.Manual;
-                receivingWindow.Left = 205;
-                receivingWindow.Top = 0;
-            } ) );
-
+            var action = GetNoFocusWindowsCommand();
             action.ImagePath = "Forward.png";
             action.DisplayName = "Show the windows";
             this.Items.Add( action );
         }
+
+        private ConfigItemAction GetNoFocusWindowsCommand()
+        {
+            var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( () =>
+            {
+                ShowWindowCouple( true );
+                ShowWindowCouple( false );
+
+                Window receivingWindow = new Window();
+                ConfigureWindow( "Receiver", receivingWindow );
+                TextBox receivingTextBox = new TextBox();
+                receivingTextBox.Text = "Blop";
+                receivingTextBox.Margin = new Thickness( 20 );
+                receivingWindow.Content = receivingTextBox;
+                receivingWindow.Left = 405;
+                receivingWindow.Top = 0;
+
+                receivingWindow.Show();
+            } ) );
+            return action;
+        }
+
+        private void ShowWindowCouple( bool enablesSendInput )
+        {
+            string name = enablesSendInput ? "Enables SendInput - " : "Enables DragDrop - ";
+
+            Window sendingWindow = GetNoFocusWindow( enablesSendInput, name + "Sender" );
+            Button sendingButton = new Button();
+            sendingButton.Content = "Send a Space";
+            sendingButton.Focusable = false;
+            sendingButton.Margin = new Thickness( 20 );
+            sendingButton.Command = new SimpleCommand( () =>
+            {
+                KeyEventArgs args = new KeyEventArgs( InputManager.Current.PrimaryKeyboardDevice, PresentationSource.FromVisual( sendingButton ), 0, Key.Space );
+                args.RoutedEvent = Keyboard.KeyDownEvent;
+                InputManager.Current.ProcessInput( args );
+            } );
+            sendingWindow.Content = sendingButton;
+            sendingWindow.Left = 0;
+            sendingWindow.Top = enablesSendInput ? 0 : 105;
+
+
+            sendingWindow.Show();
+        }
+
+        public Window GetNoFocusWindow( bool enablesSendInput, string windowName )
+        {
+            Window window = enablesSendInput ? new NoFocusWindowEnablesSendInput() as Window : new NoFocusWindowEnablesDragDrop() as Window;
+            ConfigureWindow( windowName, window );
+            return window;
+        }
+
+        private static void ConfigureWindow( string windowName, Window window )
+        {
+            window.Title = windowName;
+            window.Width = 400;
+            window.Height = 100;
+            window.WindowStartupLocation = WindowStartupLocation.Manual;
+            //window.WindowStyle = WindowStyle.None;
+        }
+
+
     }
 }

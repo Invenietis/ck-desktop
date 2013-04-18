@@ -64,7 +64,7 @@ namespace CK.Windows
         private void DoSetHitTestable()
         {
             int windowLong = (int)Win.Functions.GetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE );
-            if( ((windowLong & 0x20) == 0) != _hitTestable )
+            if( ( ( windowLong & 0x20 ) == 0 ) != _hitTestable )
             {
                 int num;
                 if( _hitTestable )
@@ -83,12 +83,12 @@ namespace CK.Windows
             Win.Functions.SetWindowLong(
                 _interopHelper.Handle,
                 Win.WindowLongIndex.GWL_EXSTYLE,
-                (uint)Win.Functions.GetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE ) | 
+                (uint)Win.Functions.GetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE ) |
                 (uint)Win.WS_EX.NOACTIVATE );
 
             HwndSourceParameters parameters = new HwndSourceParameters();
             //HwndSource mainWindowSrc = HwndSource.FromHwnd( _interopHelper.Handle );
-            parameters.ExtendedWindowStyle = (int)(Win.WS_EX.TOPMOST | Win.WS_EX.TOOLWINDOW | Win.WS_EX.NOACTIVATE);
+            parameters.ExtendedWindowStyle = (int)( Win.WS_EX.TOPMOST | Win.WS_EX.TOOLWINDOW | Win.WS_EX.NOACTIVATE );
             //parameters.RestoreFocusMode = System.Windows.Input.RestoreFocusMode.None;
             //parameters.AcquireHwndFocusInMenuMode = true;
 
@@ -209,7 +209,7 @@ namespace CK.Windows
         {
             placement.length = Marshal.SizeOf( typeof( WINDOWPLACEMENT ) );
             placement.flags = 0;
-            placement.showCmd = (placement.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : placement.showCmd);
+            placement.showCmd = ( placement.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : placement.showCmd );
             SetWindowPlacement( _interopHelper.Handle, ref placement );
         }
 
@@ -274,4 +274,10 @@ namespace CK.Windows
     }
 
         #endregion
+
 }
+
+
+
+
+

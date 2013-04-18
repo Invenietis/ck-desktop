@@ -82,6 +82,8 @@
     <Compile Include="Caliburn\StackConductor.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\StringEmptyToUnsetConverter.cs" />
+    <Compile Include="NoFocusWindow.cs" />
+    <Compile Include="NoFocusWindowEnablesSendInput.cs" />
     <Compile Include="DataTemplateSelector\TemplatedDataTemplateSelector.cs" />
     <Compile Include="DependencyObjectExtensions.cs" />
     <Compile Include="Helpers\ScreenHelper.cs" />
@@ -89,7 +91,7 @@
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Markup\MarkupTypeRef.cs" />
     <Compile Include="Markup\TypeExtension.cs" />
-    <Compile Include="NoFocusWindow.cs" />
+    <Compile Include="NoFocusWindowEnablesDragDrop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataTemplateSelector\CompositeDataTemplateSelector.cs" />
     <Compile Include="DataTemplateSelector\TypeDataTemplateSelector.cs" />
