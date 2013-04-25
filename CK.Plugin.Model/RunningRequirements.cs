@@ -49,8 +49,7 @@ namespace CK.Plugin
         MustExist = 2,
 
         /// <summary>
-        /// The service or plugin must be available (ready to run but it can be stopped).
-        /// It is always guaranteed to be runnable (and will be initially started if possible) but it can be stopped later.
+        /// The service or plugin must be available and intially started. It can be stopped later.
         /// </summary>
         MustExistTryStart = 2+1,
 
