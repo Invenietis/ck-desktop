@@ -43,18 +43,12 @@ namespace CK.Windows
         HwndSourceHook _wndHook;
         IntPtr _lastFocused;
         bool _ncbuttondown;
+        bool _hitTestable;
 
         public NoFocusWindow()
         {
             _interopHelper = new WindowInteropHelper( this );
         }
-
-        /// <summary>
-        /// Gets the pointer of the window which had focus before the skin was clicked on.
-        /// </summary>
-        public IntPtr LastFocusedWindowHandle { get { return _lastFocused; } }
-
-        bool _hitTestable;
 
         public void SetHitTestable( bool hitTestable )
         {
@@ -78,6 +72,7 @@ namespace CK.Windows
                 Win.Functions.SetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE, (uint)num );
             }
         }
+
         protected override void OnSourceInitialized( EventArgs e )
         {
             Win.Functions.SetWindowLong(
@@ -89,7 +84,7 @@ namespace CK.Windows
             HwndSourceParameters parameters = new HwndSourceParameters();
             //HwndSource mainWindowSrc = HwndSource.FromHwnd( _interopHelper.Handle );
             parameters.ExtendedWindowStyle = (int)( Win.WS_EX.TOPMOST | Win.WS_EX.TOOLWINDOW | Win.WS_EX.NOACTIVATE );
-            //parameters.RestoreFocusMode = System.Windows.Input.RestoreFocusMode.None;
+            parameters.RestoreFocusMode = System.Windows.Input.RestoreFocusMode.None;
             //parameters.AcquireHwndFocusInMenuMode = true;
 
             DoSetHitTestable();
@@ -151,7 +146,7 @@ namespace CK.Windows
         IntPtr WndProc( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
             var message = (Win.WM)msg;
-            if( message != Win.WM.ACTIVATEAPP )
+            if( message != (Win.WM)Win.WM_ACTIVATEAPP )
             {
                 if( message == Win.WM.MOUSEACTIVATE )
                 {

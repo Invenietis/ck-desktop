@@ -151,7 +151,7 @@ namespace CK.Windows
         IntPtr WndProc( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
             var message = (Win.WM)msg;
-            if( message != Win.WM.ACTIVATEAPP )
+            if( message != (Win.WM)Win.WM_ACTIVATEAPP )
             {
                 if( message == Win.WM.MOUSEACTIVATE )
                 {

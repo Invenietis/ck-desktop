@@ -1,0 +1,14 @@
+﻿<Window x:Class="CK.Windows.Demo.DemoVms.StandardWindow"
+        xmlns:base="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="A standard WPF Window" ShowActivated="True" Topmost="True" Height="243" Width="362" WindowStyle="ToolWindow">
+    <Grid Margin="0,0,2,33">
+        <TextBox Margin="10,10,10,76" TextWrapping="Wrap" AcceptsReturn="True" Text="TextBox..."  />
+        <TextBlock Name="Explanation" TextWrapping="WrapWithOverflow" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Width="332" Margin="10,0,10,-25">
+            This is a basic WPF Window with ShowActivated="True", WindowStyle="ToolWindow" and Topmost="True".
+            Non activable CiviKey windows respect it, but activation/deactivation triggers awful blinks. 
+            The only way to move it is to use the caption bar.
+        </TextBlock>
+    </Grid>
+</Window>

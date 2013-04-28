@@ -82,6 +82,7 @@
     <Compile Include="Caliburn\StackConductor.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\StringEmptyToUnsetConverter.cs" />
+    <Compile Include="CiviKeyWindow.cs" />
     <Compile Include="NoFocusWindow.cs" />
     <Compile Include="NoFocusWindowEnablesSendInput.cs" />
     <Compile Include="DataTemplateSelector\TemplatedDataTemplateSelector.cs" />

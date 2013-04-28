@@ -45,29 +45,21 @@ namespace CK.Windows.Demo
         [STAThread]
         public static void Main( string[] args )
         {
-            try
+            // Crash logs upload and updater availability is managed during this initialization.
+            using( var init = CKApp.Initialize( new CKAppParameters( "CK-Windows", "Demo" ) ) )
             {
-
-                // Crash logs upload and updater availability is managed during this initialization.
-                using( var init = CKApp.Initialize( new CKAppParameters( "CK-Windows", "Demo" ) ) )
+                if( init != null )
                 {
-                    if( init != null )
+                    // Common logger is actually bound to log4net.
+                    // CK-Windows must not depend on log4Net: its initialization must be done here.
+                    CommonLogger.Initialize( CKApp.CurrentParameters.ApplicationDataPath + @"AppLogs\", false );
+                    CKApp.Run( () =>
                     {
-                        // Common logger is actually bound to log4net.
-                        // CK-Windows must not depend on log4Net: its initialization must be done here.
-                        CommonLogger.Initialize( CKApp.CurrentParameters.ApplicationDataPath + @"AppLogs\", false );
-                        CKApp.Run( () =>
-                        {
-                            App app = new App();
-                            app.InitializeComponent();
-                            return app;
-                        } );
-                    }
+                        App app = new App();
+                        app.InitializeComponent();
+                        return app;
+                    } );
                 }
-            }
-            catch( Exception ex )
-            {
-                Console.WriteLine( ex.Message );
             }
         }
 

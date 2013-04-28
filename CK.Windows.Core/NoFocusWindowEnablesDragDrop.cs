@@ -49,11 +49,6 @@ namespace CK.Windows
             this.Focusable = false;
         }
 
-        /// <summary>
-        /// Gets the pointer of the window which had focus before the skin was clicked on.
-        /// </summary>
-        public IntPtr LastFocusedWindowHandle { get { return _lastFocused; } }
-
         protected override void OnSourceInitialized( EventArgs e )
         {
             CK.Windows.Interop.Win.Functions.SetWindowLong( _interopHelper.Handle, CK.Windows.Interop.Win.WindowLongIndex.GWL_EXSTYLE, (uint)CK.Windows.Interop.Win.WS_EX.NOACTIVATE );

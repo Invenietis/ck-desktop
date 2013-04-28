@@ -39,7 +39,8 @@ namespace CK.Windows.Demo
             DisplayName = "CK-Windows demo App";
 
             ConfigManager = new ConfigManager();
-            ConfigManager.ActivateItem( new RootViewModel(this, ConfigManager ) );
+            var vm = new RootViewModel( this, ConfigManager );
+            ConfigManager.ActivateItem( vm );
             ActivateItem( ConfigManager );
         }
     }

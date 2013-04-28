@@ -242,6 +242,11 @@ namespace CK.Windows.Interop
         [NativeDll( DefaultDllNameGeneric = "DwmApi" )]
         public interface DwmApi
         {
+            /// <summary>
+            /// See google "DWM Blur Behind Overview". (http://msdn.microsoft.com/en-us/library/windows/desktop/aa969537%28v=vs.85%29.aspx)
+            /// </summary>
+            /// <param name="hwnd">Winfow handle.</param>
+            /// <param name="margins">Margins (-1 for "sheet of glass" effect.</param>
             [CK.Interop.DllImport( EntryPoint = "DwmExtendFrameIntoClientArea", PreserveSig = false )]
             void ExtendFrameIntoClientArea( IntPtr hwnd, ref Win.Margins margins );
 

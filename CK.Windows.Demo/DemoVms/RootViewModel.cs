@@ -46,9 +46,14 @@ namespace CK.Windows.Demo
             action.DisplayName = "Show a popup";
             this.Items.Add( action );
 
-            this.AddAction( "Show another popup", () => MessageBox.Show( "Another Pow!" ) );
-            this.AddAction( "Show a custom modal popup", ShowCustomMessageBox );
-            this.AddAction( "Show another custom modal popup", ShowOtherCustomMessageBox );
+            // Using extension methods.
+            this.AddAction( "CiviKey window, not Activable.", () => new DemoVms.NonActivableCiviKeyWindow().Show() );
+            this.AddAction( "CiviKey window, Activable with TextBox.", () => new DemoVms.ActivableCiviKeyWindowWithText().Show() );
+            this.AddAction( "CiviKey Text Buffer.", () => new DemoVms.CiviKeyTextBuffering().Show() );
+            this.AddAction( "Standard WPF window with TextBox.", () => new DemoVms.StandardWindow().Show() );
+
+            this.AddAction( "Simple MessageBox.", () => MessageBox.Show( "Another Pow!" ) );
+            this.AddAction( "Dialog from ModalViewModel", ShowCustomMessageBox );
             this.AddLink( _subvm ?? ( _subvm = new SubViewModel( app, configManager ) ) );
         }
 
@@ -58,26 +63,10 @@ namespace CK.Windows.Demo
         internal void ShowCustomMessageBox()
         {
             ModalViewModel modalDataContext = new ModalViewModel( "Mise à jour disponible", String.Format( "Testing TextWrapping to make sure that the window {0}won't end up extremely wide.", Environment.NewLine ), true, "Remember my choice test", CustomMsgBoxIcon.Question, 1 );
-
             modalDataContext.Buttons.Add( new ModalButton( modalDataContext, "OK", null, ModalResult.Ok ) );
             modalDataContext.Buttons.Add( new ModalButton( modalDataContext, "Cancel", () => Console.Out.WriteLine( "Testing Cancel" ), ModalResult.Cancel ) );
-
             CustomMsgBox b = new CustomMsgBox( ref modalDataContext );
             b.ShowDialog();
-
-            Console.Out.WriteLine( String.Format( "result : {0}", modalDataContext.ModalResult + " \r\n checkbox checked : " + modalDataContext.IsCheckboxChecked ) );
-        }
-
-        /// <summary>
-        /// Shows how to use the WPF CustomMsgBox
-        /// </summary>
-        internal void ShowOtherCustomMessageBox()
-        {
-            ModalViewModel modalDataContext = new ModalViewModel( "Mise à jour disponible", "No buttons have been added to this MsgBox", CustomMsgBoxIcon.Question, 1 );
-
-            CustomMsgBox b = new CustomMsgBox( ref modalDataContext );
-            b.ShowDialog();
-
             Console.Out.WriteLine( String.Format( "result : {0}", modalDataContext.ModalResult + " \r\n checkbox checked : " + modalDataContext.IsCheckboxChecked ) );
         }
     }

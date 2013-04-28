@@ -1,0 +1,14 @@
+﻿<base:CiviKeyWindow x:Class="CK.Windows.Demo.DemoVms.ActivableCiviKeyWindowWithText"
+        xmlns:base="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Text Buffer (in Activable window)" ShowActivated="True" Topmost="True" Height="243" Width="362" WindowStyle="ToolWindow">
+    <Grid Margin="0,0,2,33">
+        <TextBox Margin="10,10,10,76" TextWrapping="Wrap" AcceptsReturn="True" Text="This is a normal TextBox." />
+        <TextBlock Name="Explanation" TextWrapping="WrapWithOverflow" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Width="332" Margin="10,0,10,-25">
+            This is a CiviKeyWindow with ShowActivated="True", WindowStyle="ToolWindow" and Topmost="True".
+            It knows how to handle Activation/Deactivation (without blinking nor blocking) correctly with other CiviKey window. 
+            It also enables the window to be moved by clicking in the client area or in this text thanks to the IsDraggableVisual override.
+        </TextBlock>
+    </Grid>
+</base:CiviKeyWindow>

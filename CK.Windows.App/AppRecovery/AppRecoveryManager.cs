@@ -141,10 +141,6 @@ namespace CK.Windows.App
 
         static void CurrentDomain_UnhandledException( object sender, UnhandledExceptionEventArgs e )
         {
-#if DEBUG
-            //Helps the developper identify the culprit of exceptions
-            Debugger.Break();
-#endif
             // If it has been initialized.
             if( _registeredExceptions != null )
             {

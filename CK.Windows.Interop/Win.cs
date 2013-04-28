@@ -31,7 +31,20 @@ namespace CK.Windows.Interop
 {
     public static class Win
     {
-        public static User32Api Functions = PInvoker.GetInvoker<User32Api>();
+        /// <summary>
+        /// Gets Win32 native functions related to Window management.
+        /// </summary>
+        public static readonly User32Api Functions = PInvoker.GetInvoker<User32Api>();
+
+        /// <summary>
+        /// True constant is 1 in Windows.
+        /// </summary>
+        public static IntPtr PtrTrue = new IntPtr( 1 );
+        
+        /// <summary>
+        /// True constant is 0 in Window.
+        /// </summary>
+        public static readonly IntPtr PtrFalse = IntPtr.Zero;
 
         /// <summary>
         /// Get and SetWindowLong index. 
@@ -47,12 +60,54 @@ namespace CK.Windows.Interop
             GWL_ID            = -12,
         }
 
+        
+        /// <summary>
+        /// WM_MOUSEACTIVATE return value: activates the window, and does not discard the mouse message.
+        /// </summary>
+        public const int MA_ACTIVATE =  1;
+        /// <summary>
+        /// WM_MOUSEACTIVATE return value: activates the window, and discards the mouse message.
+        /// </summary>
+        public const int MA_ACTIVATEANDEAT = 2;
+        /// <summary>
+        /// WM_MOUSEACTIVATE return value: does not activate the window, and does not discard the mouse message.
+        /// </summary>
+        public const int MA_NOACTIVATE = 3;
+        /// <summary>
+        /// WM_MOUSEACTIVATE return value: does not activate the window, but discards the mouse message.
+        /// </summary>
+        public const int MA_NOACTIVATEANDEAT = 4;
+
+
+        /// <summary>
+        /// WM_ACTIVATE wParam low order value: activated by some method other than a mouse click (for example, by a call to 
+        /// the SetActiveWindow function or by use of the keyboard interface to select the window).
+        /// </summary>
+        public const int WA_ACTIVE = 1;
+        /// <summary>
+        /// WM_ACTIVATE wParam low order value: activated by a mouse click.
+        /// </summary>
+        public const int WA_CLICKACTIVE = 2;
+        /// <summary>
+        /// WM_ACTIVATE wParam low order value: window ha been deactivated.
+        /// </summary>
+        public const int WA_INACTIVE = 0;
+
+        /// <summary>
+        /// Return code for WM_NCHITTEST: Client Area.
+        /// </summary>
+        public const int HTClient = 0x1;
+        /// <summary>
+        /// Return code for WM_NCHITTEST: Caption of the window.
+        /// </summary>
+        public const int HTCaption = 0x2;
+        
         /// <summary>
         /// Window Styles.
         /// The following styles can be specified wherever a window style is required. After the control has been created, these styles cannot be modified, except as noted.
         /// </summary>
         [Flags]
-        private enum WS : uint
+        public enum WS : uint
         {
             /// <summary>The window has a thin-line border.</summary>
             BORDER = 0x800000,
@@ -256,6 +311,42 @@ namespace CK.Windows.Interop
             WINDOWEDGE = 0x00000100
         }
 
+
+        /// <summary>
+        /// The WM_ACTIVATE message is sent to both the window being activated and the window being deactivated. If the windows use the same input queue, the message is sent synchronously, first to the window procedure of the top-level window being deactivated, then to the window procedure of the top-level window being activated. If the windows use different input queues, the message is sent asynchronously, so the window is activated immediately.
+        /// The wParam contains a pointer to the last focused window
+        /// </summary>
+        public const int WM_ACTIVATE = 0x0006;
+
+        /// <summary>
+        /// An application sends the WM_SETREDRAW message to a window to allow changes in that window to be redrawn or to prevent changes in that window from being redrawn.
+        /// </summary>
+        public const int WM_SETREDRAW = 0x000B;
+
+        /// <summary>
+        /// The WM_ACTIVATEAPP message is sent when a window belonging to a different application than the active window is about to be activated. 
+        /// The message is sent to the application whose window is being activated and to the application whose window is being deactivated.
+        /// </summary>
+        public const int WM_ACTIVATEAPP = 0x001C;
+
+        /// <summary>
+        /// The WM_NCHITTEST message is sent to a window when the cursor moves, or when a mouse button is pressed or released. 
+        /// If the mouse is not captured, the message is sent to the window beneath the cursor. Otherwise, the message is sent to the window that has captured the mouse.
+        /// </summary>
+        public const int WM_NCHITTEST = 0x0084;
+
+        /// <summary>
+        /// The WM_NCACTIVATE message is sent to a window when its nonclient area needs to be changed to indicate an active or inactive state.
+        /// </summary>
+        public const int WM_NCACTIVATE = 0x0086;
+
+        /// <summary>
+        /// The system will send a window the WM_DWMCOMPOSITIONCHANGED message to indicate that the availability of desktop composition has changed.
+        /// </summary>
+        public const int WM_DWMCOMPOSITIONCHANGED = 0x031E;
+
+
+
         /// <summary>
         /// Windows Messages defined in winuser.h from Windows SDK v6.1. Documentation from MSDN.
         /// </summary>
@@ -366,10 +457,6 @@ namespace CK.Windows.Interop
             /// The WM_DEVMODECHANGE message is sent to all top-level windows whenever the user changes device-mode settings.
             /// </summary>
             DEVMODECHANGE = 0x001B,
-            /// <summary>
-            /// The WM_ACTIVATEAPP message is sent when a window belonging to a different application than the active window is about to be activated. The message is sent to the application whose window is being activated and to the application whose window is being deactivated.
-            /// </summary>
-            ACTIVATEAPP = 0x001C,
             /// <summary>
             /// An application sends the WM_FONTCHANGE message to all top-level windows in the system after changing the pool of font resources.
             /// </summary>
@@ -571,10 +658,6 @@ namespace CK.Windows.Interop
             /// The WM_NCPAINT message is sent to a window when its frame must be painted.
             /// </summary>
             NCPAINT = 0x0085,
-            /// <summary>
-            /// The WM_NCACTIVATE message is sent to a window when its nonclient area needs to be changed to indicate an active or inactive state.
-            /// </summary>
-            NCACTIVATE = 0x0086,
             /// <summary>
             /// The WM_GETDLGCODE message is sent to the window procedure associated with a control. By default, the system handles all keyboard input to the control; the system interprets certain types of keyboard input as dialog box navigation keys. To override this default behavior, the control can respond to the WM_GETDLGCODE message to indicate the types of input it wants to process itself.
             /// </summary>
@@ -1126,10 +1209,6 @@ namespace CK.Windows.Interop
             /// </summary>
             CLIPBOARDUPDATE = 0x031D,
             /// <summary>
-            /// The system will send a window the WM_DWMCOMPOSITIONCHANGED message to indicate that the availability of desktop composition has changed.
-            /// </summary>
-            DWMCOMPOSITIONCHANGED = 0x031E,
-            /// <summary>
             /// WM_DWMNCRENDERINGCHANGED is called when the non-client area rendering status of a window has changed. Only windows that have set the flag DWM_BLURBEHIND.fTransitionOnMaximized to true will get this message.
             /// </summary>
             DWMNCRENDERINGCHANGED = 0x031F,
@@ -1220,6 +1299,9 @@ namespace CK.Windows.Interop
             RESTORED  = 0 
         }
     
+        /// <summary>
+        /// SetWindowPos flags.
+        /// </summary>
         public enum SetWindowPosFlags : uint
         {
             /// <summary>
@@ -1295,6 +1377,7 @@ namespace CK.Windows.Interop
             ShowWindow = 0x0040,
         }
 
+
         [StructLayout( LayoutKind.Sequential )]
         public struct WindowPos
         {
@@ -1306,6 +1389,7 @@ namespace CK.Windows.Interop
             public int Cy;
             public SetWindowPosFlags Flags;
         }
+
         /// <summary>
         /// Special window handles
         /// Prefixed with HWND_ in Win.h.
@@ -1373,8 +1457,18 @@ namespace CK.Windows.Interop
             [CK.Interop.DllImport]
             IntPtr GetForegroundWindow();
 
+            /// <summary>
+            /// Return type: BOOL
+            /// If the window was brought to the foreground, the return value is nonzero.
+            /// If the window was not brought to the foreground, the return value is zero.
+            /// </summary>
+            /// <param name="hWnd">Handle of the window.</param>
+            /// <returns>0 on failure.</returns>
             [CK.Interop.DllImport]
             int SetForegroundWindow( IntPtr hWnd );
+
+            [CK.Interop.DllImport( CharSet = CharSet.Auto )]
+            IntPtr SendMessage( IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam );
 
             [CK.Interop.DllImport( EntryPoint32 = "SetWindowLong", EntryPoint64 = "SetWindowLongPtr", ExactSpelling = false )]
             IntPtr SetWindowLong( IntPtr hWnd, WindowLongIndex index, uint dwNewLong );
@@ -1396,6 +1490,9 @@ namespace CK.Windows.Interop
 
             [CK.Interop.DllImport]
             bool GetWindowRect( IntPtr hwnd, out Rect r );
+
+            [CK.Interop.DllImport]
+            IntPtr DefWindowProc( IntPtr hWnd, int uMsg, IntPtr wParam, IntPtr lParam );
 
         }
 

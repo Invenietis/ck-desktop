@@ -76,7 +76,7 @@ namespace CK.Windows.App
             _roller.MaxSizeRollBackups = 4;
             _roller.MaximumFileSize = "100KB";
             _roller.StaticLogFileName = true;
-            _roller.File = Path.Combine( _appLogDirectory, "LowLevel.log" );
+            _roller.File = CurrentLogFilePath;
             _roller.ActivateOptions();
             _hierarchy.Root.AddAppender( _roller );
 
@@ -99,6 +99,14 @@ namespace CK.Windows.App
         static public string AppLogDirectory
         {
             get { return _appLogDirectory; }
+        }
+
+        /// <summary>
+        /// Gets the path of the directory that will be used to store the LowLevel.log files.
+        /// </summary>
+        static public string CurrentLogFilePath
+        {
+            get { return Path.Combine( _appLogDirectory, "LowLevel.log" ); }
         }
 
         /// <summary>
