@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (CK.Windows.Core\NoFocusWindow.cs) is part of CiviKey. 
+* This file (CK.Windows.Core\CKWindow.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -14,12 +14,16 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2013, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
+
+#if DEBUG
+#define WINTRACE
+#endif
 
 using System;
 using System.Windows;
@@ -34,9 +38,11 @@ using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+
 namespace CK.Windows
 {
-    public partial class CiviKeyWindow : Window
+
+    public partial class CKWindow : Window
     {
         /// <summary>
         /// "Restore hope" uses quite low priority dispatching and this is a good thing:
@@ -150,6 +156,8 @@ namespace CK.Windows
         {
             Console.WriteLine( "[CiviKeyWindow]{0}.", String.Format( format, p ) );
         }
+
+        [Conditional( "WINTRACE" )]
         static void WinTrace( IntPtr hWnd, string text )
         {
             Console.WriteLine( "[CiviKeyWindow:0x{0:X}]{1}.", hWnd, text );

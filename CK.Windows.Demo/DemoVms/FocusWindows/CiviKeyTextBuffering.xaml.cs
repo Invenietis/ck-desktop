@@ -19,7 +19,7 @@ namespace CK.Windows.Demo.DemoVms
     /// <summary>
     /// Interaction logic for CiviKeyTextBuffering.xaml
     /// </summary>
-    public partial class CiviKeyTextBuffering : CiviKeyWindow
+    public partial class CiviKeyTextBuffering : CKWindow
     {
         IntPtr _targetHWnd;
         bool _isExternalWindow;

@@ -16,7 +16,7 @@ namespace CK.Windows.Demo.DemoVms
     /// <summary>
     /// Interaction logic for TextBuffering.xaml
     /// </summary>
-    public partial class ActivableCiviKeyWindowWithText : CiviKeyWindow
+    public partial class ActivableCiviKeyWindowWithText : CKWindow
     {
         public ActivableCiviKeyWindowWithText()
         {

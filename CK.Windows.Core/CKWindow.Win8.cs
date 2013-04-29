@@ -1,4 +1,31 @@
-﻿using System;
+﻿#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (CK.Windows.Core\CKWindow.Win8.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2013, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+#if DEBUG
+#define WINTRACE
+#endif
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +36,7 @@ using CK.Windows.Interop;
 
 namespace CK.Windows
 {
-    public partial class CiviKeyWindow
+    public partial class CKWindow
     {
         IntPtr WndProcWin8( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
@@ -81,6 +108,7 @@ namespace CK.Windows
                             // This avoids the NC area's blinking.
                             if( wParam.ToInt32() != 0 )
                             {
+                                WinTrace( _hwnd, "NC Activation ignored for non activable window." );
                                 handled = true;
                                 return IntPtr.Zero;
                             }
@@ -202,7 +230,7 @@ namespace CK.Windows
                 TriggerRestoreHope();
             }
 
-            public override HwndSourceHook GetWndProc( CiviKeyWindow w )
+            public override HwndSourceHook GetWndProc( CKWindow w )
             {
                 return w.WndProcWin8;
             }
@@ -212,8 +240,9 @@ namespace CK.Windows
                 if( _restoreHopeHwnd.Count > 0 )
                 {
                     WinTrace( "==> Restore Hwnd Count = {0}.", _restoreHopeHwnd.Count );
-                    IntPtr hasBeenActivated = IntPtr.Zero;
                     var last = _restoreHopeHwnd.ToArray();
+                    _restoreHopeHwnd.Clear();
+                    IntPtr hasBeenActivated = IntPtr.Zero;
                     for( int i = last.Length - 1; i >= 0; --i )
                     {
                         var w = last[i];
@@ -235,7 +264,6 @@ namespace CK.Windows
                         }
                     }
                     WinTrace( "==> End of restore Hwnd" );
-                    _restoreHopeHwnd.Clear();
                 }
             }
         }

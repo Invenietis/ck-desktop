@@ -80,11 +80,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caliburn\StackConductor.cs" />
-    <Compile Include="CiviKeyWindow.RestoreHope.cs" />
-    <Compile Include="CiviKeyWindow.Win8.cs" />
+    <Compile Include="CKWindow.RestoreHope.cs" />
+    <Compile Include="CKWindow.Win8.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\StringEmptyToUnsetConverter.cs" />
-    <Compile Include="CiviKeyWindow.cs" />
+    <Compile Include="CKWindow.cs" />
     <Compile Include="NoFocusWindow.cs" />
     <Compile Include="NoFocusWindowEnablesSendInput.cs" />
     <Compile Include="DataTemplateSelector\TemplatedDataTemplateSelector.cs" />
