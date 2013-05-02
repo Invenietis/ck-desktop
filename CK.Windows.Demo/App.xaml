@@ -5,10 +5,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="MyDataTemplates.xaml" />
                 <ResourceDictionary>
-                    <local:AppBoostrapper x:Key="bootstrapper"/>
+                    <local:AppBoostrapper x:Key="bootstrapper" />
                 </ResourceDictionary>
-                <ResourceDictionary Source="MyDataTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

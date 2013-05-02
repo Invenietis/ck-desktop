@@ -8,7 +8,7 @@
         <TextBlock Name="Explanation" TextWrapping="WrapWithOverflow" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Width="332" Margin="10,0,10,-25">
             This is a CiviKeyWindow with ShowActivated="True", WindowStyle="ToolWindow" and Topmost="True".
             It knows how to handle Activation/Deactivation (without blinking nor blocking) correctly with other CiviKey window. 
-            It also enables the window to be moved by clicking in the client area or in this text thanks to the IsDraggableVisual override.
+            It also enables the window to be moved by clicking in the client area or in this text thanks to the IsCKWindowDraggableVisual override.
         </TextBlock>
     </Grid>
 </base:CKWindow>

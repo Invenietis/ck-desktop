@@ -40,7 +40,7 @@ namespace CK.Windows.Demo
     /// <summary>
     /// Interaction logic for AppView.xaml
     /// </summary>
-    public partial class AppView : UserControl
+    public partial class AppView : CKWindow
     {
         public AppView()
         {

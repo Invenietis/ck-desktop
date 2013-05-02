@@ -51,7 +51,7 @@ namespace CK.Windows
 
         protected override void OnSourceInitialized( EventArgs e )
         {
-            CK.Windows.Interop.Win.Functions.SetWindowLong( _interopHelper.Handle, CK.Windows.Interop.Win.WindowLongIndex.GWL_EXSTYLE, (uint)CK.Windows.Interop.Win.WS_EX.NOACTIVATE );
+            CK.Windows.Interop.Win.Functions.SetWindowLong( _interopHelper.Handle, CK.Windows.Interop.Win.WindowLongIndex.GWL_EXSTYLE, (uint)CK.Windows.Interop.Win.WS_EX_NOACTIVATE );
 
             HwndSource mainWindowSrc = HwndSource.FromHwnd( _interopHelper.Handle );
 
@@ -102,8 +102,7 @@ namespace CK.Windows
 
         IntPtr WndProc( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
-            Console.Out.WriteLine( ( (CK.Windows.Interop.Win.WM)msg ).ToString() );
-            switch( (CK.Windows.Interop.Win.WM)msg )
+            switch( msg )
             {
                 //case CK.Windows.Interop.Win.WM.ACTIVATE:
                 //case CK.Windows.Interop.Win.WM.NCACTIVATE:
@@ -120,7 +119,7 @@ namespace CK.Windows
                 //    }
 
                 //    break;
-                case CK.Windows.Interop.Win.WM.SETFOCUS:
+                case CK.Windows.Interop.Win.WM_SETFOCUS:
                     //if( !_ncbuttondown )
                     //{
                     //    handled = true;
@@ -134,12 +133,12 @@ namespace CK.Windows
                     //}
                     
                     break;
-                case CK.Windows.Interop.Win.WM.NCLBUTTONDOWN:
+                case CK.Windows.Interop.Win.WM_NCLBUTTONDOWN:
                     _ncbuttondown = true;
                     GetFocus();
                     Console.Out.WriteLine( "ButtonDown, Getting the focus" );
                     break;
-                case CK.Windows.Interop.Win.WM.NCMOUSEMOVE:
+                case CK.Windows.Interop.Win.WM_NCMOUSEMOVE:
                     if( _ncbuttondown )
                     {
                         ReleaseFocus();

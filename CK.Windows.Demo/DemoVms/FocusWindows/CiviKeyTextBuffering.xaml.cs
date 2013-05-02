@@ -27,7 +27,6 @@ namespace CK.Windows.Demo.DemoVms
         public CiviKeyTextBuffering()
         {
             InitializeComponent();
-            Send.IsEnabled = false;
         }
 
         protected override bool IsDraggableVisual( DependencyObject visualElement )
@@ -41,15 +40,13 @@ namespace CK.Windows.Demo.DemoVms
             _isExternalWindow = isExternalWindow;
             if( _targetHWnd == IntPtr.Zero )
             {
-                Send.IsEnabled = false;
-                SendText.Text = "(no active target)";
+                SendText.Text = "(no active target: it will be the foreground window)";
             }
             else
             {
                 if( isExternalWindow )
                 {
                     SendText.Text = String.Format( "Send to external HWnd = 0x{0:X}", hWnd.ToInt32() );
-                    SendText.IsEnabled = true;
                 }
                 else 
                 {
@@ -57,7 +54,6 @@ namespace CK.Windows.Demo.DemoVms
                     if( s == null )
                     {
                         SendText.Text = String.Format( "Internal Target but unable to get the WPF window for it. HWnd = 0x{0:X}", hWnd.ToInt32() );
-                        Send.IsEnabled = false;
                     }
                     else
                     {
@@ -65,12 +61,10 @@ namespace CK.Windows.Demo.DemoVms
                         if( w == null )
                         {
                             SendText.Text = String.Format( "This should never happen: the internal target is not a WPF window. HWnd = 0x{0:X}", hWnd.ToInt32() );
-                            Send.IsEnabled = false;
                         }
                         else
                         {
                             SendText.Text = String.Format( "Send to internal window '{0}' (HWnd = 0x{1:X})", w.ToString(), hWnd.ToInt32() );
-                            Send.IsEnabled = true;
                         }
                     }
                 }
@@ -79,8 +73,21 @@ namespace CK.Windows.Demo.DemoVms
 
         private void SendClick( object sender, RoutedEventArgs e )
         {
-            Win.Functions.SetForegroundWindow( _targetHWnd );
-            PseudoSendStringService.SendString( WorkingBuffer.Text );
+            if( _targetHWnd == IntPtr.Zero )
+            {
+                IntPtr w = Win.Functions.GetForegroundWindow();
+                uint processId;
+                Win.Functions.GetWindowThreadProcessId( w, out processId );
+                if( processId != System.Diagnostics.Process.GetCurrentProcess().Id )
+                {
+                    _targetHWnd = w;
+                }
+            }
+            if( _targetHWnd != IntPtr.Zero )
+            {
+                Win.Functions.SetForegroundWindow( _targetHWnd );
+                PseudoSendStringService.SendString( WorkingBuffer.Text );
+            }
         }
     }
 }

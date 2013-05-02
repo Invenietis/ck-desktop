@@ -79,11 +79,11 @@ namespace CK.Windows
                 _interopHelper.Handle,
                 Win.WindowLongIndex.GWL_EXSTYLE,
                 (uint)Win.Functions.GetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE ) |
-                (uint)Win.WS_EX.NOACTIVATE );
+                (uint)Win.WS_EX_NOACTIVATE );
 
             HwndSourceParameters parameters = new HwndSourceParameters();
             //HwndSource mainWindowSrc = HwndSource.FromHwnd( _interopHelper.Handle );
-            parameters.ExtendedWindowStyle = (int)( Win.WS_EX.TOPMOST | Win.WS_EX.TOOLWINDOW | Win.WS_EX.NOACTIVATE );
+            parameters.ExtendedWindowStyle = (int)( Win.WS_EX_TOPMOST | Win.WS_EX_TOOLWINDOW | Win.WS_EX_NOACTIVATE );
             parameters.RestoreFocusMode = System.Windows.Input.RestoreFocusMode.None;
             //parameters.AcquireHwndFocusInMenuMode = true;
 
@@ -145,15 +145,14 @@ namespace CK.Windows
 
         IntPtr WndProc( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
-            var message = (Win.WM)msg;
-            if( message != (Win.WM)Win.WM_ACTIVATEAPP )
+            if( msg != Win.WM_ACTIVATEAPP )
             {
-                if( message == Win.WM.MOUSEACTIVATE )
+                if( msg == Win.WM_MOUSEACTIVATE )
                 {
                     handled = true;
                     return new IntPtr( 3 );
                 }
-                if( message != Win.WM.WINDOWPOSCHANGING )
+                if( msg != Win.WM_WINDOWPOSCHANGING )
                 {
                     return IntPtr.Zero;
                 }
@@ -167,21 +166,21 @@ namespace CK.Windows
                 return IntPtr.Zero;
             }
 
-            switch( (CK.Windows.Interop.Win.WM)msg )
+            switch( msg )
             {
-                case Win.WM.MOUSEACTIVATE:
+                case Win.WM_MOUSEACTIVATE:
                     return (IntPtr)0x0003;
                     handled = true;
                     return new IntPtr( 3 );
 
-                case CK.Windows.Interop.Win.WM.SETFOCUS:
+                case CK.Windows.Interop.Win.WM_SETFOCUS:
                     _lastFocused = hWnd;
                     break;
-                case CK.Windows.Interop.Win.WM.NCLBUTTONDOWN:
+                case CK.Windows.Interop.Win.WM_NCLBUTTONDOWN:
                     _ncbuttondown = true;
                     GetFocus();
                     break;
-                case CK.Windows.Interop.Win.WM.NCMOUSEMOVE:
+                case CK.Windows.Interop.Win.WM_NCMOUSEMOVE:
                     if( _ncbuttondown )
                     {
                         ReleaseFocus();

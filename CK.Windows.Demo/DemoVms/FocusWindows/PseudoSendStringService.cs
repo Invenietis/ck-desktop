@@ -10,6 +10,7 @@ namespace CK.Windows.Demo.DemoVms
 
         public static void SendString( string text )
         {
+            Console.WriteLine( "Sending string: {0}", text );
             System.Windows.Forms.SendKeys.SendWait( text );
         }
 

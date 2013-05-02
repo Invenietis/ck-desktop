@@ -38,20 +38,31 @@ namespace CK.Windows
 {
     public partial class CKWindow
     {
+
         IntPtr WndProcWin8( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
+            // This code dumps any changes to GetForegroundWindow on each received message. 
+            // It shows that we can not get the "current target" when this application is no more the active one: 
+            // when reactivation occurs, first call to GetForegroundWindow returns 0 (desktop) and on the second message that
+            // we receive GetForegroundWindow returns this handle (our activable window is already activated). 
+            //      <<field>> IntPtr _prevTrace;
+            //      IntPtr prevTRACE = Win.Functions.GetForegroundWindow();
+            //      if( _prevTrace != prevTRACE )
+            //      {
+            //          WinTrace( _hwnd, "Prev Win: 0x{0:X} - msg = 0x{1:X}.", prevTRACE.ToInt32(), msg );
+            //          _prevTrace = prevTRACE;
+            //      }
+            // ==> We need an "external" mechanism to track the "external" last activated window to be able  
+            //     to restore the focus to it.
             RestoreHopeWin8 hope = (RestoreHopeWin8)_hopeRestorer;
             switch( msg )
             {
-                // Only clicks if desktop composition isn't enabled
                 case Win.WM_NCHITTEST:
                     {
                         int hit = Win.Functions.DefWindowProc( _hwnd, msg, wParam, lParam ).ToInt32();
-                        if( hit == Win.HTClient
-                            && _isExtendedFrame
-                            && IsOnExtendedFrame( PointFromLParam( lParam ) ) )
+                        if( hit == Win.HTCLIENT )
                         {
-                            hit = Win.HTCaption;
+                            CKNCHitTest( PointFromLParam( lParam ), ref hit );
                         }
                         handled = true;
                         return new IntPtr( hit );
@@ -132,7 +143,7 @@ namespace CK.Windows
                             // YES! after numerous tries, it is as easy as returning true (to accept the deactivation), but handling the 
                             // message so that redrawing of the deactivated non-client area is not processed (we claim to have done it).
                             // We use "restore hope" to push the fact that deactivation has been refused for this window.
-                            // "Restore hope" calls us back with a WM_NCACTIVATE after having set the _civikeyWindowDeactivation to be this
+                            // "Restore hope" calls us back with a WM_NCACTIVATE after having set the CurrentHWndMessageTarget to be this
                             // window handle: when we receive this "real" deativation message, we process it normally.
                             //
 
@@ -168,11 +179,12 @@ namespace CK.Windows
                         {
                             // We are activating and we have the handle of the previously active one.
                             // If the previous is an activable one, memorizes it in order to restore its activation later.
-                            if( (Win.Functions.GetWindowLong( lParam, Win.WindowLongIndex.GWL_EXSTYLE ).ToInt32() & (int)Win.WS_EX.NOACTIVATE) == 0 )
+                            if( (Win.Functions.GetWindowLong( lParam, Win.WindowLongIndex.GWL_EXSTYLE ).ToInt32() & (int)Win.WS_EX_NOACTIVATE) == 0 )
                             {
                                 // If we are an activable window, calls the overridable SetActiveTarget.
                                 if( ShowActivated )
                                 {
+                                    WinTrace( _hwnd, "Setting internal target: 0x{0:X}.", lParam.ToInt32() );
                                     SetActiveTarget( lParam, isExternalWindow: false );
                                 }
                                 else
@@ -199,7 +211,8 @@ namespace CK.Windows
                             // When prev is null, it is the desktop. We can NOT ignore it otherwise we will try to send message to 
                             // another application (and the security of Windows will make the SetForegroundWindow call successful but 
                             // useless).
-                            SetActiveTarget( prev, true ); 
+                            WinTrace( _hwnd, "Setting external target: 0x{0:X}.", prev.ToInt32() );
+                            SetActiveTarget( prev, true );
                         }
                         break;
                     }

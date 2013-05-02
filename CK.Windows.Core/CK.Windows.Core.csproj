@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caliburn\StackConductor.cs" />
+    <Compile Include="CKWindow.Central.cs" />
     <Compile Include="CKWindow.RestoreHope.cs" />
     <Compile Include="CKWindow.Win8.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />

@@ -25,7 +25,12 @@ namespace CK.Windows.Demo.DemoVms
 
         protected override bool IsDraggableVisual( DependencyObject visualElement )
         {
-            return base.IsDraggableVisual( visualElement ) || visualElement == DraggableImage || visualElement == Explanation;
+            if( visualElement == DraggableImage || visualElement == Explanation ) return true;
+            if( visualElement is Border )
+            {
+                return VisualTreeHelper.GetParent( visualElement ) == this;
+            }
+            return false;
         }
 
         private void ClickedKey( object sender, RoutedEventArgs e )

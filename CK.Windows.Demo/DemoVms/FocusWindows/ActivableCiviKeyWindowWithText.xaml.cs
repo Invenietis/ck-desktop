@@ -25,7 +25,19 @@ namespace CK.Windows.Demo.DemoVms
 
         protected override bool IsDraggableVisual( DependencyObject visualElement )
         {
-            return base.IsDraggableVisual( visualElement ) || visualElement == Explanation;
+            return visualElement == Explanation || (visualElement is Border && VisualTreeHelper.GetParent( visualElement ) == this);
+        }
+
+        protected override void OnActivated( EventArgs e )
+        {
+            Console.WriteLine( "ActivableCiviKeyWindowWithText.OnActivated (hWnd=0x{0:X})", ThisWindowHandle );
+            base.OnActivated( e );
+        }
+        
+        protected override void OnDeactivated( EventArgs e )
+        {
+            Console.WriteLine( "ActivableCiviKeyWindowWithText.OnDeactivated (hWnd=0x{0:X})", ThisWindowHandle );
+            base.OnDeactivated( e );
         }
     }
 }

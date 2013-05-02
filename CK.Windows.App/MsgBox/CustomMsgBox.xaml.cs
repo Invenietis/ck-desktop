@@ -71,7 +71,7 @@ namespace CK.Windows.App
 
         protected override void OnContentRendered( EventArgs e )
         {
-            IEnumerable<Button> visualButtons = CK.Windows.Helpers.TreeHelper.FindChildren<Button>( this.buttongrid );
+            IEnumerable<Button> visualButtons = TreeHelper.FindChildren<Button>( this.buttongrid );
             if(_ctx.FocusedButtonIndex >= visualButtons.ToList().Count) _ctx.FocusedButtonIndex = 0;
             Button b = visualButtons.ElementAtOrDefault( _ctx.FocusedButtonIndex );
             if( b != null ) b.Focus();

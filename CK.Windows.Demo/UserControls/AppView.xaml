@@ -1,7 +1,9 @@
-﻿<UserControl x:Class="CK.Windows.Demo.AppView"
+﻿<ck:CKWindow x:Class="CK.Windows.Demo.AppView"
              xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:loc="clr-namespace:CK.Windows.Demo"
-             MinWidth="300" MinHeight="300">
+             xmlns:ck="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
+             MinWidth="300" MinHeight="300" ResizeMode="CanResizeWithGrip" d:DesignWidth="423.224" d:DesignHeight="426.044" BorderThickness="0" Width="300" Height="300" WindowStartupLocation="Manual">
     <ContentControl Content="{Binding ActiveItem}"/>
-</UserControl>
+</ck:CKWindow>

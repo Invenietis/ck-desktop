@@ -37,6 +37,7 @@ using CK.Windows.Interop;
 using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Diagnostics;
+using CK.Windows.Helpers;
 
 
 namespace CK.Windows
@@ -65,12 +66,13 @@ namespace CK.Windows
                             _hwnd,
                             Win.WindowLongIndex.GWL_EXSTYLE,
                             (uint)Win.Functions.GetWindowLong( _hwnd, Win.WindowLongIndex.GWL_EXSTYLE ) |
-                            (uint)Win.WS_EX.NOACTIVATE );
+                            Win.WS_EX_NOACTIVATE );
             }
             hSource.AddHook( _hopeRestorer.GetWndProc( this ) );
             hSource.CompositionTarget.BackgroundColor = Color.FromArgb( 0, 0, 0, 0 );
             hSource.CompositionTarget.RenderMode = RenderMode.Default;
             TryExtendFrame();
+            if( StaticCentral.ErrorMessage != null ) Title += StaticCentral.ErrorMessage;
             base.OnSourceInitialized( e );
         }
 
@@ -120,28 +122,43 @@ namespace CK.Windows
             return new Point( lParam.ToInt32() & 0xFFFF, lParam.ToInt32() >> 16 );
         }
 
-        bool IsOnExtendedFrame( Point p )
+        void CKNCHitTest( Point p, ref int htCode )
         {
             var point = PointFromScreen( p );
-            Visual client = Content as Visual;
-            if( client != null )
+            HitTestResult result = VisualTreeHelper.HitTest( this, point );
+            if( result != null )
             {
-                HitTestResult result = VisualTreeHelper.HitTest( client, point );
-                if( result != null ) return IsDraggableVisual( result.VisualHit );
+                //Console.WriteLine( "HitTest: "+ result.VisualHit.GetType().Name ); 
+                if( IsDraggableVisual( result.VisualHit ) )
+                {
+                    htCode = Win.HTCAPTION;
+                }
+                else if( ResizeMode == System.Windows.ResizeMode.CanResizeWithGrip )
+                {
+                    if( TreeHelper.FindParentInVisualTree( result.VisualHit, d => d is System.Windows.Controls.Primitives.ResizeGrip ) != null )
+                    {
+                        if( FlowDirection == FlowDirection.RightToLeft )
+                            htCode = Win.HTBOTTOMLEFT;
+                        else htCode = Win.HTBOTTOMRIGHT;
+                    }
+                }
             }
-            // Nothing was hit - assume that this area is covered by frame extensions anyway
-            return true;
+            else
+            {
+                // Nothig was hit. Assume the extended frame.
+                htCode = Win.HTCAPTION;
+            }
         }
 
         /// <summary>
-        /// By default, the <see cref="ContentControl.Content"/> is draggable. Any other element are not.
-        /// By overriding this method, other visual elements can be considered as a handle to drag the window.
+        /// By default, nothing is draggable: this method always returns false.
+        /// By overriding this method, any visual elements can be considered as a handle to drag the window.
         /// </summary>
         /// <param name="visualElement">Visual element that could be considered as a handle to drag the window.</param>
         /// <returns>True if the element must drag the window.</returns>
         protected virtual bool IsDraggableVisual( DependencyObject visualElement )
         {
-            return visualElement == Content;
+            return false;
         }
 
         #region WinTrace helpers

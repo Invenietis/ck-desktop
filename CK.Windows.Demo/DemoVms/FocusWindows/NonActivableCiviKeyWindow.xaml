@@ -1,13 +1,20 @@
-﻿<base:CKWindow x:Class="CK.Windows.Demo.DemoVms.NonActivableCiviKeyWindow"
-        xmlns:base="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+﻿<ck:CKWindow x:Class="CK.Windows.Demo.DemoVms.NonActivableCiviKeyWindow"
+        xmlns:ck="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Non Activable CiviKey window (a kind of Skin)" Height="211" Width="576" Topmost="True" WindowStyle="ToolWindow" ShowActivated="False">
+        Title="Non Activable CiviKey window (a kind of Skin)" Height="229" Width="576" Topmost="True" WindowStyle="ToolWindow" ShowActivated="False" ResizeMode="CanResizeWithGrip" >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="FocusStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
-        <Button Content="Key 'A'" Name="A" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="ClickedKey"/>
-        <Button Content="Key 'B'" Name="B" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Click="ClickedKey"/>
-        <Button Content="Key 'C'" Name="C" HorizontalAlignment="Left" Margin="170,10,0,0" VerticalAlignment="Top" Width="75" Click="ClickedKey"/>
-        <Button Content="Throw Exception" Name="Exception" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="155" Click="ThrowException" />
+        <Button Content="Key 'A'" Name="A" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="ClickedKey" Style="{DynamicResource 3DButton}" />
+        <Button Content="Key 'B'" Name="B" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Click="ClickedKey" Style="{DynamicResource 3DButton}" />
+        <Button Content="Key 'C'" Name="C" HorizontalAlignment="Left" Margin="170,10,0,0" VerticalAlignment="Top" Width="75" Click="ClickedKey" Style="{DynamicResource 3DButton}"/>
+        <Button Content="Throw Exception" Name="Exception" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Width="155" Click="ThrowException" Style="{DynamicResource 3DButton}" />
         <Image x:Name="DraggableImage" HorizontalAlignment="Left" Height="39" Margin="479,19,0,0" VerticalAlignment="Top" Width="74" Source="Images/DraggableImage.png"/>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="45" Margin="310,10,0,0" VerticalAlignment="Top" Width="89">
             <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Images/NonDraggableImage.png"/>
@@ -17,7 +24,8 @@
             This is a CiviKeyWindow with ShowActivated="False", WindowStyle="ToolWindow" and Topmost="True".
             It is always deactivated (ie. it does not steal the focus). 
             The window can be moved by clicking in the client area or any Visual that are accepted by the IsDraggableVisual override (here, the image "Drag Me" and this text).
+            Note: This IsCKWindowDraggableVisual implementation is compliant with ResizeMode="CanResizeWithGrip".)
             </TextBlock>
         </Border>
     </Grid>
-</base:CKWindow>
+</ck:CKWindow>
