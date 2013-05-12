@@ -37,35 +37,40 @@ namespace CK.Windows
 {
     public partial class CKWindow
     {
-        [ThreadStatic]
-        static RestoreHope _hopeRestorer = CreateHope();
-
-        static RestoreHope CreateHope()
+        /// <summary>
+        /// Base class to encapsulate delayed operations.
+        /// When needed by a driver implementation, it must be instanciated as a thread static object.
+        /// </summary>
+        abstract class DelayedOperation
         {
-            RestoreHope h = new RestoreHopeWin8();
-            WinTrace( "{0} creation for thread ManageThreaddId = {1}.", h.GetType().Name, System.Threading.Thread.CurrentThread.ManagedThreadId );
-            return h;
-        }
+            /// <summary>
+            /// DelayedOperation uses quite low priority dispatching and this is a good thing:
+            /// it does not interfere at all with the application/windows life cycle.
+            /// </summary>
+            const DispatcherPriority DelayedOperationPriority = DispatcherPriority.ApplicationIdle;
 
-        abstract class RestoreHope
-        {
             readonly DispatcherOperationCallback _restoreHope;
             IntPtr _currentMsgTarget;
-            DispatcherOperation _currentHope;
+            DispatcherOperation _currentOp;
 
-            protected RestoreHope()
+            protected DelayedOperation()
             {
                 _restoreHope = new DispatcherOperationCallback( RestoreHopeAction );
             }
 
-            /// <summary>
-            /// Ensures that <see cref="DoRestoreHope"/> will be called.
-            /// </summary>
-            public void TriggerRestoreHope()
+            public static void Delayed( Action a )
             {
-                if( _currentHope == null )
+                Dispatcher.CurrentDispatcher.BeginInvoke( a, DelayedOperationPriority, null );
+            }
+
+            /// <summary>
+            /// Ensures that <see cref="DoRunAll"/> will be called.
+            /// </summary>
+            public void RunAll()
+            {
+                if( _currentOp == null )
                 {
-                    _currentHope = Dispatcher.CurrentDispatcher.BeginInvoke( RestoreHopePriority, _restoreHope, null );
+                    _currentOp = Dispatcher.CurrentDispatcher.BeginInvoke( DelayedOperationPriority, _restoreHope, null );
                 }
                 else WinTrace( "Reentrant RestoreHope." );
             }
@@ -73,13 +78,13 @@ namespace CK.Windows
             object RestoreHopeAction( object p )
             {
                 // Handle reentrancy by clearing the current operation.
-                _currentHope = null;
-                DoRestoreHope();
+                _currentOp = null;
+                DoRunAll();
                 return null;
             }
 
             /// <summary>
-            /// Gets the handle that currently receives a message from this (<see cref="SendHopeMessage"/> is being called).
+            /// Gets the handle that currently receives a message from this (<see cref="SendDelayedMessage"/> is being called).
             /// Null otherwise.
             /// </summary>
             public IntPtr CurrentHWndMessageTarget
@@ -95,27 +100,17 @@ namespace CK.Windows
             /// <param name="msg">See <see cref="Win.Functions.SendMessage"/>.</param>
             /// <param name="wParam">See <see cref="Win.Functions.SendMessage"/>.</param>
             /// <param name="lParam">See <see cref="Win.Functions.SendMessage"/>.</param>
-            protected void SendHopeMessage( IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam )
+            protected void SendDelayedMessage( IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam )
             {
                 _currentMsgTarget = hWnd;
                 Win.Functions.SendMessage( hWnd, msg, wParam, lParam );
                 _currentMsgTarget = IntPtr.Zero;
 
             }
-
-            /// <summary>
-            /// Selects the window hook.
-            /// This is called during source initialization: ther selected hook 
-            /// is associated to the window.
-            /// </summary>
-            /// <param name="w">A CiviKey window.</param>
-            /// <returns>The hook to use.</returns>
-            public abstract HwndSourceHook GetWndProc( CKWindow w );
-
             /// <summary>
             /// Must process the full set of recorded actions at once and clear them.
             /// </summary>
-            abstract protected void DoRestoreHope();
+            abstract protected void DoRunAll();
 
         }
 

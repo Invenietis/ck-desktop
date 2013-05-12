@@ -58,7 +58,7 @@ namespace CK.Windows
             mainWindowSrc.CompositionTarget.BackgroundColor = Color.FromArgb( 0, 0, 0, 0 );
             mainWindowSrc.CompositionTarget.RenderMode = RenderMode.Default;
 
-            if( OSVersionInfo.IsWindowsVistaOrGreater && CK.Windows.Interop.Dwm.Functions.IsCompositionEnabled() )
+            if( OSVersionInfoTEMP.OSLevel >= OSVersionInfoTEMP.SimpleOSLevel.WindowsVista && CK.Windows.Interop.Dwm.Functions.IsCompositionEnabled() )
             {
                 CK.Windows.Interop.Win.Margins m = new CK.Windows.Interop.Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
                 CK.Windows.Interop.Dwm.Functions.ExtendFrameIntoClientArea( _interopHelper.Handle, ref m );

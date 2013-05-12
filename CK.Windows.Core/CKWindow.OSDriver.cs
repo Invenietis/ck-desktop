@@ -32,12 +32,43 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Windows.Interop;
+using CK.Core;
 using CK.Windows.Interop;
 
 namespace CK.Windows
 {
     public partial class CKWindow
     {
+        abstract class OSDriver
+        {
+            protected readonly CKWindow W;
+
+            protected OSDriver( CKWindow w )
+            {
+                W = w;
+            }
+
+            public static OSDriver Create( CKWindow w, HwndSource wSource, OSVersionInfoTEMP.SimpleOSLevel osLevel = OSVersionInfoTEMP.SimpleOSLevel.Unknown )
+            {
+                if( osLevel == OSVersionInfoTEMP.SimpleOSLevel.Unknown ) osLevel = OSVersionInfoTEMP.OSLevel;
+                if( osLevel >= OSVersionInfoTEMP.SimpleOSLevel.Windows8 )
+                {
+                    return new Win8Driver( w, wSource );
+                }
+                else if( osLevel >= OSVersionInfoTEMP.SimpleOSLevel.Windows7 )
+                {
+                    return new Win7Driver( w, wSource );
+                }
+                else if( osLevel >= OSVersionInfoTEMP.SimpleOSLevel.WindowsVista )
+                {
+                    return new VistaDriver( w, wSource );
+                }
+                return new XPDriver( w, wSource );
+            }
+        }
+
+
         //static class StaticCentral
         //{
         //    static readonly Win.HookProc _hookProcHandle = new Win.HookProc( ShellHookProc );

@@ -45,67 +45,39 @@ namespace CK.Windows
 
     public partial class CKWindow : Window
     {
-        /// <summary>
-        /// "Restore hope" uses quite low priority dispatching and this is a good thing:
-        /// it does not interfere at all with the application/windows life cycle.
-        /// </summary>
-        const DispatcherPriority RestoreHopePriority = DispatcherPriority.ApplicationIdle;
-
         IntPtr _hwnd;
-        bool _isExtendedFrame;
+        OSDriver _driver;
 
         protected override void OnSourceInitialized( EventArgs e )
         {
             _hwnd = new WindowInteropHelper( this ).Handle;
             WinTrace( _hwnd, "Source initialized." );
             HwndSource hSource = HwndSource.FromHwnd( _hwnd );
+            _driver = OSDriver.Create( this, hSource );
 
             if( !ShowActivated )
+            {
+                SetNoActivateFlag( true );
+            }
+            base.OnSourceInitialized( e );
+        }
+
+        internal void SetNoActivateFlag( bool set )
+        {
+            if( set )
             {
                 Win.Functions.SetWindowLong(
                             _hwnd,
                             Win.WindowLongIndex.GWL_EXSTYLE,
-                            (uint)Win.Functions.GetWindowLong( _hwnd, Win.WindowLongIndex.GWL_EXSTYLE ) |
-                            Win.WS_EX_NOACTIVATE );
+                            (uint)Win.Functions.GetWindowLong( _hwnd, Win.WindowLongIndex.GWL_EXSTYLE ) | Win.WS_EX_NOACTIVATE );
             }
-            hSource.AddHook( _hopeRestorer.GetWndProc( this ) );
-            hSource.CompositionTarget.BackgroundColor = Color.FromArgb( 0, 0, 0, 0 );
-            hSource.CompositionTarget.RenderMode = RenderMode.Default;
-            TryExtendFrame();
-            if( StaticCentral.ErrorMessage != null ) Title += StaticCentral.ErrorMessage;
-            base.OnSourceInitialized( e );
-        }
-
-        void TryExtendFrame()
-        {
-            try
+            else
             {
-                WinTrace( _hwnd, "Frame extended." );
-                _isExtendedFrame = OSVersionInfo.IsWindowsVistaOrGreater && Dwm.Functions.IsCompositionEnabled();
-                if( _isExtendedFrame )
-                {
-                    // Negative margins have special meaning to DwmExtendFrameIntoClientArea.
-                    // Negative margins create the "sheet of glass" effect, where the client 
-                    // area is rendered as a solid surface without a window border.
-                    Win.Margins m = new CK.Windows.Interop.Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
-                    Dwm.Functions.ExtendFrameIntoClientArea( _hwnd, ref m );
-                }
+                Win.Functions.SetWindowLong(
+                            _hwnd,
+                            Win.WindowLongIndex.GWL_EXSTYLE,
+                            (uint)Win.Functions.GetWindowLong( _hwnd, Win.WindowLongIndex.GWL_EXSTYLE ) & ~Win.WS_EX_NOACTIVATE );
             }
-            catch
-            {
-                _isExtendedFrame = false;
-                Background = new SolidColorBrush( Colors.WhiteSmoke );
-            }
-        }
-
-        /// <summary>
-        /// Called for activable Windows (when <see cref="Window.ShowActivated"/> is true).
-        /// This can be used to manually restore the focus to previously active window.
-        /// </summary>
-        /// <param name="hWnd">The handle window of the window that just lost the focus.</param>
-        /// <param name="isExternalWindow">True if the window is in another process. False if it is an internal (activable) window.</param>
-        protected virtual void SetActiveTarget( IntPtr hWnd, bool isExternalWindow )
-        {
         }
 
         /// <summary>
@@ -178,6 +150,12 @@ namespace CK.Windows
         static void WinTrace( IntPtr hWnd, string text )
         {
             Console.WriteLine( "[CiviKeyWindow:0x{0:X}]{1}.", hWnd, text );
+        }
+
+        [Conditional( "WINTRACE" )]
+        static void WinTrace( CKWindow wnd, string text )
+        {
+            Console.WriteLine( "[CiviKeyWindow:0x{0:X}]{1}.", wnd.ThisWindowHandle, text );
         }
 
         [Conditional( "WINTRACE" )]

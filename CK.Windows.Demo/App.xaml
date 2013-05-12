@@ -1,7 +1,8 @@
 ﻿<Application x:Class="CK.Windows.Demo.App"
              xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CK.Windows.Demo">
+             xmlns:local="clr-namespace:CK.Windows.Demo"
+             ShutdownMode="OnMainWindowClose">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

@@ -38,47 +38,19 @@ namespace CK.Windows
 {
     public partial class CKWindow
     {
-
-        protected override void OnPreviewMouseUp( System.Windows.Input.MouseButtonEventArgs e )
+        IntPtr WndProcVista( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
-            base.OnPreviewMouseUp( e );
+            VistaDriver driver = (VistaDriver)_driver;
+            return IntPtr.Zero;
         }
 
-        class Win8Driver : OSDriver
+        class VistaDriver : OSDriver
         {
-            internal Win8Driver( CKWindow w, HwndSource wSource )
+            internal VistaDriver( CKWindow w, HwndSource wSource )
                 : base( w )
             {
-                wSource.AddHook( WndProc );
-            }
-
-            IntPtr WndProc( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
-            {
-                switch( msg )
-                {
-                    case Win.WM_NCHITTEST:
-                        {
-                            int hit = Win.Functions.DefWindowProc( W.ThisWindowHandle, msg, wParam, lParam ).ToInt32();
-                            if( hit == Win.HTCLIENT )
-                            {
-                                W.CKNCHitTest( W.PointFromLParam( lParam ), ref hit );
-                            }
-                            handled = true;
-                            return new IntPtr( hit );
-                        }
-                    case Win.WM_NCACTIVATE:
-                        {
-                            break;
-                        }
-                    case Win.WM_ACTIVATE:
-                        {
-                            break;
-                        }
-
-                }
-                return IntPtr.Zero;
+                wSource.AddHook( w.WndProcVista );
             }
         }
-
     }
 }

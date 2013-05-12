@@ -30,6 +30,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Collections;
 using System.Windows;
+using CK.Core;
 
 namespace CK.Windows.App
 {
@@ -67,7 +68,7 @@ namespace CK.Windows.App
         /// </summary>
         static public bool IsOSRecoveryAvailable
         {
-            get { return _registeredExceptions != null ? _isOSRecoveryAvailable : CK.Core.OSVersionInfo.IsWindowsVistaOrGreater; }
+            get { return _registeredExceptions != null ? _isOSRecoveryAvailable : OSVersionInfoTEMP.OSLevel >= OSVersionInfoTEMP.SimpleOSLevel.WindowsVista; }
         }
 
         /// <summary>
@@ -106,7 +107,7 @@ namespace CK.Windows.App
                 _registeredExceptions = new List<string>();
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
                 System.Windows.Forms.Application.SetUnhandledExceptionMode( System.Windows.Forms.UnhandledExceptionMode.ThrowException );
-                if( !CK.Core.OSVersionInfo.IsWindowsVistaOrGreater ) return _isOSRecoveryAvailable = false;
+                if( OSVersionInfoTEMP.OSLevel < OSVersionInfoTEMP.SimpleOSLevel.WindowsVista ) return _isOSRecoveryAvailable = false;
 
                 string[] args = Environment.GetCommandLineArgs();
                 if( args != null && args.Length == 3 && args[1] == _crashcountParameterName )
