@@ -28,6 +28,8 @@ using System.Text;
 using Caliburn.Micro;
 using CK.Windows.Config;
 using System.Windows;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace CK.Windows.Demo
 {
@@ -54,6 +56,63 @@ namespace CK.Windows.Demo
             this.AddLink( ProfilesVM );
 
             this.AddLink( new FocusTestsViewModel( app, ConfigManager ) );
+
+            var group = this.AddGroup();
+
+            PropertyChangedMockupClass mockup = new PropertyChangedMockupClass();
+            group.AddProperty( mockup, m => m.InjectedCallerName );
+            group.AddProperty( mockup, m => m.Value );
+
+            group.AddAction( "Change values", () =>
+            {
+                mockup.InjectedCallerName = "CallerMemberNameAttribute works !";
+                mockup.Value = "Classical process works";
+            } );
+
+
         }
+    }
+
+    public class PropertyChangedMockupClass : INotifyPropertyChanged
+    {
+        public PropertyChangedMockupClass()
+        {
+            InjectedCallerName = "Click the button below";
+            Value = "Click the button below";
+        }
+
+        string _injectedCallerName;
+        public string InjectedCallerName
+        {
+            get { return _injectedCallerName; }
+            set
+            {
+                _injectedCallerName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        string _value;
+        public string Value { get { return _value; } set { _value = value; OnPropertyChanged( "Value" ); } }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged( [CallerMemberName] string propertyName = "" )
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if( handler != null )
+            {
+                var e = new PropertyChangedEventArgs( propertyName );
+                handler( this, e );
+            }
+        }
+    }
+}
+
+namespace System.Runtime.CompilerServices
+{
+    [AttributeUsage( AttributeTargets.Parameter, AllowMultiple = false, Inherited = true )]
+    public sealed class CallerMemberNameAttribute : Attribute
+    {
     }
 }
