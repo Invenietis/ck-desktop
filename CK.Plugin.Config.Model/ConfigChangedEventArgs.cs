@@ -40,12 +40,12 @@ namespace CK.Plugin.Config
         /// The objects whose configuration have changed.
         /// It is always available (if <see cref="Obj"/> is not null, this collection contains it).
         /// </summary>
-        public readonly IReadOnlyCollection<object> MultiObj;
+        public readonly ICKReadOnlyCollection<object> MultiObj;
 
         /// <summary>
         /// The plugins whose configuration have changed.
         /// </summary>
-        public readonly IReadOnlyCollection<INamedVersionedUniqueId> MultiPluginId;
+        public readonly ICKReadOnlyCollection<INamedVersionedUniqueId> MultiPluginId;
 
         /// <summary>
         /// The name of the entry whose configuration has changed. 
@@ -103,28 +103,28 @@ namespace CK.Plugin.Config
         }
 
         public ConfigChangedEventArgs( IObjectPluginAssociation a, IConfigEntry e, ChangeStatus status )
-            : this( a.Obj, new ReadOnlyListMono<object>( a.Obj ), new ReadOnlyListMono<INamedVersionedUniqueId>( a.PluginId ), e.Key, e.Value, status )
+            : this( a.Obj, new CKReadOnlyListMono<object>( a.Obj ), new CKReadOnlyListMono<INamedVersionedUniqueId>( a.PluginId ), e.Key, e.Value, status )
         {
         }
 
-        public ConfigChangedEventArgs( IReadOnlyCollection<object> multiObj, bool allObjectsConcerned, INamedVersionedUniqueId pluginId, ChangeStatus status )
-            : this( null, multiObj, new ReadOnlyListMono<INamedVersionedUniqueId>( pluginId ), null, null, status )
+        public ConfigChangedEventArgs( ICKReadOnlyCollection<object> multiObj, bool allObjectsConcerned, INamedVersionedUniqueId pluginId, ChangeStatus status )
+            : this( null, multiObj, new CKReadOnlyListMono<INamedVersionedUniqueId>( pluginId ), null, null, status )
         {
             IsAllObjectsConcerned = allObjectsConcerned;
         }
 
-        public ConfigChangedEventArgs( object obj, IReadOnlyCollection<INamedVersionedUniqueId> multiPluginId, bool allPluginsConcerned, ChangeStatus status )
-            : this( obj, new ReadOnlyListMono<object>( obj ), multiPluginId, null, null, status )
+        public ConfigChangedEventArgs( object obj, ICKReadOnlyCollection<INamedVersionedUniqueId> multiPluginId, bool allPluginsConcerned, ChangeStatus status )
+            : this( obj, new CKReadOnlyListMono<object>( obj ), multiPluginId, null, null, status )
         {
             IsAllPluginsConcerned = allPluginsConcerned;
         }
 
         public ConfigChangedEventArgs( object obj, INamedVersionedUniqueId pluginId, ChangeStatus status )
-            : this( obj, new ReadOnlyListMono<object>( obj ), new ReadOnlyListMono<INamedVersionedUniqueId>( pluginId ), null, null, status )
+            : this( obj, new CKReadOnlyListMono<object>( obj ), new CKReadOnlyListMono<INamedVersionedUniqueId>( pluginId ), null, null, status )
         {
         }
 
-        public ConfigChangedEventArgs( IReadOnlyCollection<object> multiObj, bool allObjectsConcerned, IReadOnlyCollection<INamedVersionedUniqueId> multiPluginId, bool allPluginsConcerned, ChangeStatus status )
+        public ConfigChangedEventArgs( ICKReadOnlyCollection<object> multiObj, bool allObjectsConcerned, ICKReadOnlyCollection<INamedVersionedUniqueId> multiPluginId, bool allPluginsConcerned, ChangeStatus status )
             : this( null, multiObj, multiPluginId, null, null, status )
         {
             IsAllPluginsConcerned = allPluginsConcerned;
@@ -133,8 +133,8 @@ namespace CK.Plugin.Config
 
         private ConfigChangedEventArgs( 
             object obj, 
-            IReadOnlyCollection<object> multiObj,
-            IReadOnlyCollection<INamedVersionedUniqueId> multiPluginId, 
+            ICKReadOnlyCollection<object> multiObj,
+            ICKReadOnlyCollection<INamedVersionedUniqueId> multiPluginId, 
             string key, 
             object value, 
             ChangeStatus status )

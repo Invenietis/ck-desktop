@@ -37,6 +37,6 @@ namespace CK.Plugin
     {        
         string ReturnType { get; }
         string Name { get; }
-        IReadOnlyList<ISimpleParameterInfo> Parameters { get; }
+        ICKReadOnlyList<ISimpleParameterInfo> Parameters { get; }
     }
 }

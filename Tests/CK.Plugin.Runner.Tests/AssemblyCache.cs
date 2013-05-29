@@ -11,7 +11,7 @@ namespace CK.Core
     public class AssemblyCache
     {
         public readonly Assembly Assembly;
-        IReadOnlyList<string> _sortedResourceNames;
+        ICKReadOnlyList<string> _sortedResourceNames;
         Dictionary<string,Type> _types;
         
         static ConcurrentDictionary<string, AssemblyCache> _cache = new ConcurrentDictionary<string, AssemblyCache>();
@@ -21,7 +21,7 @@ namespace CK.Core
             Assembly = a;
         }
 
-        public IReadOnlyList<string> ResourceNames
+        public ICKReadOnlyList<string> ResourceNames
             {
                 get
                 {
@@ -33,7 +33,7 @@ namespace CK.Core
                             {
                                 var l = Assembly.GetManifestResourceNames();
                                 Array.Sort( l, StringComparer.Ordinal );
-                                _sortedResourceNames = new ReadOnlyListOnIList<string>( l );
+                                _sortedResourceNames = new CKReadOnlyListOnIList<string>( l );
                             }
                         }
                     }

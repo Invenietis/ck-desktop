@@ -38,11 +38,11 @@ namespace CK.Plugin.Discoverer
         bool _isDynamicService;
 
         List<PluginInfo> _implCollection;
-        IReadOnlyList<IPluginInfo> _impl;
+        ICKReadOnlyList<IPluginInfo> _impl;
 
-        IReadOnlyList<ISimplePropertyInfo> _propertiesInfoCollectionEx;
-        IReadOnlyList<ISimpleMethodInfo> _methodsInfoCollectionEx;
-        IReadOnlyList<ISimpleEventInfo> _eventsInfoCollectionEx;
+        ICKReadOnlyList<ISimplePropertyInfo> _propertiesInfoCollectionEx;
+        ICKReadOnlyList<ISimpleMethodInfo> _methodsInfoCollectionEx;
+        ICKReadOnlyList<ISimpleEventInfo> _eventsInfoCollectionEx;
 
         IList<SimplePropertyInfo> _propertiesInfoCollection;
         IList<SimpleEventInfo> _eventsInfoCollection;
@@ -51,21 +51,21 @@ namespace CK.Plugin.Discoverer
         /// <summary>
         /// Gets a collection containing infos about the properties exposed by the service
         /// </summary>
-        IReadOnlyCollection<ISimplePropertyInfo> IServiceInfo.PropertiesInfoCollection
+        ICKReadOnlyCollection<ISimplePropertyInfo> IServiceInfo.PropertiesInfoCollection
         {
             get { return _propertiesInfoCollectionEx; }
         }
         /// <summary>
         /// Gets a collection containing infos about the methods exposed by the service
         /// </summary>
-        IReadOnlyCollection<ISimpleMethodInfo> IServiceInfo.MethodsInfoCollection
+        ICKReadOnlyCollection<ISimpleMethodInfo> IServiceInfo.MethodsInfoCollection
         {
             get { return _methodsInfoCollectionEx; }
         }
         /// <summary>
         /// Gets a collection containing infos about the events exposed by the service
         /// </summary>
-        IReadOnlyCollection<ISimpleEventInfo> IServiceInfo.EventsInfoCollection
+        ICKReadOnlyCollection<ISimpleEventInfo> IServiceInfo.EventsInfoCollection
         {
             get { return _eventsInfoCollectionEx; }
         }
@@ -82,7 +82,7 @@ namespace CK.Plugin.Discoverer
             get { return _assembly; }
         }
 
-        public IReadOnlyList<IPluginInfo> Implementations
+        public ICKReadOnlyList<IPluginInfo> Implementations
         {
             get { return _impl; }
         }
@@ -117,7 +117,7 @@ namespace CK.Plugin.Discoverer
             foreach( Runner.PluginInfo plugin in r.Implementations )
                 _implCollection.Add( merger.FindOrCreate( plugin ) );
 
-            _impl = new ReadOnlyListOnIList<PluginInfo>( _implCollection );
+            _impl = new CKReadOnlyListOnIList<PluginInfo>( _implCollection );
 
             _propertiesInfoCollection = new List<SimplePropertyInfo>();
             foreach( Runner.SimplePropertyInfo rP in r.PropertiesInfoCollection )
@@ -126,7 +126,7 @@ namespace CK.Plugin.Discoverer
                 p.Initialize( rP );
                 _propertiesInfoCollection.Add( p );
             }
-            _propertiesInfoCollectionEx = new ReadOnlyListOnIList<SimplePropertyInfo>( _propertiesInfoCollection );
+            _propertiesInfoCollectionEx = new CKReadOnlyListOnIList<SimplePropertyInfo>( _propertiesInfoCollection );
 
             _methodsInfoCollection = new List<SimpleMethodInfo>();
             foreach( Runner.SimpleMethodInfo rM in r.MethodsInfoCollection )
@@ -136,7 +136,7 @@ namespace CK.Plugin.Discoverer
                 _methodsInfoCollection.Add( m );
             }
 
-            _methodsInfoCollectionEx = new ReadOnlyListOnIList<SimpleMethodInfo>( _methodsInfoCollection );
+            _methodsInfoCollectionEx = new CKReadOnlyListOnIList<SimpleMethodInfo>( _methodsInfoCollection );
 
             _eventsInfoCollection = new List<SimpleEventInfo>();
             foreach( Runner.SimpleEventInfo rE in r.EventsInfoCollection )
@@ -146,7 +146,7 @@ namespace CK.Plugin.Discoverer
                 _eventsInfoCollection.Add( e );
             }
 
-            _eventsInfoCollectionEx = new ReadOnlyListOnIList<SimpleEventInfo>( _eventsInfoCollection );
+            _eventsInfoCollectionEx = new CKReadOnlyListOnIList<SimpleEventInfo>( _eventsInfoCollection );
         }
 
         internal bool Merge( PluginDiscoverer.Merger merger, Runner.ServiceInfo r )

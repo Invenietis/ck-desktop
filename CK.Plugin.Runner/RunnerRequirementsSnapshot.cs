@@ -32,7 +32,7 @@ using System.Diagnostics;
 
 namespace CK.Plugin.Hosting
 {
-    public class RunnerRequirementsSnapshot : IReadOnlyCollection<RequirementLayerSnapshot>
+    public class RunnerRequirementsSnapshot : ICKReadOnlyCollection<RequirementLayerSnapshot>
     {
         IList<RequirementLayerSnapshot> _layers;
         Dictionary<object,SolvedConfigStatus> _final;

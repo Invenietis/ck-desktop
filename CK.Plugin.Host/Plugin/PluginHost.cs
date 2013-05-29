@@ -38,7 +38,7 @@ namespace CK.Plugin.Hosting
         readonly ServiceHost _serviceHost;
         readonly Dictionary<IPluginInfo, PluginProxy> _plugins;
         readonly Dictionary<Guid, PluginProxy> _loadedPlugins;
-        readonly IReadOnlyCollection<IPluginProxy> _loadedPluginsEx;
+        readonly ICKReadOnlyCollection<IPluginProxy> _loadedPluginsEx;
         readonly List<PluginProxy> _newlyLoadedPlugins;
 
         public PluginHost()
@@ -50,7 +50,7 @@ namespace CK.Plugin.Hosting
         {
             _plugins = new Dictionary<IPluginInfo, PluginProxy>();
             _loadedPlugins = new Dictionary<Guid, PluginProxy>();
-            _loadedPluginsEx = new ReadOnlyCollectionOnICollection<PluginProxy>( _loadedPlugins.Values );
+            _loadedPluginsEx = new CKReadOnlyCollectionOnICollection<PluginProxy>( _loadedPlugins.Values );
             _serviceHost = new ServiceHost( catchMode );
             _newlyLoadedPlugins = new List<PluginProxy>();
         }
@@ -70,7 +70,7 @@ namespace CK.Plugin.Hosting
         /// Gets or sets a function called after plugins that must stop or be disabled have actually been stopped or disabled
         /// and before start of (potentially newly loaded) plugins.
         /// </summary>
-        public Action<IReadOnlyCollection<IPluginProxy>> ServiceReferencesBinder { get; set; }
+        public Action<ICKReadOnlyCollection<IPluginProxy>> ServiceReferencesBinder { get; set; }
 
         /// <summary>
         /// Gets the <see cref="IPluginProxy"/> corresponding to the <see cref="IPluginInfo"/>.
@@ -98,7 +98,7 @@ namespace CK.Plugin.Hosting
         /// <summary>
         /// Gets the loaded plugins. This contains also the plugins that are currently disabled but have been loaded at least once.
         /// </summary>
-        public IReadOnlyCollection<IPluginProxy> LoadedPlugins { get { return _loadedPluginsEx; } }
+        public ICKReadOnlyCollection<IPluginProxy> LoadedPlugins { get { return _loadedPluginsEx; } }
 
         public bool IsPluginRunning( IPluginInfo key )
         {
@@ -296,7 +296,7 @@ namespace CK.Plugin.Hosting
             Debug.Assert( ServiceReferencesBinder != null );
             try
             {
-                var listNew = new ReadOnlyCollectionOnICollection<PluginProxy>( _newlyLoadedPlugins );
+                var listNew = new CKReadOnlyCollectionOnICollection<PluginProxy>( _newlyLoadedPlugins );
                 ServiceReferencesBinder( listNew );
             }
             catch( Exception ex )

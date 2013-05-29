@@ -29,6 +29,8 @@ using CK.Storage;
 using System.ComponentModel;
 using CK.Core;
 using System.Xml;
+using System.Linq;
+using CK.Plugin.Config.Model;
 
 namespace CK.Plugin.Config
 {
@@ -176,7 +178,7 @@ namespace CK.Plugin.Config
             IsUserConfigDirty = false;
 		}
 
-		public IReadOnlyList<ISimpleErrorMessage> LoadUserConfig( IStructuredReader reader )
+		public ICKReadOnlyList<ISimpleErrorMessage> LoadUserConfig( IStructuredReader reader )
 		{
             if( reader == null ) throw new ArgumentNullException( "reader" );
 
@@ -200,7 +202,7 @@ namespace CK.Plugin.Config
             IsSystemConfigDirty = false;
         }
 
-        public IReadOnlyList<ISimpleErrorMessage> LoadSystemConfig( IStructuredReader reader )
+        public ICKReadOnlyList<ISimpleErrorMessage> LoadSystemConfig( IStructuredReader reader )
         {
             if( reader == null ) throw new ArgumentNullException( "reader" );
 

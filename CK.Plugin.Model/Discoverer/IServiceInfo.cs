@@ -55,22 +55,22 @@ namespace CK.Plugin
         /// <summary>
         /// Gets the different <see cref="IPluginInfo"/> that implement this service.
         /// </summary>
-        IReadOnlyList<IPluginInfo> Implementations { get; }
+        ICKReadOnlyList<IPluginInfo> Implementations { get; }
 
         /// <summary>
         /// Gets the collection of <see cref="ISimpleMethodInfo"/> that this service exposes.
         /// </summary>
-        IReadOnlyCollection<ISimpleMethodInfo> MethodsInfoCollection { get; }
+        ICKReadOnlyCollection<ISimpleMethodInfo> MethodsInfoCollection { get; }
 
         /// <summary>
         /// Gets the collection of <see cref="ISimpleEventInfo"/> that this service exposes.
         /// </summary>
-        IReadOnlyCollection<ISimpleEventInfo> EventsInfoCollection { get; }
+        ICKReadOnlyCollection<ISimpleEventInfo> EventsInfoCollection { get; }
 
         /// <summary>
         /// Gets the collection of <see cref="ISimplePropertyInfo"/> that this service exposes.
         /// </summary>
-        IReadOnlyCollection<ISimplePropertyInfo> PropertiesInfoCollection { get; }
+        ICKReadOnlyCollection<ISimplePropertyInfo> PropertiesInfoCollection { get; }
 
         /// <summary>
         /// Gets the <see cref="IServiceInfo"/> that generalizes this one if it exists.

@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.Xml;
 using System.Xml.Serialization;
 using CK.Core;
+using CK.Plugin.Config.Model;
 using CK.Storage;
 
 namespace CK.SharedDic

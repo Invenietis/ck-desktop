@@ -35,7 +35,7 @@ namespace CK.Plugin.Config
     {
         ConfigurationBase _holder;
         Dictionary<Guid, PluginStatus> _pluginStatusDic;
-        ReadOnlyCollectionOnICollection<PluginStatus> _pluginStatusReadOnlyCollection;
+        CKReadOnlyCollectionOnICollection<PluginStatus> _pluginStatusReadOnlyCollection;
 
         public event EventHandler<PluginStatusCollectionChangingEventArgs> Changing;
 
@@ -45,7 +45,7 @@ namespace CK.Plugin.Config
         {
             _holder = holder;
             _pluginStatusDic = new Dictionary<Guid, PluginStatus>();
-            _pluginStatusReadOnlyCollection = new ReadOnlyCollectionOnICollection<PluginStatus>( _pluginStatusDic.Values );
+            _pluginStatusReadOnlyCollection = new CKReadOnlyCollectionOnICollection<PluginStatus>( _pluginStatusDic.Values );
         }
 
         internal bool CanChange( ChangeStatus action, Guid pluginId, ConfigPluginStatus status )
@@ -143,7 +143,7 @@ namespace CK.Plugin.Config
             return false;
         }
 
-        #region IReadOnlyCollection
+        #region ICKReadOnlyCollection
 
         public bool Contains( object item )
         {

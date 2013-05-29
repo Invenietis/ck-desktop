@@ -56,7 +56,7 @@ namespace CK.Plugin.Config
         }
     }
 
-    public interface ISolvedPluginConfiguration : IReadOnlyCollection<SolvedPluginConfigElement>
+    public interface ISolvedPluginConfiguration : ICKReadOnlyCollection<SolvedPluginConfigElement>
     {
         /// <summary>
         /// Fires whenever a configuration changed.

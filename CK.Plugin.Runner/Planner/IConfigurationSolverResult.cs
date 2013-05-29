@@ -10,15 +10,15 @@ namespace CK.Plugin.Hosting
     {
         bool ConfigurationSuccess { get; }
 
-        IReadOnlyCollection<IPluginInfo> BlockingPlugins { get; }
+        ICKReadOnlyCollection<IPluginInfo> BlockingPlugins { get; }
 
-        IReadOnlyCollection<IServiceInfo> BlockingServices { get; }
+        ICKReadOnlyCollection<IServiceInfo> BlockingServices { get; }
 
-        IReadOnlyCollection<IPluginInfo> DisabledPlugins { get; }
+        ICKReadOnlyCollection<IPluginInfo> DisabledPlugins { get; }
 
-        IReadOnlyCollection<IPluginInfo> StoppedPlugins { get; }
+        ICKReadOnlyCollection<IPluginInfo> StoppedPlugins { get; }
 
-        IReadOnlyCollection<IPluginInfo> RunningPlugins { get; }
+        ICKReadOnlyCollection<IPluginInfo> RunningPlugins { get; }
     }
 
 }

@@ -31,7 +31,7 @@ namespace CK.Plugin.Config
     /// Can be used by all objects that whants to keep a collection of <see cref="IPluginStatus"/>.
     /// Typically system or user configuration.
     /// </summary>
-    public interface IPluginStatusCollection : IReadOnlyCollection<IPluginStatus>
+    public interface IPluginStatusCollection : ICKReadOnlyCollection<IPluginStatus>
     {
         event EventHandler<PluginStatusCollectionChangedEventArgs> Changed;
 

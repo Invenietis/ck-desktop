@@ -72,7 +72,7 @@ namespace CK.Plugin
         /// <summary>
         /// Gets the list of errors that occured while there was no launched plugins to process them.
         /// </summary>
-        IReadOnlyList<ILogErrorCaught> UntrackedErrors { get; }
+        ICKReadOnlyList<ILogErrorCaught> UntrackedErrors { get; }
 
     }
 }

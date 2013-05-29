@@ -32,7 +32,7 @@ using System.Diagnostics;
 
 namespace CK.Plugin.Hosting
 {
-    class LogEventEntry : LogHostEventArgs, ILogEventEntry, IReadOnlyCollection<ILogEventError>
+    class LogEventEntry : LogHostEventArgs, ILogEventEntry, ICKReadOnlyCollection<ILogEventError>
     {
         int _depth;
         EventInfo _event;
@@ -107,7 +107,7 @@ namespace CK.Plugin.Hosting
             get { return _event; }
         }
 
-        public IReadOnlyCollection<ILogEventError> Errors
+        public ICKReadOnlyCollection<ILogEventError> Errors
         {
             get { return this; }
         }
@@ -121,8 +121,8 @@ namespace CK.Plugin.Hosting
         { 
             get { return Math.Abs( _errorCount ); } 
         }
-        
-        bool IReadOnlyCollection<ILogEventError>.Contains( object o )
+
+        bool ICKReadOnlyCollection<ILogEventError>.Contains( object o )
         {
             LogEventEntryError e = o as LogEventEntryError;
             return e != null && e.OtherErrors == this;

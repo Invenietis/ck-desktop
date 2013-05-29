@@ -84,7 +84,7 @@ namespace CK.Plugin.Runner.Tests.Planner
             return d;
         }
 
-        void Check( IReadOnlyCollection<IPluginInfo> plugins, params string[] pluginFullNames )
+        void Check( ICKReadOnlyCollection<IPluginInfo> plugins, params string[] pluginFullNames )
         {
             Assert.That( plugins.Select( p => p.PluginFullName ).OrderBy( Util.FuncIdentity ), Is.EquivalentTo( pluginFullNames.OrderBy( Util.FuncIdentity ) ) );
         }

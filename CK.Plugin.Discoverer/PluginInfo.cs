@@ -51,12 +51,12 @@ namespace CK.Plugin.Discoverer
         bool _isOldVersion;
         IServiceInfo _service;
 
-        IReadOnlyList<string> _categories;
-        IReadOnlyList<IPluginConfigAccessorInfo> _editorsInfo;
-        IReadOnlyList<IPluginConfigAccessorInfo> _editableBy;
+        ICKReadOnlyList<string> _categories;
+        ICKReadOnlyList<IPluginConfigAccessorInfo> _editorsInfo;
+        ICKReadOnlyList<IPluginConfigAccessorInfo> _editableBy;
 
         string[] _categoriesCollection;
-        SortedArrayKeyList<ServiceReferenceInfo,string> _servicesReferences;
+        CKSortedArrayKeyList<ServiceReferenceInfo,string> _servicesReferences;
         List<PluginConfigAccessorInfo> _editorsCollection;
         List<PluginConfigAccessorInfo> _editableByCollection;
 
@@ -89,7 +89,7 @@ namespace CK.Plugin.Discoverer
             get { return _url; }
         }
 
-        public IReadOnlyList<string> Categories
+        public ICKReadOnlyList<string> Categories
         {
             get { return _categories; }
         }
@@ -104,12 +104,12 @@ namespace CK.Plugin.Discoverer
             get { return _pluginFullName; }
         }
 
-        public IReadOnlyList<IPluginConfigAccessorInfo> EditorsInfo
+        public ICKReadOnlyList<IPluginConfigAccessorInfo> EditorsInfo
         {
             get { return _editorsInfo; }
         }
 
-        public IReadOnlyList<IPluginConfigAccessorInfo> EditableBy
+        public ICKReadOnlyList<IPluginConfigAccessorInfo> EditableBy
         {
             get { return _editableBy; }
         }
@@ -119,7 +119,7 @@ namespace CK.Plugin.Discoverer
             get { return _assemblyInfo; }
         }
 
-        public IReadOnlyList<IServiceReferenceInfo> ServiceReferences
+        public ICKReadOnlyList<IServiceReferenceInfo> ServiceReferences
         {
             get { return _servicesReferences; }
         }
@@ -158,14 +158,14 @@ namespace CK.Plugin.Discoverer
 
             Debug.Assert( r.Categories != null );
             _categoriesCollection = r.Categories;
-            _categories = new ReadOnlyListOnIList<string>( _categoriesCollection );
+            _categories = new CKReadOnlyListOnIList<string>( _categoriesCollection );
 
             if( r.Service != null )
             {
                 _service = merger.FindOrCreate( r.Service );
             }
 
-            _servicesReferences = new SortedArrayKeyList<ServiceReferenceInfo, string>( serviceRef => serviceRef.PropertyName );
+            _servicesReferences = new CKSortedArrayKeyList<ServiceReferenceInfo, string>( serviceRef => serviceRef.PropertyName );
             if( r.ServiceReferences != null )
             {
                 foreach( Runner.ServiceReferenceInfo service in r.ServiceReferences )
@@ -187,9 +187,9 @@ namespace CK.Plugin.Discoverer
                 foreach( Runner.PluginConfigAccessorInfo editor in r.EditableBy )
                     _editableByCollection.Add( merger.FindOrCreate( editor ) );
             }
-            _editorsInfo = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _editorsCollection );
-            _editableBy = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _editableByCollection );
-            _editorsInfo = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _editorsCollection );
+            _editorsInfo = new CKReadOnlyListOnIList<PluginConfigAccessorInfo>( _editorsCollection );
+            _editableBy = new CKReadOnlyListOnIList<PluginConfigAccessorInfo>( _editableByCollection );
+            _editorsInfo = new CKReadOnlyListOnIList<PluginConfigAccessorInfo>( _editorsCollection );
         }
 
         internal bool Merge( PluginDiscoverer.Merger merger, Runner.PluginInfo r )
@@ -241,7 +241,7 @@ namespace CK.Plugin.Discoverer
             if( !_categories.SequenceEqual( r.Categories, StringComparer.Ordinal ) )
             {
                 _categoriesCollection = r.Categories;
-                _categories = new ReadOnlyListOnIList<string>( _categoriesCollection );
+                _categories = new CKReadOnlyListOnIList<string>( _categoriesCollection );
                 hasChanged = true;
             }
             

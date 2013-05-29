@@ -42,19 +42,19 @@ namespace CK.Plugin.Hosting
         /// Gets the collection of plugins that must be started.
         /// Null when <see cref="Impossible"/> is true.
         /// </summary>
-        public IReadOnlyCollection<IPluginInfo> PluginsToStart { get; private set; }
+        public ICKReadOnlyCollection<IPluginInfo> PluginsToStart { get; private set; }
 
         /// <summary>
         /// Gets the collection of plugins that must be stopped.
         /// Null when <see cref="Impossible"/> is true.
         /// </summary>
-        public IReadOnlyCollection<IPluginInfo> PluginsToStop { get; private set; }
+        public ICKReadOnlyCollection<IPluginInfo> PluginsToStop { get; private set; }
 
         /// <summary>
         /// Gets the collection of plugins that must be disabled. 
         /// Null when <see cref="Impossible"/> is true.
         /// </summary>
-        public IReadOnlyCollection<IPluginInfo> PluginsToDisable { get; private set; }
+        public ICKReadOnlyCollection<IPluginInfo> PluginsToDisable { get; private set; }
 
         /// <summary>
         /// Gets whether the execution is not possible (no running configuration that satisfy
@@ -67,7 +67,7 @@ namespace CK.Plugin.Hosting
             // Let properties be null: This is the Impossible one.
         }
 
-        internal ExecutionPlan( IEnumerable<IPluginInfo> pluginsToStart, IEnumerable<IPluginInfo> pluginsToStop, IReadOnlyCollection<IPluginInfo> pluginsToDisable )
+        internal ExecutionPlan( IEnumerable<IPluginInfo> pluginsToStart, IEnumerable<IPluginInfo> pluginsToStop, ICKReadOnlyCollection<IPluginInfo> pluginsToDisable )
         {
             Debug.Assert( pluginsToStart != null && pluginsToStop != null && pluginsToDisable != null );
             PluginsToStart = pluginsToStart.ToReadOnlyCollection();

@@ -10,7 +10,7 @@ namespace CK.Plugin.Runner.Tests.Planner
     {
         readonly DiscovererStub _disco;
         internal List<PluginInfoStub> _plugins;
-        IReadOnlyList<PluginInfoStub> _pluginsEx;
+        ICKReadOnlyList<PluginInfoStub> _pluginsEx;
         ServiceInfoStub _generalization;
 
         internal ServiceInfoStub( DiscovererStub disco, string name )
@@ -18,7 +18,7 @@ namespace CK.Plugin.Runner.Tests.Planner
             _disco = disco;
             ServiceFullName = name;
             _plugins = new List<PluginInfoStub>();
-            _pluginsEx = new ReadOnlyListOnIList<PluginInfoStub>( _plugins );
+            _pluginsEx = new CKReadOnlyListOnIList<PluginInfoStub>( _plugins );
             IsDynamicService = true;
         }
 
@@ -28,7 +28,7 @@ namespace CK.Plugin.Runner.Tests.Planner
 
         public IAssemblyInfo AssemblyInfo  { get; set; }
 
-        public IReadOnlyList<IPluginInfo> Implementations
+        public ICKReadOnlyList<IPluginInfo> Implementations
         {
             get { return _pluginsEx; }
         }
@@ -46,11 +46,11 @@ namespace CK.Plugin.Runner.Tests.Planner
 
         string IServiceInfo.AssemblyQualifiedName { get { return null; } }
 
-        IReadOnlyCollection<ISimpleMethodInfo> IServiceInfo.MethodsInfoCollection { get { return ReadOnlyListEmpty<ISimpleMethodInfo>.Empty; } }
+        ICKReadOnlyCollection<ISimpleMethodInfo> IServiceInfo.MethodsInfoCollection { get { return CKReadOnlyListEmpty<ISimpleMethodInfo>.Empty; } }
 
-        IReadOnlyCollection<ISimpleEventInfo> IServiceInfo.EventsInfoCollection { get { return ReadOnlyListEmpty<ISimpleEventInfo>.Empty; } }
+        ICKReadOnlyCollection<ISimpleEventInfo> IServiceInfo.EventsInfoCollection { get { return CKReadOnlyListEmpty<ISimpleEventInfo>.Empty; } }
 
-        IReadOnlyCollection<ISimplePropertyInfo> IServiceInfo.PropertiesInfoCollection { get { return ReadOnlyListEmpty<ISimplePropertyInfo>.Empty; } }
+        ICKReadOnlyCollection<ISimplePropertyInfo> IServiceInfo.PropertiesInfoCollection { get { return CKReadOnlyListEmpty<ISimplePropertyInfo>.Empty; } }
 
         bool IDiscoveredInfo.HasError { get { return false; } }
 

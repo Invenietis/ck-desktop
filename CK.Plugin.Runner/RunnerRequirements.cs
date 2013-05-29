@@ -33,7 +33,7 @@ using System.Diagnostics;
 namespace CK.Plugin.Hosting
 {
 
-    public class RunnerRequirements : IReadOnlyCollection<RequirementLayer>
+    public class RunnerRequirements : ICKReadOnlyCollection<RequirementLayer>
     {
         PluginRunner _runner;
         List<RequirementLayer> _layers;

@@ -39,7 +39,7 @@ namespace CK.Plugin
         /// <summary>
         /// Gets the list of errors thrown by event receivers.
         /// </summary>
-        IReadOnlyCollection<ILogEventError> Errors { get; }
+        ICKReadOnlyCollection<ILogEventError> Errors { get; }
 
 
     }

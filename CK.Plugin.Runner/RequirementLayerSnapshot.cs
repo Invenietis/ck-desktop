@@ -48,19 +48,19 @@ namespace CK.Plugin.Hosting
 
         public string LayerName { get; private set; }
 
-        public IReadOnlyCollection<PluginRequirementIdentifier> PluginRequirements { get; private set; }
+        public ICKReadOnlyCollection<PluginRequirementIdentifier> PluginRequirements { get; private set; }
 
-        public IReadOnlyCollection<ServiceRequirementIdentifier> ServiceRequirements { get; private set; }
+        public ICKReadOnlyCollection<ServiceRequirementIdentifier> ServiceRequirements { get; private set; }
 
         internal RequirementLayerSnapshot( RequirementLayer l )
         {
             LayerName = l.LayerName;
 
             var plugins = l.PluginRequirements.Select( ( r, idx ) => new PluginRequirementIdentifier() { PluginId = r.PluginId, Requirement = r.Requirement } ).ToArray();
-            PluginRequirements = new ReadOnlyCollectionOnICollection<PluginRequirementIdentifier>( plugins );
+            PluginRequirements = new CKReadOnlyCollectionOnICollection<PluginRequirementIdentifier>( plugins );
 
             var services = l.ServiceRequirements.Select( ( r, idx ) => new ServiceRequirementIdentifier() { AssemblyQualifiedName = r.AssemblyQualifiedName, Requirement = r.Requirement } ).ToArray();
-            ServiceRequirements = new ReadOnlyCollectionOnICollection<ServiceRequirementIdentifier>( services );
+            ServiceRequirements = new CKReadOnlyCollectionOnICollection<ServiceRequirementIdentifier>( services );
         }
     }
 }

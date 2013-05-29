@@ -32,6 +32,7 @@ using System.Linq;
 using CK.Storage;
 using System.Collections.Generic;
 using System.Reflection;
+using CK.Plugin.Config.Model;
 
 namespace CK.Context
 {
@@ -41,25 +42,25 @@ namespace CK.Context
         ILogCenter _log;
         MethodInfo _loader;
 
-        internal LoadResult( ILogCenter log, MethodInfo loader, bool fileNotFound, IReadOnlyList<ISimpleErrorMessage> warnings )
+        internal LoadResult( ILogCenter log, MethodInfo loader, bool fileNotFound, ICKReadOnlyList<ISimpleErrorMessage> warnings )
         {
             Debug.Assert( log != null && loader != null );
             _log = log;
             _loader = loader;
             FileNotFound = fileNotFound;
-            Warnings = warnings ?? ReadOnlyListEmpty<ISimpleErrorMessage>.Empty;
+            Warnings = warnings ?? CKReadOnlyListEmpty<ISimpleErrorMessage>.Empty;
         }
 
         public bool FileNotFound { get; private set; }
 
-        public IReadOnlyList<ISimpleErrorMessage> Warnings { get; private set; }
+        public ICKReadOnlyList<ISimpleErrorMessage> Warnings { get; private set; }
 
         public bool Logged { get { return _log == null; } }
 
         public void Log()
         {
             if( _log == null ) return;
-            
+
             _log = null;
         }
 
@@ -74,14 +75,14 @@ namespace CK.Context
     public abstract class AbstractContextHost
     {
         IContext _ctx;
-        
+
         /// <summary>
         /// Initializes a new ContextHost instance. 
         /// Absolutely nothing is done by this constructor: <see cref="CreateContext"/> must be called
         /// in order to obtain a new <see cref="IContext"/>.
         /// </summary>
         public AbstractContextHost()
-        {           
+        {
         }
 
         /// <summary>
@@ -145,7 +146,7 @@ namespace CK.Context
         /// <param name="saving">True if we are saving the configuration. False if we are loading it.</param>
         /// <returns>The address for the user configuration.</returns>
         protected abstract Uri GetDefaultUserConfigAddress( bool saving );
-        
+
         /// <summary>
         /// This method is called by <see cref="EnsureCurrentContextProfile"/> whenever the host needs an address to store the current context
         /// and there is no already registered context in the user profile.
@@ -203,6 +204,7 @@ namespace CK.Context
         public virtual LoadResult LoadUserConfig( Uri address )
         {
             LoadResult r = DoRead( _ctx.ConfigManager.Extended.LoadUserConfig, address );
+
             if( !r.FileNotFound )
             {
                 _ctx.ConfigManager.SystemConfiguration.CurrentUserProfile = _ctx.ConfigManager.SystemConfiguration.UserProfiles.FindOrCreate( address );
@@ -299,7 +301,7 @@ namespace CK.Context
         protected virtual IStructuredWriter OpenWrite( Uri u )
         {
             if( u == null ) throw new ArgumentNullException( "u" );
-         
+
             if( !u.IsFile ) throw new ArgumentException( "Only file:// protocol is currently supported." );
             string path = u.LocalPath;
             return SimpleStructuredWriter.CreateWriter( new FileStream( path, FileMode.Create ), _ctx );
@@ -308,15 +310,15 @@ namespace CK.Context
         protected virtual IStructuredReader OpenRead( Uri u, bool throwIfMissing )
         {
             if( u == null ) throw new ArgumentNullException( "u" );
-            
+
             if( !u.IsFile ) throw new ArgumentException( "Only file:// protocol is currently supported." );
             string path = u.LocalPath;
             return SimpleStructuredReader.CreateReader( File.Exists( path ) ? new FileStream( path, FileMode.Open ) : null, _ctx, throwIfMissing );
         }
 
-        protected virtual LoadResult DoRead( Func<IStructuredReader,IReadOnlyList<ISimpleErrorMessage>> reader, Uri u )
+        protected virtual LoadResult DoRead( Func<IStructuredReader, ICKReadOnlyList<ISimpleErrorMessage>> reader, Uri u )
         {
-            if( reader == null ) throw new ArgumentNullException( "reader" );           
+            if( reader == null ) throw new ArgumentNullException( "reader" );
             if( u == null ) throw new ArgumentNullException( "u" );
 
             using( var sr = OpenRead( u, false ) )
@@ -326,7 +328,7 @@ namespace CK.Context
             }
         }
 
-        protected virtual LoadResult DoRead( Func<IStructuredReader, IReadOnlyList<ISimpleErrorMessage>> reader, IStructuredReader structuredReader )
+        protected virtual LoadResult DoRead( Func<IStructuredReader, ICKReadOnlyList<ISimpleErrorMessage>> reader, IStructuredReader structuredReader )
         {
             if( reader == null ) throw new ArgumentNullException( "reader" );
             if( structuredReader == null ) throw new ArgumentNullException( "structuredReader" );

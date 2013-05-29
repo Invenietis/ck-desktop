@@ -33,7 +33,7 @@ namespace CK.Plugin.Config
     /// and all contexts used. The <see cref="IUriHistory"/> items are considered as a list: the first, top item (the one at index 0)
     /// is considered to be the current one.
     /// </summary>
-    public interface IUriHistoryCollection : IReadOnlyList<IUriHistory>, INotifyCollectionChanged, INotifyPropertyChanged
+    public interface IUriHistoryCollection : ICKReadOnlyList<IUriHistory>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         /// <summary>
         /// Gets the current, top <see cref="IUriHistory"/>. 

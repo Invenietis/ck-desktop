@@ -10,11 +10,11 @@ namespace CK.Plugin.Hosting
     {
         ILivePluginInfo FindPlugin( IPluginInfo p );
 
-        IObservableReadOnlyCollection<ILivePluginInfo> Plugins { get; }
+        CKIObservableReadOnlyCollection<ILivePluginInfo> Plugins { get; }
 
         ILiveServiceInfo FindService( IServiceInfo p );
 
-        IObservableReadOnlyCollection<ILiveServiceInfo> Services { get; }
+        CKIObservableReadOnlyCollection<ILiveServiceInfo> Services { get; }
 
     }
 }

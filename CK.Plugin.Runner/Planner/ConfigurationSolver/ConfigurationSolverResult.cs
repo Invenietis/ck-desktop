@@ -7,14 +7,14 @@ using CK.Core;
 
 namespace CK.Plugin.Hosting
 {
-    class ConfigurationSolverResult : IConfigurationSolverResult
+    public class ConfigurationSolverResult : IConfigurationSolverResult
     {
-        IReadOnlyCollection<IPluginInfo> _blockingPlugins;
-        IReadOnlyCollection<IServiceInfo> _blockingServices;
+        ICKReadOnlyCollection<IPluginInfo> _blockingPlugins;
+        ICKReadOnlyCollection<IServiceInfo> _blockingServices;
         
-        IReadOnlyCollection<IPluginInfo> _disabledPlugins;
-        IReadOnlyCollection<IPluginInfo> _stoppedPlugins;
-        IReadOnlyCollection<IPluginInfo> _runningPlugins;
+        ICKReadOnlyCollection<IPluginInfo> _disabledPlugins;
+        ICKReadOnlyCollection<IPluginInfo> _stoppedPlugins;
+        ICKReadOnlyCollection<IPluginInfo> _runningPlugins;
 
         public ConfigurationSolverResult( List<IPluginInfo> blockingPlugins, List<IServiceInfo> blockingServices )
         {
@@ -39,27 +39,27 @@ namespace CK.Plugin.Hosting
 
         public bool ConfigurationSuccess { get; private set; }
 
-        public IReadOnlyCollection<IPluginInfo> BlockingPlugins 
+        public ICKReadOnlyCollection<IPluginInfo> BlockingPlugins 
         { 
             get { return _blockingPlugins; } 
         }
 
-        public IReadOnlyCollection<IServiceInfo> BlockingServices 
+        public ICKReadOnlyCollection<IServiceInfo> BlockingServices 
         {
             get { return _blockingServices; } 
         }
 
-        public IReadOnlyCollection<IPluginInfo> DisabledPlugins
+        public ICKReadOnlyCollection<IPluginInfo> DisabledPlugins
         {
             get { return _disabledPlugins; }
         }
 
-        public IReadOnlyCollection<IPluginInfo> StoppedPlugins
+        public ICKReadOnlyCollection<IPluginInfo> StoppedPlugins
         {
             get { return _stoppedPlugins; }
         }
 
-        public IReadOnlyCollection<IPluginInfo> RunningPlugins
+        public ICKReadOnlyCollection<IPluginInfo> RunningPlugins
         {
             get { return _runningPlugins; }
         }
@@ -69,9 +69,5 @@ namespace CK.Plugin.Hosting
             Debug.Assert( ConfigurationSuccess );
             
         }
-
-
-
     }
-
 }

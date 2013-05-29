@@ -36,8 +36,8 @@ namespace CK.Plugin.Discoverer
         string _fileName;
         int _fileSize;
         AssemblyName _assemblyName;
-        IReadOnlyList<IPluginInfo> _plugins;
-        IReadOnlyList<IServiceInfo> _services;
+        ICKReadOnlyList<IPluginInfo> _plugins;
+        ICKReadOnlyList<IServiceInfo> _services;
         List<PluginInfo> _pluginsCollection;
         List<ServiceInfo> _servicesCollection;
 
@@ -61,12 +61,12 @@ namespace CK.Plugin.Discoverer
 			get { return _plugins != null && (_plugins.Count > 0 || _services.Count > 0); } 
 		}
 
-		public IReadOnlyList<IPluginInfo> Plugins 
+        public ICKReadOnlyList<IPluginInfo> Plugins 
 		{
 			get { return _plugins; } 
 		}
 
-		public IReadOnlyList<IServiceInfo> Services
+        public ICKReadOnlyList<IServiceInfo> Services
 		{
 			get { return _services; } 
 		}
@@ -91,8 +91,8 @@ namespace CK.Plugin.Discoverer
             foreach( Runner.ServiceInfo service in r.Services )
                 _servicesCollection.Add( merger.FindOrCreate( service ) );
 
-            _plugins = new ReadOnlyListOnIList<PluginInfo>( _pluginsCollection );
-            _services = new ReadOnlyListOnIList<ServiceInfo>( _servicesCollection );
+            _plugins = new CKReadOnlyListOnIList<PluginInfo>( _pluginsCollection );
+            _services = new CKReadOnlyListOnIList<ServiceInfo>( _servicesCollection );
         }
 
         internal bool Merge( PluginDiscoverer.Merger merger, Runner.PluginAssemblyInfo r )

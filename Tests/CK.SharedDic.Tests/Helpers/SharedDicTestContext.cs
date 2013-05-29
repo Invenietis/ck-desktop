@@ -38,14 +38,14 @@ namespace SharedDic
     public static class SharedDicTestContext
     {
         static List<INamedVersionedUniqueId> _allPlugins;
-        static IReadOnlyList<INamedVersionedUniqueId> _allPluginsEx;
+        static ICKReadOnlyList<INamedVersionedUniqueId> _allPluginsEx;
 
         static IServiceProvider _serviceProvider;
 
         static SharedDicTestContext()
         {
             _allPlugins = new List<INamedVersionedUniqueId>();
-            _allPluginsEx = new ReadOnlyListOnIList<INamedVersionedUniqueId>( _allPlugins );
+            _allPluginsEx = new CKReadOnlyListOnIList<INamedVersionedUniqueId>( _allPlugins );
             EnsurePlugins( 10 );
 
             var c = new SimpleServiceContainer();
@@ -59,7 +59,7 @@ namespace SharedDic
             get { return _serviceProvider; }
         }
 
-        public static IReadOnlyList<INamedVersionedUniqueId> Plugins { get { return _allPluginsEx; } }
+        public static ICKReadOnlyList<INamedVersionedUniqueId> Plugins { get { return _allPluginsEx; } }
 
         public static void ClearPlugins()
         {

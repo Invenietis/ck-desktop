@@ -44,19 +44,19 @@ namespace CK.Plugin.Host.Tests
 
         public Uri RefUrl { get; set; }
 
-        public IReadOnlyList<string> Categories { get; set; }
+        public ICKReadOnlyList<string> Categories { get; set; }
 
         public Uri IconUri { get; set; }
 
         public string PluginFullName { get; set; }
 
-        public IReadOnlyList<IPluginConfigAccessorInfo> EditorsInfo { get; set; }
+        public ICKReadOnlyList<IPluginConfigAccessorInfo> EditorsInfo { get; set; }
 
-        public IReadOnlyList<IPluginConfigAccessorInfo> EditableBy { get; set; }
+        public ICKReadOnlyList<IPluginConfigAccessorInfo> EditableBy { get; set; }
 
         public IAssemblyInfo AssemblyInfo { get; set; }
 
-        public IReadOnlyList<IServiceReferenceInfo> ServiceReferences { get; set; }
+        public ICKReadOnlyList<IServiceReferenceInfo> ServiceReferences { get; set; }
 
         public IServiceInfo Service { get; set; }
 
@@ -123,7 +123,7 @@ namespace CK.Plugin.Host.Tests
 
             if( startPlugin )
             {
-                PluginHost.Execute( ReadOnlyListEmpty<IPluginInfo>.Empty, ReadOnlyListEmpty<IPluginInfo>.Empty, new[] { PluginPluginId } );
+                PluginHost.Execute( CKReadOnlyListEmpty<IPluginInfo>.Empty, CKReadOnlyListEmpty<IPluginInfo>.Empty, new[] { PluginPluginId } );
                 Assert.That( PluginProxy.Status == InternalRunningStatus.Started );
                 Assert.That( Service.Status == InternalRunningStatus.Started );
             }
@@ -203,8 +203,8 @@ namespace CK.Plugin.Host.Tests
         {
             if( ServiceProxyBase.Status == InternalRunningStatus.Disabled )
             {
-                PluginHost.Execute( ReadOnlyListEmpty<IPluginInfo>.Empty, ReadOnlyListEmpty<IPluginInfo>.Empty, new[] { PluginPluginId } );
-                PluginHost.Execute( ReadOnlyListEmpty<IPluginInfo>.Empty, new[] { PluginPluginId }, ReadOnlyListEmpty<IPluginInfo>.Empty );
+                PluginHost.Execute( CKReadOnlyListEmpty<IPluginInfo>.Empty, CKReadOnlyListEmpty<IPluginInfo>.Empty, new[] { PluginPluginId } );
+                PluginHost.Execute( CKReadOnlyListEmpty<IPluginInfo>.Empty, new[] { PluginPluginId }, CKReadOnlyListEmpty<IPluginInfo>.Empty );
             }
             Assert.That( ServiceProxyBase.Status == InternalRunningStatus.Stopped );
         }

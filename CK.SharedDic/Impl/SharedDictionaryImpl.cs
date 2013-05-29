@@ -107,7 +107,7 @@ namespace CK.SharedDic
                         if ( definitive ) changeStatus = ChangeStatus.ContainerDestroy;
                         else changeStatus= ChangeStatus.ContainerClear;
 
-                        Changed( this, new ConfigChangedEventArgs( o, new ReadOnlyCollectionOnISet<INamedVersionedUniqueId>( pluginsTouched ), allPluginsConcerned, changeStatus ) );
+                        Changed( this, new ConfigChangedEventArgs( o, new CKReadOnlyCollectionOnISet<INamedVersionedUniqueId>( pluginsTouched ), allPluginsConcerned, changeStatus ) );
                     }
                 }
                 if( definitive ) _byObject.Remove( o );
@@ -178,7 +178,7 @@ namespace CK.SharedDic
                         if ( definitive ) changeStatus = ChangeStatus.ContainerDestroy;
                         else changeStatus = ChangeStatus.ContainerClear;
 
-                        Changed( this, new ConfigChangedEventArgs( new ReadOnlyCollectionOnISet<object>( objectsTouched ), allObjectsConcerned, p, changeStatus ) );
+                        Changed( this, new ConfigChangedEventArgs( new CKReadOnlyCollectionOnISet<object>( objectsTouched ), allObjectsConcerned, p, changeStatus ) );
                     }
                 }
                 if( definitive ) _byPlugin.Remove( p.UniqueId );
@@ -243,8 +243,8 @@ namespace CK.SharedDic
 
             if ( Changed != null )
             {
-                var pluginsWrapper = new ReadOnlyCollectionTypeConverter<INamedVersionedUniqueId, Guid>( previousByPlugin.Keys, g => previousByPlugin[g].PluginId, uid => uid.UniqueId );
-                Changed( this, new ConfigChangedEventArgs( new ReadOnlyCollectionOnICollection<object>( previousByObject.Keys ), true, pluginsWrapper, true, ChangeStatus.ContainerClear ) );
+                var pluginsWrapper = new CKReadOnlyCollectionTypeConverter<INamedVersionedUniqueId, Guid>( previousByPlugin.Keys, g => previousByPlugin[g].PluginId, uid => uid.UniqueId );
+                Changed( this, new ConfigChangedEventArgs( new CKReadOnlyCollectionOnICollection<object>( previousByObject.Keys ), true, pluginsWrapper, true, ChangeStatus.ContainerClear ) );
             }
         }
 
@@ -259,8 +259,8 @@ namespace CK.SharedDic
             _fragments.Clear();
             if( Changed != null )
             {
-                var pluginsWrapper = new ReadOnlyCollectionTypeConverter<INamedVersionedUniqueId, Guid>( previousByPlugin.Keys, g => previousByPlugin[g].PluginId, uid => uid.UniqueId );
-                Changed( this, new ConfigChangedEventArgs( new ReadOnlyCollectionOnICollection<object>( previousByObject.Keys ), true, pluginsWrapper, true, ChangeStatus.ContainerDestroy ) );
+                var pluginsWrapper = new CKReadOnlyCollectionTypeConverter<INamedVersionedUniqueId, Guid>( previousByPlugin.Keys, g => previousByPlugin[g].PluginId, uid => uid.UniqueId );
+                Changed( this, new ConfigChangedEventArgs( new CKReadOnlyCollectionOnICollection<object>( previousByObject.Keys ), true, pluginsWrapper, true, ChangeStatus.ContainerDestroy ) );
             }
         }
 

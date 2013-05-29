@@ -26,6 +26,7 @@ using CK.SharedDic;
 using System;
 using CK.Storage;
 using CK.Core;
+using CK.Plugin.Config.Model;
 
 namespace CK.Plugin.Config
 {
@@ -72,7 +73,7 @@ namespace CK.Plugin.Config
 		/// the configuration remains empty and null is returned.
 		/// </summary>
         /// <returns>A list (possibly empty) of <see cref="ISimpleErrorMessage"/> describing read errors.</returns>
-		IReadOnlyList<ISimpleErrorMessage> LoadSystemConfig( IStructuredReader reader );
+		ICKReadOnlyList<ISimpleErrorMessage> LoadSystemConfig( IStructuredReader reader );
 
 		/// <summary>
 		/// Loads the user configuration from a stream. Current settings are cleared and if the stream is null or empty,
@@ -80,7 +81,7 @@ namespace CK.Plugin.Config
 		/// Only &lt;User&gt; element is read.
 		/// </summary>
         /// <returns>A list (possibly empty) of <see cref="ISimpleErrorMessage"/> describing read errors.</returns>
-        IReadOnlyList<ISimpleErrorMessage> LoadUserConfig( IStructuredReader reader );
+        ICKReadOnlyList<ISimpleErrorMessage> LoadUserConfig( IStructuredReader reader );
 
 		/// <summary>
 		/// Writes the user config to the given stream.

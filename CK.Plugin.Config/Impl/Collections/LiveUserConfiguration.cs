@@ -34,7 +34,7 @@ namespace CK.Plugin.Config
     internal class LiveUserConfiguration : ILiveUserConfiguration
     {
         Dictionary<Guid,LiveUserAction> _actions;
-        IReadOnlyCollection<ILiveUserAction> _collection;
+        ICKReadOnlyCollection<ILiveUserAction> _collection;
 
         public event EventHandler<LiveUserConfigurationChangingEventArgs> Changing;
 
@@ -43,7 +43,7 @@ namespace CK.Plugin.Config
         public LiveUserConfiguration()
         {
             _actions = new Dictionary<Guid, LiveUserAction>();
-            _collection = new ReadOnlyCollectionOnICollection<LiveUserAction>( _actions.Values );
+            _collection = new CKReadOnlyCollectionOnICollection<LiveUserAction>( _actions.Values );
         }
 
         internal bool CanChange( ChangeStatus changeAction, Guid pluginId, ConfigUserAction action )
@@ -114,7 +114,7 @@ namespace CK.Plugin.Config
             }
         }
 
-        #region IReadOnlyCollection<ILiveUserAction> Members
+        #region ICKReadOnlyCollection<ILiveUserAction> Members
 
         public bool Contains( object item )
         {

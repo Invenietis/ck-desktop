@@ -77,9 +77,9 @@ namespace Discoverer
             Assert.That( discoverer.Services.Count == 1 );
 
             //Test methods, events and properties info :
-            IReadOnlyCollection<ISimpleEventInfo> events = discoverer.Services.First().EventsInfoCollection;
-            IReadOnlyCollection<ISimpleMethodInfo> methods = discoverer.Services.First().MethodsInfoCollection;
-            IReadOnlyCollection<ISimplePropertyInfo> properties = discoverer.Services.First().PropertiesInfoCollection;
+            ICKReadOnlyCollection<ISimpleEventInfo> events = discoverer.Services.First().EventsInfoCollection;
+            ICKReadOnlyCollection<ISimpleMethodInfo> methods = discoverer.Services.First().MethodsInfoCollection;
+            ICKReadOnlyCollection<ISimplePropertyInfo> properties = discoverer.Services.First().PropertiesInfoCollection;
 
             Assert.That( events.Count, Is.EqualTo( 1 ) );
             Assert.That( methods.Count, Is.EqualTo( 2 ) );
@@ -121,9 +121,9 @@ namespace Discoverer
             }
 
             //Test methods, events and properties info of service A
-            IReadOnlyCollection<ISimpleEventInfo> eventsA = discoverer.Services.First().EventsInfoCollection;
-            IReadOnlyCollection<ISimpleMethodInfo> methodsA = discoverer.Services.First().MethodsInfoCollection;
-            IReadOnlyCollection<ISimplePropertyInfo> propertiesA = discoverer.Services.First().PropertiesInfoCollection;
+            ICKReadOnlyCollection<ISimpleEventInfo> eventsA = discoverer.Services.First().EventsInfoCollection;
+            ICKReadOnlyCollection<ISimpleMethodInfo> methodsA = discoverer.Services.First().MethodsInfoCollection;
+            ICKReadOnlyCollection<ISimplePropertyInfo> propertiesA = discoverer.Services.First().PropertiesInfoCollection;
 
             Assert.That( eventsA.Count, Is.EqualTo( 1 ) );
             Assert.That( methodsA.Count, Is.EqualTo( 2 ) );
@@ -142,9 +142,9 @@ namespace Discoverer
 
 
             //Test methods, events and properties info of service B
-            IReadOnlyCollection<ISimpleEventInfo> eventsB = discoverer.Services.ElementAt( 1 ).EventsInfoCollection;
-            IReadOnlyCollection<ISimpleMethodInfo> methodsB = discoverer.Services.ElementAt( 1 ).MethodsInfoCollection;
-            IReadOnlyCollection<ISimplePropertyInfo> propertiesB = discoverer.Services.ElementAt( 1 ).PropertiesInfoCollection;
+            ICKReadOnlyCollection<ISimpleEventInfo> eventsB = discoverer.Services.ElementAt( 1 ).EventsInfoCollection;
+            ICKReadOnlyCollection<ISimpleMethodInfo> methodsB = discoverer.Services.ElementAt( 1 ).MethodsInfoCollection;
+            ICKReadOnlyCollection<ISimplePropertyInfo> propertiesB = discoverer.Services.ElementAt( 1 ).PropertiesInfoCollection;
 
             Assert.That( eventsB.Count, Is.EqualTo( 0 ) );
             Assert.That( methodsB.Count, Is.EqualTo( 2 ) );

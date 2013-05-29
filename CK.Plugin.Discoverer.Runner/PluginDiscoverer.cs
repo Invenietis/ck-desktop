@@ -37,7 +37,7 @@ namespace CK.Plugin.Discoverer.Runner
     public sealed class PluginDiscoverer : MarshalByRefObject
 	{
         //Collections used to insert items and to be converted 
-        //into an IReadOnlyList after (for properties)
+        //into an ICKReadOnlyList after (for properties)
         //Assemblies
         Dictionary<string,PluginAssemblyInfo> _filesProcessed;
         Dictionary<string,PluginAssemblyInfo> _assembliesByName;

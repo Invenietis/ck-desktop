@@ -55,7 +55,7 @@ namespace CK.Plugin.Hosting
             _configurations.Add( _defaultConfiguration );
 
             _untrackedErrors = new List<ILogErrorCaught>();
-            UntrackedErrors = new ReadOnlyListOnIList<ILogErrorCaught>( _untrackedErrors );
+            UntrackedErrors = new CKReadOnlyListOnIList<ILogErrorCaught>( _untrackedErrors );
         }
 
         public ISimpleServiceHostConfiguration DefaultConfiguration 
@@ -64,7 +64,7 @@ namespace CK.Plugin.Hosting
         }
 
         private IList<ILogErrorCaught> _untrackedErrors;
-        public IReadOnlyList<ILogErrorCaught> UntrackedErrors { get; private set; }
+        public ICKReadOnlyList<ILogErrorCaught> UntrackedErrors { get; private set; }
 
         public void Add( IServiceHostConfiguration configurator )
         {

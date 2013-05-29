@@ -10,13 +10,13 @@ namespace CK.Plugin.Hosting
 {
     class LiveConfiguration : ILiveConfiguration
     {
-        ObservableSortedArrayList<LivePlugin> _plugins;
-        ObservableSortedArrayList<LiveService> _services;
+        CKObservableSortedArrayList<LivePlugin> _plugins;
+        CKObservableSortedArrayList<LiveService> _services;
 
         internal LiveConfiguration()
         {
-            _plugins = new ObservableSortedArrayList<LivePlugin>();
-            _services = new ObservableSortedArrayList<LiveService>();
+            _plugins = new CKObservableSortedArrayList<LivePlugin>();
+            _services = new CKObservableSortedArrayList<LiveService>();
         }
 
         ILivePluginInfo ILiveConfiguration.FindPlugin( IPluginInfo p )
@@ -24,7 +24,7 @@ namespace CK.Plugin.Hosting
             return FindPlugin( p );
         }
 
-        IObservableReadOnlyCollection<ILivePluginInfo> ILiveConfiguration.Plugins
+        CKIObservableReadOnlyCollection<ILivePluginInfo> ILiveConfiguration.Plugins
         {
             get { return _plugins; }
         }
@@ -34,7 +34,7 @@ namespace CK.Plugin.Hosting
             return FindService( s );
         }
 
-        IObservableReadOnlyCollection<ILiveServiceInfo> ILiveConfiguration.Services
+        CKIObservableReadOnlyCollection<ILiveServiceInfo> ILiveConfiguration.Services
         {
             get { return _services; }
         }

@@ -38,7 +38,7 @@ namespace CK.Plugin
     public class SimpleMethodInfo : ISimpleMethodInfo, IComparable<SimpleMethodInfo>
     {
         IList<SimpleParameterInfo> _parameters;
-        IReadOnlyList<ISimpleParameterInfo> _parametersEx;
+        ICKReadOnlyList<ISimpleParameterInfo> _parametersEx;
 
         string _returnType;
         string _name;
@@ -46,12 +46,12 @@ namespace CK.Plugin
         public string ReturnType { get { return _returnType; } }
         public string Name { get { return _name; } }
         public IList<SimpleParameterInfo> Parameters { get { return _parameters; } }
-        IReadOnlyList<ISimpleParameterInfo> ISimpleMethodInfo.Parameters { get { return _parametersEx; } }
+        ICKReadOnlyList<ISimpleParameterInfo> ISimpleMethodInfo.Parameters { get { return _parametersEx; } }
         
         public SimpleMethodInfo()
         {
             _parameters = new List<SimpleParameterInfo>();
-            _parametersEx = new ReadOnlyListOnIList<SimpleParameterInfo>(_parameters);
+            _parametersEx = new CKReadOnlyListOnIList<SimpleParameterInfo>(_parameters);
         }
 
         internal void Initialize( Discoverer.Runner.SimpleMethodInfo r )

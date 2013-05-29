@@ -31,72 +31,72 @@ namespace CK.Plugin
 {
     public class DiscoverDoneEventArgs : EventArgs
     {
-        IReadOnlyList<IAssemblyInfo> _newAssemblies;
-        IReadOnlyList<IAssemblyInfo> _changedAssemblies;
-        IReadOnlyList<IAssemblyInfo> _deletedAssemblies;
+        ICKReadOnlyList<IAssemblyInfo> _newAssemblies;
+        ICKReadOnlyList<IAssemblyInfo> _changedAssemblies;
+        ICKReadOnlyList<IAssemblyInfo> _deletedAssemblies;
 
-        IReadOnlyList<IPluginInfo> _newPlugins;
-        IReadOnlyList<IPluginInfo> _changedPlugins;
-        IReadOnlyList<IPluginInfo> _deletedPlugins;
+        ICKReadOnlyList<IPluginInfo> _newPlugins;
+        ICKReadOnlyList<IPluginInfo> _changedPlugins;
+        ICKReadOnlyList<IPluginInfo> _deletedPlugins;
 
-        IReadOnlyList<IPluginConfigAccessorInfo> _newEditors;
-        IReadOnlyList<IPluginConfigAccessorInfo> _changedEditors;
-        IReadOnlyList<IPluginConfigAccessorInfo> _deletedEditors;
+        ICKReadOnlyList<IPluginConfigAccessorInfo> _newEditors;
+        ICKReadOnlyList<IPluginConfigAccessorInfo> _changedEditors;
+        ICKReadOnlyList<IPluginConfigAccessorInfo> _deletedEditors;
 
-        IReadOnlyList<IServiceInfo> _newServices;
-        IReadOnlyList<IServiceInfo> _changedServices;
-        IReadOnlyList<IServiceInfo> _deletedServices;
+        ICKReadOnlyList<IServiceInfo> _newServices;
+        ICKReadOnlyList<IServiceInfo> _changedServices;
+        ICKReadOnlyList<IServiceInfo> _deletedServices;
 
-        IReadOnlyList<IPluginInfo> _newOldPlugins;
-        IReadOnlyList<IPluginInfo> _deletedOldPlugins;
+        ICKReadOnlyList<IPluginInfo> _newOldPlugins;
+        ICKReadOnlyList<IPluginInfo> _deletedOldPlugins;
 
-        IReadOnlyList<string> _newMissingAssemblies;
-        IReadOnlyList<string> _deletedMissingAssemblies;
+        ICKReadOnlyList<string> _newMissingAssemblies;
+        ICKReadOnlyList<string> _deletedMissingAssemblies;
 
-        public IReadOnlyList<IAssemblyInfo> NewAssemblies { get { return _newAssemblies; } }
-        public IReadOnlyList<IAssemblyInfo> ChangedAssemblies { get { return _changedAssemblies; } }
-        public IReadOnlyList<IAssemblyInfo> DeletedAssemblies { get { return _deletedAssemblies; } }
+        public ICKReadOnlyList<IAssemblyInfo> NewAssemblies { get { return _newAssemblies; } }
+        public ICKReadOnlyList<IAssemblyInfo> ChangedAssemblies { get { return _changedAssemblies; } }
+        public ICKReadOnlyList<IAssemblyInfo> DeletedAssemblies { get { return _deletedAssemblies; } }
 
         /// <summary>
         /// Gets the list of new discovered plugins (contains also plugins on error).
         /// </summary>
-        public IReadOnlyList<IPluginInfo> NewPlugins { get { return _newPlugins; } }
-        public IReadOnlyList<IPluginInfo> ChangedPlugins { get { return _changedPlugins; } }
-        public IReadOnlyList<IPluginInfo> DeletedPlugins { get { return _deletedPlugins; } }
+        public ICKReadOnlyList<IPluginInfo> NewPlugins { get { return _newPlugins; } }
+        public ICKReadOnlyList<IPluginInfo> ChangedPlugins { get { return _changedPlugins; } }
+        public ICKReadOnlyList<IPluginInfo> DeletedPlugins { get { return _deletedPlugins; } }
 
-        public IReadOnlyList<IPluginConfigAccessorInfo> NewEditors { get { return _newEditors; } }
-        public IReadOnlyList<IPluginConfigAccessorInfo> ChangedEditors { get { return _changedEditors; } }
-        public IReadOnlyList<IPluginConfigAccessorInfo> DeletedEditors { get { return _deletedEditors; } }
+        public ICKReadOnlyList<IPluginConfigAccessorInfo> NewEditors { get { return _newEditors; } }
+        public ICKReadOnlyList<IPluginConfigAccessorInfo> ChangedEditors { get { return _changedEditors; } }
+        public ICKReadOnlyList<IPluginConfigAccessorInfo> DeletedEditors { get { return _deletedEditors; } }
         
         /// <summary>
         /// Gets the list of new discovered services (contains also services on error).
         /// </summary>
-        public IReadOnlyList<IServiceInfo> NewServices { get { return _newServices; } }
-        public IReadOnlyList<IServiceInfo> ChangedServices { get { return _changedServices; } }
-        public IReadOnlyList<IServiceInfo> DeletedServices { get { return _deletedServices; } }
+        public ICKReadOnlyList<IServiceInfo> NewServices { get { return _newServices; } }
+        public ICKReadOnlyList<IServiceInfo> ChangedServices { get { return _changedServices; } }
+        public ICKReadOnlyList<IServiceInfo> DeletedServices { get { return _deletedServices; } }
 
         /// <summary>
         /// Gets the list of appearing old plugins. They may be previously active plugins replaced by a newer version
         /// or a "new" old plugin (when both plugins plugin versions are discovered at once).
         /// </summary>
-        public IReadOnlyList<IPluginInfo> NewOldPlugins { get { return _newOldPlugins; } }
-        public IReadOnlyList<IPluginInfo> DeletedOldPlugins { get { return _deletedOldPlugins; } }
+        public ICKReadOnlyList<IPluginInfo> NewOldPlugins { get { return _newOldPlugins; } }
+        public ICKReadOnlyList<IPluginInfo> DeletedOldPlugins { get { return _deletedOldPlugins; } }
 
         /// <summary>
         /// Gets the list of missing assemblies.
         /// </summary>
-        public IReadOnlyList<string> NewDisappearedAssemblies { get { return _newMissingAssemblies; } }
-        public IReadOnlyList<string> DeletedDisappearedAssemblies { get { return _deletedMissingAssemblies; } }
+        public ICKReadOnlyList<string> NewDisappearedAssemblies { get { return _newMissingAssemblies; } }
+        public ICKReadOnlyList<string> DeletedDisappearedAssemblies { get { return _deletedMissingAssemblies; } }
 
         public int ChangeCount { get; private set; }
 
         public DiscoverDoneEventArgs(
-            IReadOnlyList<IAssemblyInfo> newAssemblies,IReadOnlyList<IAssemblyInfo> changedAssemblies,IReadOnlyList<IAssemblyInfo> deletedAssemblies,
-            IReadOnlyList<IPluginInfo> newPlugins,IReadOnlyList<IPluginInfo> changedPlugins,IReadOnlyList<IPluginInfo> deletedPlugins,
-            IReadOnlyList<IPluginConfigAccessorInfo> newEditors, IReadOnlyList<IPluginConfigAccessorInfo> changedEditors, IReadOnlyList<IPluginConfigAccessorInfo> deletedEditors,
-            IReadOnlyList<IServiceInfo> newServices,IReadOnlyList<IServiceInfo> changedServices,IReadOnlyList<IServiceInfo> deletedServices, 
-            IReadOnlyList<IPluginInfo> newOldPlugins,IReadOnlyList<IPluginInfo> deletedOldPlugins,
-            IReadOnlyList<string> newMissingAssemblies,IReadOnlyList<string> deletedMissingAssemblies)
+            ICKReadOnlyList<IAssemblyInfo> newAssemblies, ICKReadOnlyList<IAssemblyInfo> changedAssemblies, ICKReadOnlyList<IAssemblyInfo> deletedAssemblies,
+            ICKReadOnlyList<IPluginInfo> newPlugins, ICKReadOnlyList<IPluginInfo> changedPlugins, ICKReadOnlyList<IPluginInfo> deletedPlugins,
+            ICKReadOnlyList<IPluginConfigAccessorInfo> newEditors, ICKReadOnlyList<IPluginConfigAccessorInfo> changedEditors, ICKReadOnlyList<IPluginConfigAccessorInfo> deletedEditors,
+            ICKReadOnlyList<IServiceInfo> newServices, ICKReadOnlyList<IServiceInfo> changedServices, ICKReadOnlyList<IServiceInfo> deletedServices,
+            ICKReadOnlyList<IPluginInfo> newOldPlugins, ICKReadOnlyList<IPluginInfo> deletedOldPlugins,
+            ICKReadOnlyList<string> newMissingAssemblies, ICKReadOnlyList<string> deletedMissingAssemblies )
         {
             _newAssemblies = newAssemblies;
             _changedAssemblies = changedAssemblies;

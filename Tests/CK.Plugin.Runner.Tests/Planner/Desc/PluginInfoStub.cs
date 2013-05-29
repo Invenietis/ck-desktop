@@ -10,7 +10,7 @@ namespace CK.Plugin.Runner.Tests.Planner
     {
         readonly DiscovererStub _disco;
         List<ServiceReferenceInfoStub> _serviceRef;
-        IReadOnlyList<ServiceReferenceInfoStub> _serviceRefEx;
+        ICKReadOnlyList<ServiceReferenceInfoStub> _serviceRefEx;
         ServiceInfoStub _service;
 
         internal PluginInfoStub( DiscovererStub disco, string name )
@@ -19,7 +19,7 @@ namespace CK.Plugin.Runner.Tests.Planner
             PluginId = new Guid();
             PluginFullName = name;
             _serviceRef = new List<ServiceReferenceInfoStub>();
-            _serviceRefEx = new ReadOnlyListOnIList<ServiceReferenceInfoStub>( _serviceRef ); 
+            _serviceRefEx = new CKReadOnlyListOnIList<ServiceReferenceInfoStub>( _serviceRef ); 
         }
 
         public Guid PluginId { get; set; }
@@ -32,7 +32,7 @@ namespace CK.Plugin.Runner.Tests.Planner
             return this;
         }
 
-        IReadOnlyList<IServiceReferenceInfo> IPluginInfo.ServiceReferences
+        ICKReadOnlyList<IServiceReferenceInfo> IPluginInfo.ServiceReferences
         {
             get { return _serviceRefEx; }
         }
@@ -56,9 +56,9 @@ namespace CK.Plugin.Runner.Tests.Planner
             return String.Format( "Plugin: {0}", PluginFullName );
         }
 
-        IReadOnlyList<IPluginConfigAccessorInfo> IPluginInfo.EditorsInfo { get { return ReadOnlyListEmpty<IPluginConfigAccessorInfo>.Empty; } }
+        ICKReadOnlyList<IPluginConfigAccessorInfo> IPluginInfo.EditorsInfo { get { return CKReadOnlyListEmpty<IPluginConfigAccessorInfo>.Empty; } }
 
-        IReadOnlyList<IPluginConfigAccessorInfo> IPluginInfo.EditableBy { get { return ReadOnlyListEmpty<IPluginConfigAccessorInfo>.Empty; } }
+        ICKReadOnlyList<IPluginConfigAccessorInfo> IPluginInfo.EditableBy { get { return CKReadOnlyListEmpty<IPluginConfigAccessorInfo>.Empty; } }
 
         string IPluginInfo.Description { get { return null; } }
 
@@ -66,7 +66,7 @@ namespace CK.Plugin.Runner.Tests.Planner
 
         Uri IPluginInfo.RefUrl { get { return null; } }
 
-        IReadOnlyList<string> IPluginInfo.Categories { get { return ReadOnlyListEmpty<string>.Empty; } }
+        ICKReadOnlyList<string> IPluginInfo.Categories { get { return CKReadOnlyListEmpty<string>.Empty; } }
 
         Uri IPluginInfo.IconUri { get { return null; } }
 

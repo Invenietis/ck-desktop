@@ -59,49 +59,49 @@ namespace CK.Plugin.Discoverer
 
         public event EventHandler<DiscoverDoneEventArgs> DiscoverDone;
 
-        public IReadOnlyCollection<IAssemblyInfo> AllAssemblies
+        public ICKReadOnlyCollection<IAssemblyInfo> AllAssemblies
         {
             get;
             private set;
         }
 
-        public IReadOnlyCollection<IAssemblyInfo> PluginOrServiceAssemblies
+        public ICKReadOnlyCollection<IAssemblyInfo> PluginOrServiceAssemblies
         {
             get;
             private set;
         }
 
-        public IReadOnlyCollection<IPluginInfo> Plugins
+        public ICKReadOnlyCollection<IPluginInfo> Plugins
         {
             get;
             private set;
         }
 
-        public IReadOnlyCollection<IPluginInfo> AllPlugins
+        public ICKReadOnlyCollection<IPluginInfo> AllPlugins
         {
             get;
             private set;
         }
 
-        public IReadOnlyCollection<IPluginInfo> OldVersionnedPlugins
+        public ICKReadOnlyCollection<IPluginInfo> OldVersionnedPlugins
         {
             get;
             private set;
         }
 
-        public IReadOnlyCollection<IServiceInfo> Services
+        public ICKReadOnlyCollection<IServiceInfo> Services
         {
             get;
             private set;
         }
 
-        public IReadOnlyCollection<IServiceInfo> AllServices
+        public ICKReadOnlyCollection<IServiceInfo> AllServices
         {
             get;
             private set;
         }
 
-        public IReadOnlyCollection<IServiceInfo> NotFoundServices
+        public ICKReadOnlyCollection<IServiceInfo> NotFoundServices
         {
             get;
             private set;
@@ -169,14 +169,14 @@ namespace CK.Plugin.Discoverer
             _pluginsById = new Dictionary<Guid, PluginInfo>();
             _servicesByAssemblyQualifiedName = new Dictionary<string, ServiceInfo>();
 
-            AllAssemblies = new ReadOnlyListOnIList<PluginAssemblyInfo>( _allAssemblies );
-            OldVersionnedPlugins = new ReadOnlyListOnIList<PluginInfo>( _oldPlugins );
-            Plugins = new ReadOnlyListOnIList<PluginInfo>( _plugins );
-            NotFoundServices = new ReadOnlyListOnIList<ServiceInfo>( _notFoundServices );
-            AllPlugins = new ReadOnlyListOnIList<PluginInfo>( _allPlugins );
-            AllServices = new ReadOnlyListOnIList<ServiceInfo>( _allServices );
-            Services = new ReadOnlyListOnIList<ServiceInfo>( _services );
-            PluginOrServiceAssemblies = new ReadOnlyListOnIList<PluginAssemblyInfo>( _pluginOrServiceAssemblies );
+            AllAssemblies = new CKReadOnlyListOnIList<PluginAssemblyInfo>( _allAssemblies );
+            OldVersionnedPlugins = new CKReadOnlyListOnIList<PluginInfo>( _oldPlugins );
+            Plugins = new CKReadOnlyListOnIList<PluginInfo>( _plugins );
+            NotFoundServices = new CKReadOnlyListOnIList<ServiceInfo>( _notFoundServices );
+            AllPlugins = new CKReadOnlyListOnIList<PluginInfo>( _allPlugins );
+            AllServices = new CKReadOnlyListOnIList<ServiceInfo>( _allServices );
+            Services = new CKReadOnlyListOnIList<ServiceInfo>( _services );
+            PluginOrServiceAssemblies = new CKReadOnlyListOnIList<PluginAssemblyInfo>( _pluginOrServiceAssemblies );
         }
 
         bool FileFilter( FileInfo f )
@@ -301,22 +301,22 @@ namespace CK.Plugin.Discoverer
             List<string> _newMissingAssemblies;
             List<string> _deletedMissingAssemblies;
 
-            internal IReadOnlyList<IAssemblyInfo> NewAssemblies { get; private set; }
-            internal IReadOnlyList<IAssemblyInfo> ChangedAssemblies { get; private set; }
-            internal IReadOnlyList<IAssemblyInfo> DeletedAssemblies { get; private set; }
-            internal IReadOnlyList<IPluginInfo> NewPlugins { get; private set; }
-            internal IReadOnlyList<IPluginInfo> ChangedPlugins { get; private set; }
-            internal IReadOnlyList<IPluginInfo> DeletedPlugins { get; private set; }
-            internal IReadOnlyList<IPluginConfigAccessorInfo> NewEditors { get; private set; }
-            internal IReadOnlyList<IPluginConfigAccessorInfo> ChangedEditors { get; private set; }
-            internal IReadOnlyList<IPluginConfigAccessorInfo> DeletedEditors { get; private set; }
-            internal IReadOnlyList<IServiceInfo> NewServices { get; private set; }
-            internal IReadOnlyList<IServiceInfo> ChangedServices { get; private set; }
-            internal IReadOnlyList<IServiceInfo> DeletedServices { get; private set; }
-            internal IReadOnlyList<IPluginInfo> NewOldPlugins { get; private set; }
-            internal IReadOnlyList<IPluginInfo> DeletedOldPlugins { get; private set; }
-            internal IReadOnlyList<string> NewMissingAssemblies { get; private set; }
-            internal IReadOnlyList<string> DeletedMissingAssemblies { get; private set; }
+            internal ICKReadOnlyList<IAssemblyInfo> NewAssemblies { get; private set; }
+            internal ICKReadOnlyList<IAssemblyInfo> ChangedAssemblies { get; private set; }
+            internal ICKReadOnlyList<IAssemblyInfo> DeletedAssemblies { get; private set; }
+            internal ICKReadOnlyList<IPluginInfo> NewPlugins { get; private set; }
+            internal ICKReadOnlyList<IPluginInfo> ChangedPlugins { get; private set; }
+            internal ICKReadOnlyList<IPluginInfo> DeletedPlugins { get; private set; }
+            internal ICKReadOnlyList<IPluginConfigAccessorInfo> NewEditors { get; private set; }
+            internal ICKReadOnlyList<IPluginConfigAccessorInfo> ChangedEditors { get; private set; }
+            internal ICKReadOnlyList<IPluginConfigAccessorInfo> DeletedEditors { get; private set; }
+            internal ICKReadOnlyList<IServiceInfo> NewServices { get; private set; }
+            internal ICKReadOnlyList<IServiceInfo> ChangedServices { get; private set; }
+            internal ICKReadOnlyList<IServiceInfo> DeletedServices { get; private set; }
+            internal ICKReadOnlyList<IPluginInfo> NewOldPlugins { get; private set; }
+            internal ICKReadOnlyList<IPluginInfo> DeletedOldPlugins { get; private set; }
+            internal ICKReadOnlyList<string> NewMissingAssemblies { get; private set; }
+            internal ICKReadOnlyList<string> DeletedMissingAssemblies { get; private set; }
 
             Dictionary<string, PluginAssemblyInfo> _dicAssemblies;
             Dictionary<KeyValuePair<Guid, Version>, PluginInfo> _dicPlugins;
@@ -350,27 +350,27 @@ namespace CK.Plugin.Discoverer
                 _newOldPlugins = new List<PluginInfo>();
                 _deletedOldPlugins = new List<PluginInfo>();
 
-                NewAssemblies = new ReadOnlyListOnIList<PluginAssemblyInfo>( _newAssemblies );
-                ChangedAssemblies = new ReadOnlyListOnIList<PluginAssemblyInfo>( _changedAssemblies );
-                DeletedAssemblies = new ReadOnlyListOnIList<PluginAssemblyInfo>( _deletedAssemblies );
+                NewAssemblies = new CKReadOnlyListOnIList<PluginAssemblyInfo>( _newAssemblies );
+                ChangedAssemblies = new CKReadOnlyListOnIList<PluginAssemblyInfo>( _changedAssemblies );
+                DeletedAssemblies = new CKReadOnlyListOnIList<PluginAssemblyInfo>( _deletedAssemblies );
 
-                NewMissingAssemblies = new ReadOnlyListOnIList<string>( _newMissingAssemblies );
-                DeletedMissingAssemblies = new ReadOnlyListOnIList<string>( _deletedMissingAssemblies );
+                NewMissingAssemblies = new CKReadOnlyListOnIList<string>( _newMissingAssemblies );
+                DeletedMissingAssemblies = new CKReadOnlyListOnIList<string>( _deletedMissingAssemblies );
 
-                NewServices = new ReadOnlyListOnIList<ServiceInfo>( _newServices );
-                ChangedServices = new ReadOnlyListOnIList<ServiceInfo>( _changedServices );
-                DeletedServices = new ReadOnlyListOnIList<ServiceInfo>( _deletedServices );
+                NewServices = new CKReadOnlyListOnIList<ServiceInfo>( _newServices );
+                ChangedServices = new CKReadOnlyListOnIList<ServiceInfo>( _changedServices );
+                DeletedServices = new CKReadOnlyListOnIList<ServiceInfo>( _deletedServices );
 
-                NewPlugins = new ReadOnlyListOnIList<PluginInfo>( _newPlugins );
-                ChangedPlugins = new ReadOnlyListOnIList<PluginInfo>( _changedPlugins );
-                DeletedPlugins = new ReadOnlyListOnIList<PluginInfo>( _deletedPlugins );
-                
-                NewEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _newEditors );
-                ChangedEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _changedEditors );
-                DeletedEditors = new ReadOnlyListOnIList<PluginConfigAccessorInfo>( _deletedEditors );
-                
-                NewOldPlugins = new ReadOnlyListOnIList<PluginInfo>( _newOldPlugins );
-                DeletedOldPlugins = new ReadOnlyListOnIList<PluginInfo>( _deletedOldPlugins );
+                NewPlugins = new CKReadOnlyListOnIList<PluginInfo>( _newPlugins );
+                ChangedPlugins = new CKReadOnlyListOnIList<PluginInfo>( _changedPlugins );
+                DeletedPlugins = new CKReadOnlyListOnIList<PluginInfo>( _deletedPlugins );
+
+                NewEditors = new CKReadOnlyListOnIList<PluginConfigAccessorInfo>( _newEditors );
+                ChangedEditors = new CKReadOnlyListOnIList<PluginConfigAccessorInfo>( _changedEditors );
+                DeletedEditors = new CKReadOnlyListOnIList<PluginConfigAccessorInfo>( _deletedEditors );
+
+                NewOldPlugins = new CKReadOnlyListOnIList<PluginInfo>( _newOldPlugins );
+                DeletedOldPlugins = new CKReadOnlyListOnIList<PluginInfo>( _deletedOldPlugins );
                 
                 _dicAssemblies = new Dictionary<string, PluginAssemblyInfo>();
                 foreach( PluginAssemblyInfo item in Discoverer._allAssemblies )

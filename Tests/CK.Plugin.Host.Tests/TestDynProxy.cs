@@ -202,7 +202,7 @@ namespace CK.Plugin.Host.Tests
                 c.EnsureStoppedService();
                 Assert.That( c.Service.Status == InternalRunningStatus.Stopped );
                 Assert.That( c.ServiceProxyBase.Implementation != null );
-                c.PluginHost.Execute( new[] { TestContext.PluginPluginId }, ReadOnlyListEmpty<IPluginInfo>.Empty, ReadOnlyListEmpty<IPluginInfo>.Empty );
+                c.PluginHost.Execute( new[] { TestContext.PluginPluginId }, CKReadOnlyListEmpty<IPluginInfo>.Empty, CKReadOnlyListEmpty<IPluginInfo>.Empty );
                 Assert.That( c.Service.Status == InternalRunningStatus.Disabled );
                 c.ConsumerPlugin.RunWhileNotAvailableService();
             }

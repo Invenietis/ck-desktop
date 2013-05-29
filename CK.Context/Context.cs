@@ -32,6 +32,7 @@ using CK.Plugin.Hosting;
 using CK.Core;
 using CK.Storage;
 using System.Xml;
+using CK.Plugin.Config.Model;
 
 namespace CK.Context
 {
@@ -196,7 +197,7 @@ namespace CK.Context
             }
         }
 
-        public IReadOnlyList<ISimpleErrorMessage> LoadContext( IStructuredReader reader )
+        public ICKReadOnlyList<ISimpleErrorMessage> LoadContext( IStructuredReader reader )
         {
             if( reader == null ) throw new ArgumentNullException( "reader" );
             IList<ReadElementObjectInfo> errors;

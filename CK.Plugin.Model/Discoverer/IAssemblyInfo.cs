@@ -52,12 +52,12 @@ namespace CK.Plugin
         /// <summary>
         /// Gets the collections of plugins contained into the assembly.
         /// </summary>
-		IReadOnlyList<IPluginInfo> Plugins { get; }
+        ICKReadOnlyList<IPluginInfo> Plugins { get; }
 
         /// <summary>
         /// Gets the collections of services contained into the assembly.
         /// </summary>
-		IReadOnlyList<IServiceInfo> Services { get; }
+        ICKReadOnlyList<IServiceInfo> Services { get; }
 	}
 
 }

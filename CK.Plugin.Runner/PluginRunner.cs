@@ -201,7 +201,7 @@ namespace CK.Plugin.Hosting
             ConfigureConfigAccessors( p );
         }
 
-        void ConfigureServiceReferences( IReadOnlyCollection<IPluginProxy> newPluginsLoaded )
+        void ConfigureServiceReferences( ICKReadOnlyCollection<IPluginProxy> newPluginsLoaded )
         {            
             HashSet<PropertyInfo> processedProperties = new HashSet<PropertyInfo>();
             foreach( var p in newPluginsLoaded )

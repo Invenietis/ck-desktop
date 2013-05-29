@@ -77,7 +77,7 @@ namespace CK.Plugin.Hosting
             get { return _entry.IsErrorHead ? null : _entry; }
         }
 
-        public IReadOnlyCollection<ILogEventError> OtherErrors
+        public ICKReadOnlyCollection<ILogEventError> OtherErrors
         {
             get { return _entry; }
         }

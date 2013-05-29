@@ -31,6 +31,7 @@ using CK.Storage;
 using CK.Core;
 using CK.Plugin.Hosting;
 using Common.Logging;
+using CK.Plugin.Config.Model;
 
 namespace CK.Context
 {
@@ -78,7 +79,7 @@ namespace CK.Context
         /// </summary>
         /// <param name="filePath">Path to the file.</param>
         /// <returns>A list (possibly empty) of <see cref="ISimpleErrorMessage"/> describing read errors.</returns>
-        IReadOnlyList<ISimpleErrorMessage> LoadContext( IStructuredReader reader );
+        ICKReadOnlyList<ISimpleErrorMessage> LoadContext( IStructuredReader reader );
 
         /// <summary>
         /// Fired by <see cref="RaiseExitApplication"/> to signal the end of the application (this is a cancelable event). 

@@ -29,7 +29,7 @@ namespace CK.Plugin.Config
     /// <summary>
     /// Holds the UserActions for each plugin
     /// </summary>
-    public interface ILiveUserConfiguration : IReadOnlyCollection<ILiveUserAction>
+    public interface ILiveUserConfiguration : ICKReadOnlyCollection<ILiveUserAction>
     {
         event EventHandler<LiveUserConfigurationChangingEventArgs> Changing;
 

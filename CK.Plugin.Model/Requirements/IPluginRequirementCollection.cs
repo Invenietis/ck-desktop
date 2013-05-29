@@ -33,7 +33,7 @@ namespace CK.Plugin
     /// <summary>
     /// Plugin requirements associates plugin <see cref="Guid"/> to <see cref="RunningRequirement"/>.
     /// </summary>
-    public interface IPluginRequirementCollection : IReadOnlyCollection<PluginRequirement>
+    public interface IPluginRequirementCollection : ICKReadOnlyCollection<PluginRequirement>
     {
         /// <summary>
         /// Fires before a change occurs.

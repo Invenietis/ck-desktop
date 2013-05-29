@@ -22,6 +22,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using CK.Core;
 
 namespace CK.Plugin
@@ -52,7 +53,7 @@ namespace CK.Plugin
         /// Gets an optional list of categories used to sort plugins by theme. 
         /// Never null.
         /// </summary>
-        IReadOnlyList<string> Categories { get; }
+        ICKReadOnlyList<string> Categories { get; }
 
         /// <summary>
         /// Gets an optional icon bounds to this plugin.
@@ -65,15 +66,15 @@ namespace CK.Plugin
         string PluginFullName { get; }
 
 		/// <summary>
-        /// Gets a <see cref="IReadOnlyList"/> of <see cref="IPluginEditorInfo"/> that the plugin owns.
+        /// Gets a <see cref="ICKReadOnlyList"/> of <see cref="IPluginEditorInfo"/> that the plugin owns.
 		/// </summary>
-		IReadOnlyList<IPluginConfigAccessorInfo> EditorsInfo { get; }
+        ICKReadOnlyList<IPluginConfigAccessorInfo> EditorsInfo { get; }
 
         /// <summary>
         /// Gets <see cref="IPluginEditorInfo">editors</see> that can
         /// edit the configuration of this plugin.
         /// </summary>
-        IReadOnlyList<IPluginConfigAccessorInfo> EditableBy { get; }
+        ICKReadOnlyList<IPluginConfigAccessorInfo> EditableBy { get; }
 
 		/// <summary>
 		/// Gets the assembly info that contains this plugin.
@@ -83,7 +84,7 @@ namespace CK.Plugin
 		/// <summary>
 		/// Gets the services that this plugin references.
 		/// </summary>
-		IReadOnlyList<IServiceReferenceInfo> ServiceReferences { get; }
+        ICKReadOnlyList<IServiceReferenceInfo> ServiceReferences { get; }
 
 		/// <summary>
 		/// Gets the service that this plugin implements. Null if the plugin does not implement any service.

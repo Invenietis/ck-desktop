@@ -34,7 +34,7 @@ namespace CK.Plugin
     /// Service requirements associates services identifier (the assemnly qualified name 
     /// of the <see cref="IDynamicService"/> type) to <see cref="RunningRequirement"/>.
     /// </summary>
-    public interface IServiceRequirementCollection : IReadOnlyCollection<ServiceRequirement>
+    public interface IServiceRequirementCollection : ICKReadOnlyCollection<ServiceRequirement>
     {
         /// <summary>
         /// Fires before a change occurs.

@@ -45,7 +45,7 @@ namespace CK.Plugin
         /// <summary>
         /// Other errors related to the same event.
         /// </summary>
-        IReadOnlyCollection<ILogEventError> OtherErrors { get; }
+        ICKReadOnlyCollection<ILogEventError> OtherErrors { get; }
 
         /// <summary>
         /// The subscriber method that thrown the error: it is the <see cref="ILogErrorCulprit.Culprit"/>.

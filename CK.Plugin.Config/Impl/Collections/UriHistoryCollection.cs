@@ -105,7 +105,7 @@ namespace CK.Plugin.Config
             }
         }
 
-        #region IReadOnlyList<IUriHistory>
+        #region ICKReadOnlyList<IUriHistory>
 
         public new IEnumerator<IUriHistory> GetEnumerator()
         {

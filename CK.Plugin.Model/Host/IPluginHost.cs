@@ -53,7 +53,7 @@ namespace CK.Plugin
         /// <summary>
         /// Gets the loaded plugins. This contains also the plugins that are currently disabled but have been loaded at least once.
         /// </summary>
-        IReadOnlyCollection<IPluginProxy> LoadedPlugins { get; }
+        ICKReadOnlyCollection<IPluginProxy> LoadedPlugins { get; }
 
         /// <summary>
         /// Fires whenever a plugin status changed.
