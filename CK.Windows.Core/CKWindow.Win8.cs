@@ -66,15 +66,6 @@ namespace CK.Windows
                             handled = true;
                             return new IntPtr( hit );
                         }
-                    case Win.WM_NCACTIVATE:
-                        {
-                            break;
-                        }
-                    case Win.WM_ACTIVATE:
-                        {
-                            break;
-                        }
-
                 }
                 return IntPtr.Zero;
             }

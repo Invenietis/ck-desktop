@@ -111,9 +111,6 @@ namespace CK.Windows
             /// Must process the full set of recorded actions at once and clear them.
             /// </summary>
             abstract protected void DoRunAll();
-
         }
-
-
     }
 }

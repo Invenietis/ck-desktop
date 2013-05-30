@@ -28,7 +28,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -39,9 +41,13 @@ namespace CK.Windows
 {
     public partial class CKWindow
     {
-        IntPtr WndProcWin7( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
+        private const int SW_SHOWNORMAL = 1;
+        private const int SW_SHOWMINIMIZED = 2;
+
+
+        IntPtr WndProcWinNoFocusDefault( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
-            Win7Driver driver = (Win7Driver)_driver;
+            WinDefaultDriver driver = (WinDefaultDriver)_driver;
             switch( msg )
             {
                 case Win.WM_NCHITTEST:
@@ -59,19 +65,89 @@ namespace CK.Windows
                         driver.TryExtendFrame();
                         return IntPtr.Zero;
                     }
+                case CK.Windows.Interop.Win.WM_NCLBUTTONDOWN:
+                    {
+                        _ncbuttondown = true;
+                        GetFocus();
+                        return hWnd;
+                    }
+                case CK.Windows.Interop.Win.WM_NCMOUSEMOVE:
+                    {
+                        if( _ncbuttondown )
+                        {
+                            ReleaseFocus();
+                            _ncbuttondown = false;
+                        }
+                        return hWnd;
+                    }
             }
-
             return IntPtr.Zero;
         }
 
-        class Win7Driver : OSDriver
+
+        protected override void OnMouseLeftButtonDown( MouseButtonEventArgs e )
+        {
+            GetFocus();
+            DragMove();
+            base.OnMouseLeftButtonDown( e );
+        }
+
+        protected override void OnMouseLeftButtonUp( MouseButtonEventArgs e )
+        {
+            ReleaseFocus();
+            base.OnMouseLeftButtonUp( e );
+        }
+
+        void GetFocus()
+        {
+            _lastFocused = CK.Windows.Interop.Win.Functions.GetForegroundWindow();
+            CK.Windows.Interop.Win.Functions.SetForegroundWindow( _interopHelper.Handle );
+        }
+
+        void ReleaseFocus()
+        {
+            CK.Windows.Interop.Win.Functions.SetForegroundWindow( _lastFocused );
+        }
+
+        protected override void OnStateChanged( EventArgs e )
+        {
+            if( WindowState == System.Windows.WindowState.Maximized )
+            {
+                WindowState = System.Windows.WindowState.Normal;
+                ReleaseFocus();
+            }
+        }
+
+        public void SetPlacement( WINDOWPLACEMENT placement )
+        {
+            placement.length = Marshal.SizeOf( typeof( WINDOWPLACEMENT ) );
+            placement.flags = 0;
+            placement.showCmd = ( placement.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : placement.showCmd );
+            SetWindowPlacement( _interopHelper.Handle, ref placement );
+        }
+
+        public WINDOWPLACEMENT GetPlacement()
+        {
+            WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+            GetWindowPlacement( _interopHelper.Handle, out placement );
+            return placement;
+        }
+
+        [System.Runtime.InteropServices.DllImport( "user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall )]
+        private static extern bool SetWindowPlacement( IntPtr hWnd, [In] ref WINDOWPLACEMENT lpwndpl );
+
+        [System.Runtime.InteropServices.DllImport( "user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall )]
+        private static extern bool GetWindowPlacement( IntPtr hWnd, out WINDOWPLACEMENT lpwndpl );
+
+
+        class WinDefaultDriver : OSDriver
         {
             bool _isExtendedFrame;
 
-            internal Win7Driver( CKWindow w, HwndSource wSource )
+            internal WinDefaultDriver( CKWindow w, HwndSource wSource )
                 : base( w )
             {
-                wSource.AddHook( w.WndProcWin7 );
+                wSource.AddHook( w.WndProcWinNoFocusDefault );
                 TryExtendFrame();
             }
 
@@ -87,6 +163,9 @@ namespace CK.Windows
                         // area is rendered as a solid surface without a window border.
                         Win.Margins m = new CK.Windows.Interop.Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
                         Dwm.Functions.ExtendFrameIntoClientArea( W.ThisWindowHandle, ref m );
+
+                        W.Background = Brushes.Transparent;
+                        HwndSource.FromHwnd( W.ThisWindowHandle ).CompositionTarget.BackgroundColor = Colors.Transparent;
                     }
                 }
                 catch

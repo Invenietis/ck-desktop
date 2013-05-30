@@ -47,11 +47,18 @@ namespace CK.Windows
     {
         IntPtr _hwnd;
         OSDriver _driver;
+        bool _ncbuttondown;
+        IntPtr _lastFocused;
+        WindowInteropHelper _interopHelper;
+
+        public CKWindow()
+        {
+            _interopHelper = new WindowInteropHelper( this );
+        }
 
         protected override void OnSourceInitialized( EventArgs e )
         {
             _hwnd = new WindowInteropHelper( this ).Handle;
-            WinTrace( _hwnd, "Source initialized." );
             HwndSource hSource = HwndSource.FromHwnd( _hwnd );
             _driver = OSDriver.Create( this, hSource );
 
@@ -84,7 +91,7 @@ namespace CK.Windows
         /// Gets the Win32 window handle of this <see cref="Window"/> object.
         /// Available once <see cref="Window.SourceInitialized"/> has been raised.
         /// </summary>
-        protected IntPtr ThisWindowHandle 
+        public IntPtr ThisWindowHandle 
         { 
             get { return _hwnd; } 
         }
@@ -117,7 +124,7 @@ namespace CK.Windows
             }
             else
             {
-                // Nothig was hit. Assume the extended frame.
+                // Nothing was hit. Assume the extended frame.
                 htCode = Win.HTCAPTION;
             }
         }

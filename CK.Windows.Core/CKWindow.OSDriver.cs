@@ -56,41 +56,8 @@ namespace CK.Windows
                 {
                     return new Win8Driver( w, wSource );
                 }
-                else if( osLevel >= OSVersionInfoTEMP.SimpleOSLevel.Windows7 )
-                {
-                    return new Win7Driver( w, wSource );
-                }
-                else if( osLevel >= OSVersionInfoTEMP.SimpleOSLevel.WindowsVista )
-                {
-                    return new VistaDriver( w, wSource );
-                }
-                return new XPDriver( w, wSource );
+                return new WinDefaultDriver( w, wSource );
             }
         }
-
-
-        //static class StaticCentral
-        //{
-        //    static readonly Win.HookProc _hookProcHandle = new Win.HookProc( ShellHookProc );
-        //    static readonly IntPtr _hookHandle;
-        //    public static readonly string ErrorMessage;
-
-        //    static StaticCentral()
-        //    {
-        //        _hookHandle = Win.Functions.SetWindowsHookEx( Win.HookType.WH_SHELL, _hookProcHandle, IntPtr.Zero, Win.Functions.GetCurrentThreadId() );
-        //        if( _hookHandle == IntPtr.Zero )
-        //        {
-        //            ErrorMessage = String.Format( "Unable to set Shell hook. LastWin32Error = 0x{0:X}.", Marshal.GetLastWin32Error() );
-        //        }
-        //    }
-
-        //    static int ShellHookProc( int code, IntPtr wParam, IntPtr lParam )
-        //    {
-        //        if( code < 0 ) return Win.Functions.CallNextHookEx( _hookHandle, code, wParam, lParam );
-        //        WinTrace( "Code = {0}, wParam = 0x{1:X}, lParam = 0x{2:X}", code, wParam, lParam );
-        //        return Win.Functions.CallNextHookEx( _hookHandle, code, wParam, lParam );
-        //    }
-
-        //}
     }
 }

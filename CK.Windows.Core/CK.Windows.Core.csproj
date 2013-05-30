@@ -80,18 +80,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caliburn\StackConductor.cs" />
-    <Compile Include="CKWindow.Central.cs" />
     <Compile Include="CKWindow.DelayedOperation.cs" />
-    <Compile Include="CKWindow.Win8WithDelay.cs" />
+    <Compile Include="CKWindow.Win8.cs" />
     <Compile Include="CK_Core_OSVersion_TEMP.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\StringEmptyToUnsetConverter.cs" />
     <Compile Include="CKWindow.cs" />
-    <Compile Include="CKWindow.Win7.cs" />
-    <Compile Include="CKWindow.Vista.cs" />
+    <Compile Include="CKWindow.WinDefault.cs" />
     <Compile Include="CKWindow.OSDriver.cs" />
-    <Compile Include="CKWindow.XP.cs" />
-    <Compile Include="CKWindow.Win8.cs" />
     <Compile Include="NoFocusWindow.cs" />
     <Compile Include="NoFocusWindowEnablesSendInput.cs" />
     <Compile Include="DataTemplateSelector\TemplatedDataTemplateSelector.cs" />

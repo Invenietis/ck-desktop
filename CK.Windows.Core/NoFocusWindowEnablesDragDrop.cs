@@ -104,46 +104,18 @@ namespace CK.Windows
         {
             switch( msg )
             {
-                //case CK.Windows.Interop.Win.WM.ACTIVATE:
-                //case CK.Windows.Interop.Win.WM.NCACTIVATE:
-                //    if( !_ncbuttondown )
-                //    {
-                //        handled = true;
-                //        //ReleaseFocus();
-                //        Console.Out.WriteLine( "ACTIVATE triggered, but focus released" );
-                //    }
-                //    else
-                //    {
-                //        _lastFocused = wParam;
-                //        Console.Out.WriteLine( "ACTIVATE triggered, got focus" );
-                //    }
-
-                //    break;
                 case CK.Windows.Interop.Win.WM_SETFOCUS:
-                    //if( !_ncbuttondown )
-                    //{
-                    //    handled = true;
-                    //    //ReleaseFocus();
-                    //    Console.Out.WriteLine( "Set focus triggered, but focus released" );
-                    //}
-                    //else
-                    //{
                         _lastFocused = wParam;
-                        Console.Out.WriteLine( "Set focus triggered, got focus" );
-                    //}
-                    
                     break;
                 case CK.Windows.Interop.Win.WM_NCLBUTTONDOWN:
                     _ncbuttondown = true;
                     GetFocus();
-                    Console.Out.WriteLine( "ButtonDown, Getting the focus" );
                     break;
                 case CK.Windows.Interop.Win.WM_NCMOUSEMOVE:
                     if( _ncbuttondown )
                     {
                         ReleaseFocus();
                         _ncbuttondown = false;
-                        Console.Out.WriteLine( "MouseMove, releasing the focus" );
                     }
                     break;
             }
