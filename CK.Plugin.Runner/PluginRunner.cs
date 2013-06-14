@@ -37,7 +37,7 @@ namespace CK.Plugin.Hosting
     {
         PluginDiscoverer _discoverer;
         RunnerRequirements _requirements;
-        RunningConfiguration _runningConfig;       
+        RunningConfiguration _runningConfig;
         PluginHost _host;
         IServiceProvider _externalServiceProvider;
         object _contextObject;
@@ -54,7 +54,7 @@ namespace CK.Plugin.Hosting
             _discoverer = new PluginDiscoverer();
             _runningConfig = new RunningConfiguration( this );
             _requirements = new RunnerRequirements( this );
-           
+
             _host = new PluginHost();
             // 0 - For creation.
             _host.PluginCreator = CreatePlugin;
@@ -127,8 +127,9 @@ namespace CK.Plugin.Hosting
         {
             if( _cs != null ) throw new InvalidOperationException( R.ReentrantApplyCall );
             if( _contextObject == null ) throw new InvalidOperationException( R.InitializeRequired );
-            
+
             bool errorWhileApplying = false;
+
             if( _runningConfig.IsDirty )
             {
                 // Allocates a new PlanCalculator and reuses it as long as reapplying is needed.
@@ -137,12 +138,21 @@ namespace CK.Plugin.Hosting
                 {
                     do
                     {
+                        IConfigurationSolverResult csr = null;
                         RunnerRequirementsSnapshot requirements = new RunnerRequirementsSnapshot( _requirements );
                         SolvedPluginConfigurationSnapshot configSnapshot = new SolvedPluginConfigurationSnapshot( _config.SolvedPluginConfiguration );
 
-                        PlanCalculatorStrategy strategy = PlanCalculatorStrategy.HonorConfigAndReferenceTryStart;
-                        if( stopLaunchedOptionals ) strategy  = PlanCalculatorStrategy.Minimal;
-                        IConfigurationSolverResult csr = _cs.Initialize( requirements.FinalConfigSnapshot, strategy, _discoverer.Services, _discoverer.Plugins );
+                        if( Disabled )
+                        {
+                            csr = new ConfigurationSolverResult( _discoverer.Plugins.ToList(), CKReadOnlyListEmpty<IPluginInfo>.Empty.ToList(), CKReadOnlyListEmpty<IPluginInfo>.Empty.ToList() );
+                        }
+                        else
+                        {
+                            PlanCalculatorStrategy strategy = PlanCalculatorStrategy.HonorConfigAndReferenceTryStart;
+                            if( stopLaunchedOptionals ) strategy = PlanCalculatorStrategy.Minimal;
+                            csr = _cs.Initialize( requirements.FinalConfigSnapshot, strategy, _discoverer.Services, _discoverer.Plugins );
+                        }
+
                         if( !csr.ConfigurationSuccess )
                         {
                             errorWhileApplying = true;
@@ -175,13 +185,13 @@ namespace CK.Plugin.Hosting
                         }
                     }
                     while( _cs.ReapplyNeeded && !errorWhileApplying );
-                    
+
                     if( ApplyDone != null ) ApplyDone( this, new ApplyDoneEventArgs( !errorWhileApplying ) );
                 }
                 finally
                 {
                     _cs = null;
-                }                
+                }
             }
             return !errorWhileApplying;
         }
@@ -202,7 +212,7 @@ namespace CK.Plugin.Hosting
         }
 
         void ConfigureServiceReferences( ICKReadOnlyCollection<IPluginProxy> newPluginsLoaded )
-        {            
+        {
             HashSet<PropertyInfo> processedProperties = new HashSet<PropertyInfo>();
             foreach( var p in newPluginsLoaded )
             {
@@ -256,7 +266,7 @@ namespace CK.Plugin.Hosting
             property.SetValue( obj, refService, null );
         }
 
-        public event EventHandler  IsDirtyChanged;
+        public event EventHandler IsDirtyChanged;
 
         public bool IsDirty { get; private set; }
 
