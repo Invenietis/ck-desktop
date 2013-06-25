@@ -31,14 +31,14 @@ using System;
 namespace CK.SharedDic
 {
     internal sealed class SharedDictionaryWriter : ISharedDictionaryWriter
-	{
-		SharedDictionaryImpl _dic;
+    {
+        SharedDictionaryImpl _dic;
         IStructuredWriter _writer;
         HashSet<object> _alreadyWritten;
 
-		public SharedDictionaryWriter( SharedDictionaryImpl dic, IStructuredWriter writer )
-		{
-			_dic = dic;
+        public SharedDictionaryWriter( SharedDictionaryImpl dic, IStructuredWriter writer )
+        {
+            _dic = dic;
             _writer = writer;
             _alreadyWritten = new HashSet<object>();
             _writer.Current.ObjectWriteExData += new EventHandler<ObjectWriteExDataEventArgs>( _writer_ObjectWriteExData );
@@ -59,9 +59,9 @@ namespace CK.SharedDic
         public IStructuredWriter StructuredWriter { get { return _writer; } }
 
         public ISharedDictionary SharedDictionary { get { return _dic; } }
-	
+
         public int WritePluginsDataElement( string elementName, object o, bool writeEmptyElement )
-		{
+        {
             if( elementName == null ) throw new ArgumentNullException( "elementName" );
             if( o == null ) throw new ArgumentNullException( "o" );
             int nb = WritePluginsData( o, elementName );
@@ -71,7 +71,7 @@ namespace CK.SharedDic
                 StructuredWriter.Xml.WriteEndElement();
             }
             return nb;
-		}
+        }
 
         public int WritePluginsData( object o )
         {
@@ -103,12 +103,15 @@ namespace CK.SharedDic
                         }
                         w.WriteStartElement( "p" );
                         w.WriteAttributeString( "guid", e.PluginId.UniqueId.ToString() );
-                        w.WriteAttributeString( "version", e.PluginId.Version.ToString() );
+
+                        if( e.PluginId.Version != null )
+                            w.WriteAttributeString( "version", e.PluginId.Version.ToString() );
+                        
                         if( e.PluginId.PublicName.Length > 0 ) w.WriteAttributeString( "name", e.PluginId.PublicName );
                         ++writeCount;
 
                         SharedDictionaryWriterEventArgs ev = null;
-                        if( BeforePluginsData != null ) BeforePluginsData( this, (ev = new SharedDictionaryWriterEventArgs( this, f )) );
+                        if( BeforePluginsData != null ) BeforePluginsData( this, ( ev = new SharedDictionaryWriterEventArgs( this, f ) ) );
 
                         f.WriteData( this );
 
@@ -147,5 +150,5 @@ namespace CK.SharedDic
                 _dic = null;
             }
         }
-	}
+    }
 }
