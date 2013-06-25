@@ -98,7 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemoVms\ConfigCurrentItemTestsViewModel.cs" />
-    <Compile Include="DemoVms\FocusTestsViewModel.cs" />
+    <Compile Include="DemoVms\WindowTestsViewModel.cs" />
     <Compile Include="DemoVms\FocusWindows\PseudoSendStringService.cs" />
     <Compile Include="DemoVms\FocusWindows\StandardWindow.xaml.cs">
       <DependentUpon>StandardWindow.xaml</DependentUpon>
@@ -108,9 +108,6 @@
     </Compile>
     <Compile Include="DemoVms\FocusWindows\NonActivableCiviKeyWindow.xaml.cs">
       <DependentUpon>NonActivableCiviKeyWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DemoVms\FocusWindows\CiviKeyTextBuffering.xaml.cs">
-      <DependentUpon>CiviKeyTextBuffering.xaml</DependentUpon>
     </Compile>
     <Compile Include="DemoVms\ProfilesAutoSetViewModel.cs" />
     <Compile Include="DemoVms\ProfilesNoNotifyViewModel.cs" />
@@ -147,10 +144,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DemoVms\FocusWindows\NonActivableCiviKeyWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DemoVms\FocusWindows\CiviKeyTextBuffering.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

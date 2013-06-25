@@ -7,8 +7,7 @@
         <TextBox Margin="10,10,10,76" TextWrapping="Wrap" AcceptsReturn="True" Text="TextBox..."  />
         <TextBlock Name="Explanation" TextWrapping="WrapWithOverflow" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Width="332" Margin="10,0,10,-25">
             This is a basic WPF Window with ShowActivated="True", WindowStyle="ToolWindow" and Topmost="True".
-            Non activable CiviKey windows respect it, but activation/deactivation triggers awful blinks. 
-            The only way to move it is to use the caption bar.
+            It doesn't have the Aero "glossy-effect" of a CKWindow 
         </TextBlock>
     </Grid>
 </Window>

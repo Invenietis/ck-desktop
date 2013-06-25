@@ -43,30 +43,35 @@ using CK.Windows.Helpers;
 namespace CK.Windows
 {
 
-    public partial class CKWindow : Window
+    /// <summary>
+    /// This window inherits from <see cref="CKWindow"/>
+    /// It is not activable if If ShowActivated == false and that it is created on thread seperated from the other windows of the application.
+    /// </summary>
+    public partial class CKNoFocusWindow : CKWindow
     {
-        IntPtr _hwnd;
         OSDriver _driver;
         bool _ncbuttondown;
         IntPtr _lastFocused;
-        WindowInteropHelper _interopHelper;
 
-        public CKWindow()
+        /// <summary>
+        /// Default constructor of a <see cref="CKNoFocusWindow"/>
+        /// </summary>
+        public CKNoFocusWindow()
+            :base()
         {
-            _interopHelper = new WindowInteropHelper( this );
         }
 
         protected override void OnSourceInitialized( EventArgs e )
         {
-            _hwnd = new WindowInteropHelper( this ).Handle;
-            HwndSource hSource = HwndSource.FromHwnd( _hwnd );
+            base.OnSourceInitialized( e );
+
+            HwndSource hSource = HwndSource.FromHwnd( Hwnd );
             _driver = OSDriver.Create( this, hSource );
 
             if( !ShowActivated )
             {
                 SetNoActivateFlag( true );
             }
-            base.OnSourceInitialized( e );
         }
 
         internal void SetNoActivateFlag( bool set )
@@ -74,26 +79,17 @@ namespace CK.Windows
             if( set )
             {
                 Win.Functions.SetWindowLong(
-                            _hwnd,
+                            Hwnd,
                             Win.WindowLongIndex.GWL_EXSTYLE,
-                            (uint)Win.Functions.GetWindowLong( _hwnd, Win.WindowLongIndex.GWL_EXSTYLE ) | Win.WS_EX_NOACTIVATE );
+                            (uint)Win.Functions.GetWindowLong( Hwnd, Win.WindowLongIndex.GWL_EXSTYLE ) | Win.WS_EX_NOACTIVATE );
             }
             else
             {
                 Win.Functions.SetWindowLong(
-                            _hwnd,
+                            Hwnd,
                             Win.WindowLongIndex.GWL_EXSTYLE,
-                            (uint)Win.Functions.GetWindowLong( _hwnd, Win.WindowLongIndex.GWL_EXSTYLE ) & ~Win.WS_EX_NOACTIVATE );
+                            (uint)Win.Functions.GetWindowLong( Hwnd, Win.WindowLongIndex.GWL_EXSTYLE ) & ~Win.WS_EX_NOACTIVATE );
             }
-        }
-
-        /// <summary>
-        /// Gets the Win32 window handle of this <see cref="Window"/> object.
-        /// Available once <see cref="Window.SourceInitialized"/> has been raised.
-        /// </summary>
-        public IntPtr ThisWindowHandle 
-        { 
-            get { return _hwnd; } 
         }
 
         Point PointFromLParam( IntPtr lParam )
@@ -139,38 +135,6 @@ namespace CK.Windows
         {
             return false;
         }
-
-        #region WinTrace helpers
-        [Conditional("WINTRACE")]
-        static void WinTrace( string text )
-        {
-            Console.WriteLine( "[CiviKeyWindow]{0}.", text );
-        }
-
-        [Conditional( "WINTRACE" )]
-        static void WinTrace( string format, params object[] p )
-        {
-            Console.WriteLine( "[CiviKeyWindow]{0}.", String.Format( format, p ) );
-        }
-
-        [Conditional( "WINTRACE" )]
-        static void WinTrace( IntPtr hWnd, string text )
-        {
-            Console.WriteLine( "[CiviKeyWindow:0x{0:X}]{1}.", hWnd, text );
-        }
-
-        [Conditional( "WINTRACE" )]
-        static void WinTrace( CKWindow wnd, string text )
-        {
-            Console.WriteLine( "[CiviKeyWindow:0x{0:X}]{1}.", wnd.ThisWindowHandle, text );
-        }
-
-        [Conditional( "WINTRACE" )]
-        static void WinTrace( IntPtr hWnd, string format, params object[] p )
-        {
-            Console.WriteLine( "[CiviKeyWindow:0x{0:X}]{1}.", hWnd, String.Format( format, p ) );
-        }
-        #endregion
+        
     }
-
 }

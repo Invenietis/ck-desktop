@@ -55,8 +55,6 @@ namespace CK.Windows.Demo
 
             this.AddLink( ProfilesVM );
 
-            this.AddLink( new FocusTestsViewModel( app, ConfigManager ) );
-
             var group = this.AddGroup();
 
             PropertyChangedMockupClass mockup = new PropertyChangedMockupClass();

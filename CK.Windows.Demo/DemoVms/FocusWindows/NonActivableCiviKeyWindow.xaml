@@ -1,16 +1,8 @@
-﻿<ck:CKWindow x:Class="CK.Windows.Demo.DemoVms.NonActivableCiviKeyWindow"
+﻿<ck:CKNoFocusWindow x:Class="CK.Windows.Demo.DemoVms.NonActivableCiviKeyWindow"
         xmlns:ck="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Non Activable CiviKey window (a kind of Skin)" Height="229" Width="576" Topmost="True" WindowStyle="None" ShowActivated="False" ResizeMode="CanResizeWithGrip" >
-    <!--<Window.Background>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.2">
-            <GradientStop Color="Yellow" Offset="0.0" />
-            <GradientStop Color="Red" Offset="0.25" />
-            <GradientStop Color="Blue" Offset="0.75" />
-            <GradientStop Color="LimeGreen" Offset="1.0" />
-        </LinearGradientBrush>
-    </Window.Background>-->
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -33,10 +25,11 @@
             </Border.Background>
             <TextBlock Name="Explanation" TextWrapping="WrapWithOverflow" Height="Auto" Width="Auto" Margin="10,10,10,10">
             This is a CiviKeyWindow with ShowActivated="False", WindowStyle="ToolWindow" and Topmost="True".
-            It is always deactivated (ie. it does not steal the focus). 
-            The window can be moved by clicking in the client area or any Visual that are accepted by the IsDraggableVisual override (here, the image "Drag Me" and this text).
-            Note: This IsCKWindowDraggableVisual implementation is compliant with ResizeMode="CanResizeWithGrip".)
+            It is only activated when being dragged.
+            It releases the focus as soon as it is dropped.
+            If instantiated in the same thread as another window, clicking the buttons of this window will activate it (which we don't want in CiviKey).
+            See the "second thread" example for more informations on how to have a truly non activable window
             </TextBlock>
         </Border>
     </Grid>
-</ck:CKWindow>
+</ck:CKNoFocusWindow>

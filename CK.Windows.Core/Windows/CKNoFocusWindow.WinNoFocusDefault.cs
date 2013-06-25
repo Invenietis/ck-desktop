@@ -35,24 +35,21 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
 using CK.Core;
+using CK.Windows.Core;
 using CK.Windows.Interop;
 
 namespace CK.Windows
 {
-    public partial class CKWindow
+    public partial class CKNoFocusWindow
     {
-        private const int SW_SHOWNORMAL = 1;
-        private const int SW_SHOWMINIMIZED = 2;
-
-
         IntPtr WndProcWinNoFocusDefault( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
-            WinDefaultDriver driver = (WinDefaultDriver)_driver;
+            //WinDefaultDriver driver = (WinDefaultDriver)_driver;
             switch( msg )
             {
                 case Win.WM_NCHITTEST:
                     {
-                        int hit = Win.Functions.DefWindowProc( _hwnd, msg, wParam, lParam ).ToInt32();
+                        int hit = Win.Functions.DefWindowProc( Hwnd, msg, wParam, lParam ).ToInt32();
                         if( hit == Win.HTCLIENT )
                         {
                             CKNCHitTest( PointFromLParam( lParam ), ref hit );
@@ -62,7 +59,7 @@ namespace CK.Windows
                     }
                 case Win.WM_DWMCOMPOSITIONCHANGED:
                     {
-                        driver.TryExtendFrame();
+                        this.IsFrameExtended = CKWindowTools.TryExtendFrame( this );
                         return IntPtr.Zero;
                     }
                 case CK.Windows.Interop.Win.WM_NCLBUTTONDOWN:
@@ -84,11 +81,13 @@ namespace CK.Windows
             return IntPtr.Zero;
         }
 
-
         protected override void OnMouseLeftButtonDown( MouseButtonEventArgs e )
         {
             GetFocus();
-            DragMove();
+
+            if(e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+
             base.OnMouseLeftButtonDown( e );
         }
 
@@ -101,7 +100,7 @@ namespace CK.Windows
         void GetFocus()
         {
             _lastFocused = CK.Windows.Interop.Win.Functions.GetForegroundWindow();
-            CK.Windows.Interop.Win.Functions.SetForegroundWindow( _interopHelper.Handle );
+            CK.Windows.Interop.Win.Functions.SetForegroundWindow( Hwnd );
         }
 
         void ReleaseFocus()
@@ -118,64 +117,14 @@ namespace CK.Windows
             }
         }
 
-        public void SetPlacement( WINDOWPLACEMENT placement )
-        {
-            placement.length = Marshal.SizeOf( typeof( WINDOWPLACEMENT ) );
-            placement.flags = 0;
-            placement.showCmd = ( placement.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : placement.showCmd );
-            SetWindowPlacement( _interopHelper.Handle, ref placement );
-        }
-
-        public WINDOWPLACEMENT GetPlacement()
-        {
-            WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
-            GetWindowPlacement( _interopHelper.Handle, out placement );
-            return placement;
-        }
-
-        [System.Runtime.InteropServices.DllImport( "user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall )]
-        private static extern bool SetWindowPlacement( IntPtr hWnd, [In] ref WINDOWPLACEMENT lpwndpl );
-
-        [System.Runtime.InteropServices.DllImport( "user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall )]
-        private static extern bool GetWindowPlacement( IntPtr hWnd, out WINDOWPLACEMENT lpwndpl );
-
-
         class WinDefaultDriver : OSDriver
         {
-            bool _isExtendedFrame;
-
-            internal WinDefaultDriver( CKWindow w, HwndSource wSource )
+            internal WinDefaultDriver( CKNoFocusWindow w, HwndSource wSource )
                 : base( w )
             {
                 wSource.AddHook( w.WndProcWinNoFocusDefault );
-                TryExtendFrame();
+                w.IsFrameExtended = CKWindowTools.TryExtendFrame( w );
             }
-
-            public void TryExtendFrame()
-            {
-                try
-                {
-                    _isExtendedFrame = Dwm.Functions.IsCompositionEnabled();
-                    if( _isExtendedFrame )
-                    {
-                        // Negative margins have special meaning to DwmExtendFrameIntoClientArea.
-                        // Negative margins create the "sheet of glass" effect, where the client 
-                        // area is rendered as a solid surface without a window border.
-                        Win.Margins m = new CK.Windows.Interop.Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
-                        Dwm.Functions.ExtendFrameIntoClientArea( W.ThisWindowHandle, ref m );
-
-                        W.Background = Brushes.Transparent;
-                        HwndSource.FromHwnd( W.ThisWindowHandle ).CompositionTarget.BackgroundColor = Colors.Transparent;
-                    }
-                }
-                catch
-                {
-                    _isExtendedFrame = false;
-                    W.Background = new SolidColorBrush( Colors.WhiteSmoke );
-                }
-                WinTrace( W, _isExtendedFrame ? "Frame extended" : "Frame NOT extended" );
-            }
-
         }
     }
 }

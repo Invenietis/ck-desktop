@@ -16,7 +16,7 @@ namespace CK.Windows.Demo.DemoVms
     /// <summary>
     /// Interaction logic for TextBuffering.xaml
     /// </summary>
-    public partial class ActivableCiviKeyWindowWithText : CKWindow
+    public partial class ActivableCiviKeyWindowWithText : CKNoFocusWindow
     {
         public ActivableCiviKeyWindowWithText()
         {
@@ -25,18 +25,18 @@ namespace CK.Windows.Demo.DemoVms
 
         protected override bool IsDraggableVisual( DependencyObject visualElement )
         {
-            return visualElement == Explanation || (visualElement is Border && VisualTreeHelper.GetParent( visualElement ) == this);
+            return visualElement == Explanation || ( visualElement is Border && VisualTreeHelper.GetParent( visualElement ) == this );
         }
 
         protected override void OnActivated( EventArgs e )
         {
-            Console.WriteLine( "ActivableCiviKeyWindowWithText.OnActivated (hWnd=0x{0:X})", ThisWindowHandle );
+            Console.WriteLine( "ActivableCiviKeyWindowWithText.OnActivated (hWnd=0x{0:X})", Hwnd );
             base.OnActivated( e );
         }
-        
+
         protected override void OnDeactivated( EventArgs e )
         {
-            Console.WriteLine( "ActivableCiviKeyWindowWithText.OnDeactivated (hWnd=0x{0:X})", ThisWindowHandle );
+            Console.WriteLine( "ActivableCiviKeyWindowWithText.OnDeactivated (hWnd=0x{0:X})", Hwnd );
             base.OnDeactivated( e );
         }
     }

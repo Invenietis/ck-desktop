@@ -21,41 +21,31 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-#if DEBUG
-#define WINTRACE
-#endif
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
 using System.Windows.Interop;
 using CK.Core;
-using CK.Windows.Interop;
 
 namespace CK.Windows
 {
-    public partial class CKWindow
+    public partial class CKNoFocusWindow
     {
         abstract class OSDriver
         {
-            protected readonly CKWindow W;
+            protected readonly CKNoFocusWindow Window;
 
-            protected OSDriver( CKWindow w )
+            protected OSDriver( CKNoFocusWindow w )
             {
-                W = w;
+                Window = w;
             }
 
-            public static OSDriver Create( CKWindow w, HwndSource wSource, OSVersionInfoTEMP.SimpleOSLevel osLevel = OSVersionInfoTEMP.SimpleOSLevel.Unknown )
+            public static OSDriver Create( CKNoFocusWindow w, HwndSource wSource, OSVersionInfoTEMP.SimpleOSLevel osLevel = OSVersionInfoTEMP.SimpleOSLevel.Unknown )
             {
                 if( osLevel == OSVersionInfoTEMP.SimpleOSLevel.Unknown ) osLevel = OSVersionInfoTEMP.OSLevel;
-                if( osLevel >= OSVersionInfoTEMP.SimpleOSLevel.Windows8 )
-                {
-                    return new Win8Driver( w, wSource );
-                }
+
+                //if( osLevel >= OSVersionInfoTEMP.SimpleOSLevel.Windows8 )
+                //{
+                //    return new Win8Driver( w, wSource );
+                //}
+                
                 return new WinDefaultDriver( w, wSource );
             }
         }

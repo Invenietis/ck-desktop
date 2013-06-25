@@ -16,7 +16,7 @@ namespace CK.Windows.Demo.DemoVms
     /// <summary>
     /// Interaction logic for NonActivableCiviKeyWindow.xaml
     /// </summary>
-    public partial class NonActivableCiviKeyWindow : CKWindow
+    public partial class NonActivableCiviKeyWindow : CKNoFocusWindow
     {
         public NonActivableCiviKeyWindow()
         {

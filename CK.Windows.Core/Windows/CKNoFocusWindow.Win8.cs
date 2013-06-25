@@ -36,17 +36,12 @@ using CK.Windows.Interop;
 
 namespace CK.Windows
 {
-    public partial class CKWindow
+    public partial class CKNoFocusWindow
     {
-
-        protected override void OnPreviewMouseUp( System.Windows.Input.MouseButtonEventArgs e )
-        {
-            base.OnPreviewMouseUp( e );
-        }
 
         class Win8Driver : OSDriver
         {
-            internal Win8Driver( CKWindow w, HwndSource wSource )
+            internal Win8Driver( CKNoFocusWindow w, HwndSource wSource )
                 : base( w )
             {
                 wSource.AddHook( WndProc );
@@ -58,10 +53,10 @@ namespace CK.Windows
                 {
                     case Win.WM_NCHITTEST:
                         {
-                            int hit = Win.Functions.DefWindowProc( W.ThisWindowHandle, msg, wParam, lParam ).ToInt32();
+                            int hit = Win.Functions.DefWindowProc( Window.Hwnd, msg, wParam, lParam ).ToInt32();
                             if( hit == Win.HTCLIENT )
                             {
-                                W.CKNCHitTest( W.PointFromLParam( lParam ), ref hit );
+                                Window.CKNCHitTest( Window.PointFromLParam( lParam ), ref hit );
                             }
                             handled = true;
                             return new IntPtr( hit );
