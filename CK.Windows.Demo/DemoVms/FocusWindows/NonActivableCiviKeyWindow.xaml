@@ -2,7 +2,10 @@
         xmlns:ck="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Non Activable CiviKey window (a kind of Skin)" Height="229" Width="576" Topmost="True" WindowStyle="None" ShowActivated="False" ResizeMode="CanResizeWithGrip" >
+        Title="Non Activable CiviKey window (a kind of Skin)" 
+        Height="229" Width="576" 
+        Topmost="True" WindowStyle="None" 
+        ShowActivated="False" ResizeMode="CanResizeWithGrip" >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

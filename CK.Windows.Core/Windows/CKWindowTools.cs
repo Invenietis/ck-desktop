@@ -17,38 +17,6 @@ namespace CK.Windows
         private const int SW_SHOWNORMAL = 1;
         private const int SW_SHOWMINIMIZED = 2;
 
-        /// <summary>
-        /// Adds the Aero "glossy-effect" to a WPF Window.
-        /// </summary>
-        /// <param name="w">The window</param>
-        /// <returns>whether or not the effect has been applicated. returns false if the desktop composition is </returns>
-        public static bool TryExtendFrame( CKWindow w )
-        {
-            bool isExtendedFrame = Dwm.Functions.IsCompositionEnabled();
-
-            try
-            {
-                if( isExtendedFrame )
-                {
-                    // Negative margins have special meaning to DwmExtendFrameIntoClientArea.
-                    // Negative margins create the "sheet of glass" effect, where the client 
-                    // area is rendered as a solid surface without a window border.
-                    Win.Margins m = new CK.Windows.Interop.Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
-                    Dwm.Functions.ExtendFrameIntoClientArea( w.Hwnd, ref m );
-
-                    w.Background = Brushes.Transparent;
-                    HwndSource.FromHwnd( w.Hwnd ).CompositionTarget.BackgroundColor = Colors.Transparent;
-                }
-            }
-            catch
-            {
-                isExtendedFrame = false;
-                w.Background = new SolidColorBrush( Colors.WhiteSmoke );
-            }
-
-            return isExtendedFrame;
-        }
-
         #region WinTrace helpers (commented)
         //[Conditional("WINTRACE")]
         //static void WinTrace( string text )
@@ -87,12 +55,12 @@ namespace CK.Windows
         /// </summary>
         /// <param name="w">The window to which the configuration should be applied</param>
         /// <param name="placement">The configuration, in a WINDOWPLACEMENT Struct (see MSDN for more information)</param>
-        public static void SetPlacement( CKWindow w, WINDOWPLACEMENT placement )
+        public static void SetPlacement( IntPtr hwnd, WINDOWPLACEMENT placement )
         {
             placement.length = Marshal.SizeOf( typeof( WINDOWPLACEMENT ) );
             placement.flags = 0;
             placement.showCmd = ( placement.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : placement.showCmd );
-            SetWindowPlacement( w.Hwnd, ref placement );
+            SetWindowPlacement( hwnd, ref placement );
         }
 
         /// <summary>
@@ -101,10 +69,10 @@ namespace CK.Windows
         /// </summary>
         /// <param name="w">The window</param>
         /// <returns>The configuration of the window, in a WINDOWPLACEMENT struct</returns>
-        public static WINDOWPLACEMENT GetPlacement( CKWindow w )
+        public static WINDOWPLACEMENT GetPlacement( IntPtr hwnd )
         {
             WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
-            GetWindowPlacement( w.Hwnd, out placement );
+            GetWindowPlacement( hwnd, out placement );
             return placement;
         }
 

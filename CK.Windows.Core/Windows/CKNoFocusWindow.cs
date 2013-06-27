@@ -49,7 +49,6 @@ namespace CK.Windows
     /// </summary>
     public partial class CKNoFocusWindow : CKWindow
     {
-        OSDriver _driver;
         bool _ncbuttondown;
         IntPtr _lastFocused;
 
@@ -57,22 +56,70 @@ namespace CK.Windows
         /// Default constructor of a <see cref="CKNoFocusWindow"/>
         /// </summary>
         public CKNoFocusWindow()
-            :base()
+            : base()
         {
         }
+
+        IntPtr WndProcWinNoFocusDefault( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
+        {
+            switch( msg )
+            {
+                case Win.WM_NCHITTEST:
+                    {
+                        int hit = Win.Functions.DefWindowProc( Hwnd, msg, wParam, lParam ).ToInt32();
+                        if( hit == Win.HTCLIENT )
+                        {
+                            CKNCHitTest( PointFromLParam( lParam ), ref hit );
+                        }
+                        handled = true;
+                        return new IntPtr( hit );
+                    }
+                case CK.Windows.Interop.Win.WM_NCLBUTTONDOWN:
+                    {
+                        _ncbuttondown = true;
+                        GetFocus();
+                        return hWnd;
+                    }
+                case CK.Windows.Interop.Win.WM_NCMOUSEMOVE:
+                    {
+                        if( _ncbuttondown )
+                        {
+                            ReleaseFocus();
+                            _ncbuttondown = false;
+                        }
+                        return hWnd;
+                    }
+            }
+            return IntPtr.Zero;
+        }
+
+        #region OnXXX
 
         protected override void OnSourceInitialized( EventArgs e )
         {
             base.OnSourceInitialized( e );
 
             HwndSource hSource = HwndSource.FromHwnd( Hwnd );
-            _driver = OSDriver.Create( this, hSource );
+            hSource.AddHook( WndProcWinNoFocusDefault );
 
             if( !ShowActivated )
             {
                 SetNoActivateFlag( true );
             }
         }
+
+        protected override void OnStateChanged( EventArgs e )
+        {
+            if( WindowState == System.Windows.WindowState.Maximized )
+            {
+                WindowState = System.Windows.WindowState.Normal;
+                ReleaseFocus();
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         internal void SetNoActivateFlag( bool set )
         {
@@ -92,6 +139,18 @@ namespace CK.Windows
             }
         }
 
+
+        void GetFocus()
+        {
+            _lastFocused = CK.Windows.Interop.Win.Functions.GetForegroundWindow();
+            CK.Windows.Interop.Win.Functions.SetForegroundWindow( Hwnd );
+        }
+
+        void ReleaseFocus()
+        {
+            CK.Windows.Interop.Win.Functions.SetForegroundWindow( _lastFocused );
+        }
+
         Point PointFromLParam( IntPtr lParam )
         {
             return new Point( lParam.ToInt32() & 0xFFFF, lParam.ToInt32() >> 16 );
@@ -103,7 +162,6 @@ namespace CK.Windows
             HitTestResult result = VisualTreeHelper.HitTest( this, point );
             if( result != null )
             {
-                //Console.WriteLine( "HitTest: "+ result.VisualHit.GetType().Name ); 
                 if( IsDraggableVisual( result.VisualHit ) )
                 {
                     htCode = Win.HTCAPTION;
@@ -125,6 +183,8 @@ namespace CK.Windows
             }
         }
 
+        #endregion
+
         /// <summary>
         /// By default, nothing is draggable: this method always returns false.
         /// By overriding this method, any visual elements can be considered as a handle to drag the window.
@@ -135,6 +195,5 @@ namespace CK.Windows
         {
             return false;
         }
-        
     }
 }

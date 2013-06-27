@@ -6,11 +6,12 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace CK.Windows
 {
     /// <summary>
-    /// WPF Window that has the aero "glossy-effect".
+    /// WPF Window that has the Aero "glossy-effect".
     /// </summary>
     public class CKWindow : Window
     {
@@ -26,7 +27,7 @@ namespace CK.Windows
         /// </summary>
         protected bool IsFrameExtended { get; set; }
 
-        private WindowInteropHelper InteropHelper { get; set; }
+        WindowInteropHelper _interopHelper;
 
         /// <summary>
         /// Defautl constructor
@@ -34,23 +35,7 @@ namespace CK.Windows
         public CKWindow()
             : base()
         {
-            InteropHelper = new WindowInteropHelper( this );
-        }
-
-        /// <summary>
-        /// When the window is initialized, gets the current window's Handle.
-        /// Then calls WPF Window OnSourceInitialized.
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnSourceInitialized( EventArgs e )
-        {
-            Hwnd = new WindowInteropHelper( this ).Handle;
-            HwndSource hSource = HwndSource.FromHwnd( Hwnd );
-            hSource.AddHook( WndProcWinDefault );
-
-            IsFrameExtended = CKWindowTools.TryExtendFrame( this );
-
-            base.OnSourceInitialized( e );
+            _interopHelper = new WindowInteropHelper( this );
         }
 
         IntPtr WndProcWinDefault( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
@@ -59,19 +44,62 @@ namespace CK.Windows
             {
                 case Win.WM_DWMCOMPOSITIONCHANGED:
                     {
-                        IsFrameExtended = CKWindowTools.TryExtendFrame( this );
+                        IsFrameExtended = TryExtendFrame();
                         return IntPtr.Zero;
                     }
             }
             return IntPtr.Zero;
         }
 
-        protected override void OnMouseLeftButtonDown( MouseButtonEventArgs e )
-        {
-            if( e.LeftButton == MouseButtonState.Pressed )
-                DragMove();
+        #region OnXXX
 
-            base.OnMouseLeftButtonDown( e );
+        /// <summary>
+        /// When the window is initialized, gets the current window's Handle.
+        /// Then calls WPF Window OnSourceInitialized.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnSourceInitialized( EventArgs e )
+        {
+            Hwnd = _interopHelper.Handle;
+            HwndSource hSource = HwndSource.FromHwnd( Hwnd );
+            hSource.AddHook( WndProcWinDefault );
+
+            IsFrameExtended = TryExtendFrame();
+
+            base.OnSourceInitialized( e );
         }
+
+        /// <summary>
+        /// Adds the Aero "glossy-effect" to a WPF Window.
+        /// </summary>
+        /// <returns>whether or not the effect has been applicated. returns false if the desktop composition is </returns>
+        public bool TryExtendFrame()
+        {
+            bool isExtendedFrame = Dwm.Functions.IsCompositionEnabled();
+
+            try
+            {
+                if( isExtendedFrame )
+                {
+                    // Negative margins have special meaning to DwmExtendFrameIntoClientArea.
+                    // Negative margins create the "sheet of glass" effect, where the client 
+                    // area is rendered as a solid surface without a window border.
+                    Win.Margins m = new CK.Windows.Interop.Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
+                    Dwm.Functions.ExtendFrameIntoClientArea( Hwnd, ref m );
+
+                    Background = Brushes.Transparent;
+                    HwndSource.FromHwnd( Hwnd ).CompositionTarget.BackgroundColor = Colors.Transparent;
+                }
+            }
+            catch
+            {
+                isExtendedFrame = false;
+                Background = new SolidColorBrush( Colors.WhiteSmoke );
+            }
+
+            return isExtendedFrame;
+        }
+
+        #endregion
     }
 }

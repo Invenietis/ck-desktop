@@ -81,14 +81,11 @@
   <ItemGroup>
     <Compile Include="Caliburn\StackConductor.cs" />
     <Compile Include="Windows\CKWindow.cs" />
-    <Compile Include="Windows\CKNoFocusWindow.Win8.cs" />
     <Compile Include="Windows\CKWindowTools.cs" />
     <Compile Include="CK_Core_OSVersion_TEMP.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\StringEmptyToUnsetConverter.cs" />
     <Compile Include="Windows\CKNoFocusWindow.cs" />
-    <Compile Include="Windows\CKNoFocusWindow.WinNoFocusDefault.cs" />
-    <Compile Include="Windows\CKNoFocusWindow.OSDriver.cs" />
     <Compile Include="DataTemplateSelector\TemplatedDataTemplateSelector.cs" />
     <Compile Include="DependencyObjectExtensions.cs" />
     <Compile Include="Helpers\ScreenHelper.cs" />
