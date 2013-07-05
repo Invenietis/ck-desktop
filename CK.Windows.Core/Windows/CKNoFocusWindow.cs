@@ -64,16 +64,6 @@ namespace CK.Windows
         {
             switch( msg )
             {
-                case Win.WM_NCHITTEST:
-                    {
-                        int hit = Win.Functions.DefWindowProc( Hwnd, msg, wParam, lParam ).ToInt32();
-                        if( hit == Win.HTCLIENT )
-                        {
-                            CKNCHitTest( PointFromLParam( lParam ), ref hit );
-                        }
-                        handled = true;
-                        return new IntPtr( hit );
-                    }
                 case CK.Windows.Interop.Win.WM_NCLBUTTONDOWN:
                     {
                         _ncbuttondown = true;
@@ -151,49 +141,6 @@ namespace CK.Windows
             CK.Windows.Interop.Win.Functions.SetForegroundWindow( _lastFocused );
         }
 
-        Point PointFromLParam( IntPtr lParam )
-        {
-            return new Point( lParam.ToInt32() & 0xFFFF, lParam.ToInt32() >> 16 );
-        }
-
-        void CKNCHitTest( Point p, ref int htCode )
-        {
-            var point = PointFromScreen( p );
-            HitTestResult result = VisualTreeHelper.HitTest( this, point );
-            if( result != null )
-            {
-                if( IsDraggableVisual( result.VisualHit ) )
-                {
-                    htCode = Win.HTCAPTION;
-                }
-                else if( ResizeMode == System.Windows.ResizeMode.CanResizeWithGrip )
-                {
-                    if( TreeHelper.FindParentInVisualTree( result.VisualHit, d => d is System.Windows.Controls.Primitives.ResizeGrip ) != null )
-                    {
-                        if( FlowDirection == FlowDirection.RightToLeft )
-                            htCode = Win.HTBOTTOMLEFT;
-                        else htCode = Win.HTBOTTOMRIGHT;
-                    }
-                }
-            }
-            else
-            {
-                // Nothing was hit. Assume the extended frame.
-                htCode = Win.HTCAPTION;
-            }
-        }
-
         #endregion
-
-        /// <summary>
-        /// By default, nothing is draggable: this method always returns false.
-        /// By overriding this method, any visual elements can be considered as a handle to drag the window.
-        /// </summary>
-        /// <param name="visualElement">Visual element that could be considered as a handle to drag the window.</param>
-        /// <returns>True if the element must drag the window.</returns>
-        protected virtual bool IsDraggableVisual( DependencyObject visualElement )
-        {
-            return false;
-        }
     }
 }

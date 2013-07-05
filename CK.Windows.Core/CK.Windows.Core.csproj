@@ -82,7 +82,6 @@
     <Compile Include="Caliburn\StackConductor.cs" />
     <Compile Include="Windows\CKWindow.cs" />
     <Compile Include="Windows\CKWindowTools.cs" />
-    <Compile Include="CK_Core_OSVersion_TEMP.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\StringEmptyToUnsetConverter.cs" />
     <Compile Include="Windows\CKNoFocusWindow.cs" />
