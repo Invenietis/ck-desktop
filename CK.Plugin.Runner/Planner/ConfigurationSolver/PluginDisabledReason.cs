@@ -30,6 +30,11 @@ namespace CK.Plugin.Hosting
         /// <summary>
         /// Initialized by PluginData constructor.
         /// </summary>
+        MustExistReferenceServiceIsOnError,
+
+        /// <summary>
+        /// Initialized by PluginData constructor.
+        /// </summary>
         ServiceSpecializationMustExist,
 
         /// <summary>

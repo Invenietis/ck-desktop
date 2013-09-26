@@ -49,6 +49,11 @@ namespace CK.Plugin.Hosting
                         // If the required service is already disabled, we immediately disable this plugin.
                         // If the required service is not yet disabled, we register this plugin data:
                         // whenever the service is disabled, it will disable the plugin.
+                        if( sRef.Reference.HasError )
+                        {
+                            SetDisabled( PluginDisabledReason.MustExistReferenceServiceIsOnError );
+                            break;
+                        }
                         ServiceData sr = allServices[sRef.Reference];
                         if( sr.Disabled )
                         {
