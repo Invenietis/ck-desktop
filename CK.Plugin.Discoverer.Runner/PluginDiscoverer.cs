@@ -53,13 +53,13 @@ namespace CK.Plugin.Discoverer.Runner
 		// Dynamic state : valid only while discovering.
 		List<FileInfo> _currentFiles;
 
-		public PluginDiscoverer()
+		public PluginDiscoverer( string rootAssemblyDir )
 		{
             AppDomain curDomain = AppDomain.CurrentDomain;
             curDomain.ReflectionOnlyAssemblyResolve += ( o, args ) =>
             {
                 AssemblyName name = new AssemblyName( args.Name );
-                string asmToCheck = _rootAssembly + "\\" + name.Name + ".dll";
+                string asmToCheck = _rootAssemblyDir + "\\" + name.Name + ".dll";
 
                 if( File.Exists( asmToCheck ) )
                     return Assembly.ReflectionOnlyLoadFrom( asmToCheck );
@@ -77,11 +77,11 @@ namespace CK.Plugin.Discoverer.Runner
 			_currentFiles = new List<FileInfo>();
         }
 
-        internal string _rootAssembly;
+        internal string _rootAssemblyDir;
 
 		public RunnerDataHolder Discover( DirectoryInfo dir, Predicate<FileInfo> filter )
 		{
-            _rootAssembly = dir.FullName;
+            _rootAssemblyDir = dir.FullName;
             List<FileInfo> files = new List<FileInfo>();
             foreach( FileInfo f in dir.GetFiles( "*.dll" ) )
                 if( filter( f ) ) files.Add( f );
@@ -95,7 +95,7 @@ namespace CK.Plugin.Discoverer.Runner
         /// </summary>
         public RunnerDataHolder Discover( IEnumerable<FileInfo> files )
 		{
-            _rootAssembly = Path.GetDirectoryName( files.First().FullName );
+            _rootAssemblyDir = Path.GetDirectoryName( files.First().FullName );
 
             // Transforms FileInfo into PluginAssemblyInfo.
             foreach( FileInfo f in files )
@@ -122,7 +122,7 @@ namespace CK.Plugin.Discoverer.Runner
             }
             foreach( var e in _assembliesByName )
             {
-                e.Value.LoadDependencies( _rootAssembly );
+                e.Value.LoadDependencies( _rootAssemblyDir );
             }
             foreach( var e in _assembliesByName )
             {

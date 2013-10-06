@@ -101,13 +101,19 @@ namespace CK.Plugin.Discoverer.Runner
             _services.Sort();
         }
 
-        internal bool LoadDependencies()
+        internal bool LoadDependencies( string rootAssembly )
         {
             try
             {
                 foreach( AssemblyName n in _assembly.GetReferencedAssemblies() )
                 {
-                    Assembly.ReflectionOnlyLoad( n.FullName );
+                    AssemblyName name = new AssemblyName( n.FullName );
+                    string asmToCheck = rootAssembly + "\\" + name.Name + ".dll";
+
+                    if( File.Exists( asmToCheck ) )
+                        Assembly.ReflectionOnlyLoadFrom( asmToCheck );
+                    else 
+                        Assembly.ReflectionOnlyLoad( n.FullName );
                 }
                 return true;
             }

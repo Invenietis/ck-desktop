@@ -208,16 +208,16 @@ namespace CK.Plugin.Discoverer
             if( recurse )
                 foreach( DirectoryInfo d in dir.GetDirectories() ) Discover( d, recurse, files );
 
-            LaunchDiscover( files );
+            LaunchDiscover( dir, files );
         }
 
         public void Discover( FileInfo file )
         {
             if( FileFilter( file ) )
-                LaunchDiscover( new FileInfo[] { file } );
+                LaunchDiscover( file.Directory, new FileInfo[] { file } );
         }
 
-        void LaunchDiscover( IEnumerable<FileInfo> files )
+        void LaunchDiscover( DirectoryInfo dir, IEnumerable<FileInfo> files )
         {
             _discoverCount--;
             if( _discoverCount == 0 )
@@ -231,7 +231,8 @@ namespace CK.Plugin.Discoverer
 
                 AppDomain discoverDomain = AppDomain.CreateDomain( "CKDiscovererDomain", null, ads );
                 Runner.PluginDiscoverer runnerDiscoverer = (Runner.PluginDiscoverer)discoverDomain.CreateInstanceAndUnwrap(
-                    Assembly.GetAssembly( typeof( Runner.PluginDiscoverer ) ).FullName, "CK.Plugin.Discoverer.Runner.PluginDiscoverer" );
+                    Assembly.GetAssembly( typeof( Runner.PluginDiscoverer ) ).FullName, "CK.Plugin.Discoverer.Runner.PluginDiscoverer",
+                    false, BindingFlags.Default, null, new object[] { dir.FullName }, null, null );
 
                 merger.Merge( runnerDiscoverer.Discover( files ) );
 
@@ -371,7 +372,7 @@ namespace CK.Plugin.Discoverer
 
                 NewOldPlugins = new CKReadOnlyListOnIList<PluginInfo>( _newOldPlugins );
                 DeletedOldPlugins = new CKReadOnlyListOnIList<PluginInfo>( _deletedOldPlugins );
-                
+
                 _dicAssemblies = new Dictionary<string, PluginAssemblyInfo>();
                 foreach( PluginAssemblyInfo item in Discoverer._allAssemblies )
                     _dicAssemblies.Add( item.AssemblyFileName, item );
@@ -461,7 +462,7 @@ namespace CK.Plugin.Discoverer
                 }
                 else
                 {
-                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != Discoverer.CurrentVersion ) ) );
+                    Debug.Assert( f != null && (_hasBeenDiscovered.Contains( f ) || (f.LastChangedVersion != Discoverer.CurrentVersion)) );
                     if( f.LastChangedVersion != Discoverer.CurrentVersion
                         && !_hasBeenDiscovered.Contains( f ) )
                     {
@@ -526,7 +527,7 @@ namespace CK.Plugin.Discoverer
                 }
                 else
                 {
-                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != Discoverer.CurrentVersion ) ) );
+                    Debug.Assert( f != null && (_hasBeenDiscovered.Contains( f ) || (f.LastChangedVersion != Discoverer.CurrentVersion)) );
 
                     if( f.LastChangedVersion != Discoverer.CurrentVersion
                         && !_hasBeenDiscovered.Contains( f ) )
@@ -562,7 +563,7 @@ namespace CK.Plugin.Discoverer
                 }
                 else
                 {
-                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != Discoverer.CurrentVersion ) ) );
+                    Debug.Assert( f != null && (_hasBeenDiscovered.Contains( f ) || (f.LastChangedVersion != Discoverer.CurrentVersion)) );
                     if( f.LastChangedVersion != Discoverer.CurrentVersion
                         && !_hasBeenDiscovered.Contains( f ) )
                     {
@@ -592,7 +593,7 @@ namespace CK.Plugin.Discoverer
                 }
                 else
                 {
-                    Debug.Assert( f != null && ( _hasBeenDiscovered.Contains( f ) || ( f.LastChangedVersion != Discoverer.CurrentVersion ) ) );
+                    Debug.Assert( f != null && (_hasBeenDiscovered.Contains( f ) || (f.LastChangedVersion != Discoverer.CurrentVersion)) );
                     if( f.LastChangedVersion != Discoverer.CurrentVersion
                         && !_hasBeenDiscovered.Contains( f ) )
                     {
