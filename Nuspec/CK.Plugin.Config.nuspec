@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>CK.Plugin.Config</id>
+    <version>2.9.13</version>
+    <authors>Invenietis</authors>
+    <owners>Invenietis</owners>
+    <licenseUrl>http://civikey.codeplex.com/license</licenseUrl>
+    <projectUrl>http://civikey.codeplex.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Contains CK.Plugin.Config.dll.</description>
+    <language>en-US</language>
+	<dependencies>
+	  <dependency id="CK.SharedDic" version="2.9.13" />
+	  <dependency id="Common.Logging" version="2.1.2" />
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="..\CK.Plugin.Config\bin\Debug\CK.Plugin.Config.dll" target="lib\net40" />
+    <file src="..\CK.Plugin.Config\bin\Debug\CK.Plugin.Config.pdb" target="lib\net40" />
+    <file src="..\CK.Plugin.Config\bin\Debug\CK.Plugin.Config.xml" target="lib\net40" />
+  </files>
+</package>

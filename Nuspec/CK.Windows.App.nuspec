@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>CK.Windows.App</id>
+    <version>2.9.13</version>
+    <authors>Invenietis</authors>
+    <owners>Invenietis</owners>
+    <licenseUrl>http://civikey.codeplex.com/license</licenseUrl>
+    <projectUrl>http://civikey.codeplex.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Contains CK.Windows.App.dll</description>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="CK.Windows.Core" version="2.9.13" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\CK.Windows.App\bin\Debug\CK.Windows.App.dll" target="lib\net40" />
+    <file src="..\CK.Windows.App\bin\Debug\CK.Windows.App.pdb" target="lib\net40" />
+    <file src="..\CK.Windows.App\bin\Debug\CK.Windows.App.xml" target="lib\net40" />
+    <file src="..\CK.Windows.App\bin\Debug\**\CK.Windows.App.resources.dll" target="lib\net40" />
+  </files>
+</package>
