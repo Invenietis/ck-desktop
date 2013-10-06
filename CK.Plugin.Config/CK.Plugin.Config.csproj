@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\CK.Plugin.Config.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,13 +42,13 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Core, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Core, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Core.2.8.9-develop\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Storage, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Storage, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Storage.2.8.9-develop\lib\net40\CK.Storage.dll</HintPath>
+      <HintPath>..\packages\CK.Storage.2.8.14\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
