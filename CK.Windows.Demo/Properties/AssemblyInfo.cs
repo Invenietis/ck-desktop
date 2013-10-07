@@ -33,7 +33,7 @@ using System.Windows;
 [assembly: AssemblyTitle( "CK.Windows.Demo" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Microsoft" )]
+[assembly: AssemblyCompany( "Invenietis" )]
 [assembly: AssemblyProduct( "CK.Windows.Demo" )]
 [assembly: AssemblyCopyright( "Copyright © Microsoft 2011" )]
 [assembly: AssemblyTrademark( "" )]
@@ -74,5 +74,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion( "1.0.0.0" )]
-[assembly: AssemblyFileVersion( "1.0.0.0" )]
+[assembly: AssemblyVersion( "2.9.13" )]
+[assembly: AssemblyFileVersion( "2.9.13" )]
