@@ -150,7 +150,7 @@ namespace CK.Plugin.Hosting
                         {
                             PlanCalculatorStrategy strategy = PlanCalculatorStrategy.HonorConfigAndReferenceTryStart;
                             if( stopLaunchedOptionals ) strategy = PlanCalculatorStrategy.Minimal;
-                            csr = _cs.Initialize( requirements.FinalConfigSnapshot, strategy, _discoverer.Services, _discoverer.Plugins );
+                            csr = _cs.Initialize( requirements.FinalConfigSnapshot, strategy, _discoverer.AllServices, _discoverer.Plugins );
                         }
 
                         if( !csr.ConfigurationSuccess )
