@@ -21,11 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace CK.Plugin
 {
     /// <summary>
@@ -38,7 +33,10 @@ namespace CK.Plugin
         /// No interaction with other plugins must occur (interactions must be in <see cref="Start"/>).
         /// </summary>
         /// <param name="info">Enables the implementation to give detailed information in case of error.</param>
-        /// <returns>True on success. When returning false, <see cref="IPluginSetupInfo"/> should be used to return detailed explanations.</returns>
+        /// <returns>
+        /// True on success. When returning false, <see cref="IPluginSetupInfo"/> should be used 
+        /// to return detailed explanations.
+        /// </returns>
         bool Setup( IPluginSetupInfo info );
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace CK.Plugin.Config
 {
 
 	/// <summary>
-    /// Defines one entry seen by a plugin that a in the configuration. 
+    /// Defines one entry seen by a plugin that has data in the configuration. 
 	/// This is the symmetric of <see cref="IConfigObjectEntry"/> interface.
 	/// </summary>
 	public interface IConfigPluginEntry

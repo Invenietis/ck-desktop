@@ -17,7 +17,7 @@ namespace CK.Plugin.Hosting
         ServiceData _directMustExistSpecialization;
         List<PluginData> _mustExistReferencer;
 
-        internal ServiceData( Dictionary<IServiceInfo, ServiceData> allServices, IServiceInfo s, ServiceData generalization, SolvedConfigStatus serviceStatus, Predicate<IServiceInfo> isExternalServiceAvailable )
+        internal ServiceData( Dictionary<IServiceInfo, ServiceData> allServices, IServiceInfo s, ServiceData generalization, SolvedConfigStatus serviceStatus, Func<IServiceInfo,bool> isExternalServiceAvailable )
         {
             _allServices = allServices;
             ServiceInfo = s;

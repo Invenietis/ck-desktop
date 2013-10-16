@@ -47,6 +47,11 @@ namespace CK.Plugin.Hosting
                 get { return _initialized && _firstRef == null; }
             }
 
+            /// <summary>
+            /// Returs true if there is at least one Service referenced by ALL of our implementations. 
+            /// </summary>
+            /// <param name="s"></param>
+            /// <returns></returns>
             public bool Add( ServiceData s )
             {
                 ServiceData spec = s.FirstSpecialization;
@@ -56,7 +61,7 @@ namespace CK.Plugin.Hosting
                     {
                         if( spec._theOnlyPlugin != null ) Add( s._allServices, spec._theOnlyPlugin );
                         else if( spec._commonReferences != null ) Add( spec._commonReferences );
-                        else Add( s );
+                        else Add( spec );
                         if( IsEmpty ) break;
                     }
                     spec = spec.NextSpecialization;
