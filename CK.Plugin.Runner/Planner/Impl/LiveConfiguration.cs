@@ -24,7 +24,7 @@ namespace CK.Plugin.Hosting
             return FindPlugin( p );
         }
 
-        CKIObservableReadOnlyCollection<ILivePluginInfo> ILiveConfiguration.Plugins
+        ICKObservableReadOnlyCollection<ILivePluginInfo> ILiveConfiguration.Plugins
         {
             get { return _plugins; }
         }
@@ -34,7 +34,7 @@ namespace CK.Plugin.Hosting
             return FindService( s );
         }
 
-        CKIObservableReadOnlyCollection<ILiveServiceInfo> ILiveConfiguration.Services
+        ICKObservableReadOnlyCollection<ILiveServiceInfo> ILiveConfiguration.Services
         {
             get { return _services; }
         }

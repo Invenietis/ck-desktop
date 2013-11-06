@@ -59,7 +59,7 @@ namespace CK.Plugin.Config
 
         void IStructuredSerializable.WriteContent( IStructuredWriter sw )
         {
-            sw.Xml.WriteAttributeString( "Version", "1.0.0.0" );
+            sw.Xml.WriteAttributeString( "Version", "2.9.13" );
             sw.WriteInlineObjectStructuredElement( "PluginStatusCollection", PluginStatusCollection );
             sw.WriteInlineObjectStructuredElement( UriHistoryCollection.EntryName + "Collection", UriHistoryCollection );
             sw.GetService<ISharedDictionaryWriter>( true ).WritePluginsDataElement( "Plugins", this );

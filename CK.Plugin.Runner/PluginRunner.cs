@@ -30,6 +30,7 @@ using System.Reflection;
 using CK.Plugin.Config;
 using CK.Core;
 using System.Diagnostics;
+using System.IO;
 
 namespace CK.Plugin.Hosting
 {
@@ -198,11 +199,36 @@ namespace CK.Plugin.Hosting
 
         IPlugin CreatePlugin( IPluginInfo info )
         {
-            Assembly a = Assembly.Load( info.AssemblyInfo.AssemblyName );
-            Type t = a.GetType( info.PluginFullName, true );
-            var cSP = t.GetConstructor( new Type[] { typeof( IServiceProvider ) } );
-            if( cSP != null ) return (IPlugin)cSP.Invoke( new object[] { _contextObject } );
-            return (IPlugin)Activator.CreateInstance( t );
+            return WrapResolveAssembly( () =>
+            {
+                Assembly a = Assembly.Load( info.AssemblyInfo.AssemblyName );
+
+                Type t = a.GetType( info.PluginFullName, true );
+                var cSP = t.GetConstructor( new Type[] { typeof( IServiceProvider ) } );
+                if( cSP != null ) return (IPlugin)cSP.Invoke( new object[] { _contextObject } );
+                return Activator.CreateInstance( t ) as IPlugin;
+            } );
+        }
+
+        IPlugin WrapResolveAssembly( Func<IPlugin> creator )
+        {
+            IPlugin instance = null;
+            AppDomain domain = AppDomain.CurrentDomain;
+            domain.AssemblyResolve += OnAssemblyResolve;
+
+            instance = creator();
+
+            domain.AssemblyResolve -= OnAssemblyResolve;
+            return instance;
+        }
+
+        Assembly OnAssemblyResolve( object sender, ResolveEventArgs args )
+        {
+            AssemblyName name = new AssemblyName( args.Name );
+            if( name.Name == "CK.Plugin.Config.Model" ) return typeof( CK.Plugin.Config.IPluginConfigAccessor ).Assembly;
+            if( name.Name == "CK.Plugin.Model" ) return typeof( CK.Plugin.IPlugin ).Assembly;
+
+            return null;
         }
 
         void ConfigurePlugin( IPluginProxy p )

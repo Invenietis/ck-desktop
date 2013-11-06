@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\CK.Context.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,17 +42,16 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Core, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Core, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Core.2.8.9-develop\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Storage, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Storage, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Storage.2.8.9-develop\lib\net40\CK.Storage.dll</HintPath>
+      <HintPath>..\packages\CK.Storage.2.8.14\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging">
-      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -75,33 +75,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
-      <Project>{96D1DD2E-9E76-40EA-A943-1E85B44AB862}</Project>
-      <Name>CK.Plugin.Config.Model</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\CK.Plugin.Config\CK.Plugin.Config.csproj">
-      <Project>{CA150073-0318-4281-8324-03246F09A4DD}</Project>
-      <Name>CK.Plugin.Config</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\CK.Plugin.Model\CK.Plugin.Model.csproj">
-      <Project>{D6E4A9FE-F9B9-4FDC-A21A-E3E7109128C6}</Project>
-      <Name>CK.Plugin.Model</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\CK.Plugin.Runner\CK.Plugin.Runner.csproj">
-      <Project>{9C5F6F2E-D921-4D98-BAA3-CBED45EC3A4C}</Project>
-      <Name>CK.Plugin.Runner</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\CK.SharedDic\CK.SharedDic.csproj">
-      <Project>{0BEFACC1-7CF4-4634-BD78-AACA73B3224F}</Project>
-      <Name>CK.SharedDic</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Res\R.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>R.Designer.cs</LastGenOutput>
@@ -112,6 +85,32 @@
       <Link>SharedKey.snk</Link>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
+      <Project>{96d1dd2e-9e76-40ea-a943-1e85b44ab862}</Project>
+      <Name>CK.Plugin.Config.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.Plugin.Config\CK.Plugin.Config.csproj">
+      <Project>{ca150073-0318-4281-8324-03246f09a4dd}</Project>
+      <Name>CK.Plugin.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.Plugin.Host\CK.Plugin.Host.csproj">
+      <Project>{c9fcbf26-371b-48c2-aa78-06292ee30b9d}</Project>
+      <Name>CK.Plugin.Host</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.Plugin.Model\CK.Plugin.Model.csproj">
+      <Project>{d6e4a9fe-f9b9-4fdc-a21a-e3e7109128c6}</Project>
+      <Name>CK.Plugin.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.Plugin.Runner\CK.Plugin.Runner.csproj">
+      <Project>{9c5f6f2e-d921-4d98-baa3-cbed45ec3a4c}</Project>
+      <Name>CK.Plugin.Runner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.SharedDic\CK.SharedDic.csproj">
+      <Project>{0befacc1-7cf4-4634-bd78-aaca73b3224f}</Project>
+      <Name>CK.SharedDic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

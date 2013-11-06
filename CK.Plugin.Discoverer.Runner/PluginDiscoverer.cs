@@ -53,10 +53,19 @@ namespace CK.Plugin.Discoverer.Runner
 		// Dynamic state : valid only while discovering.
 		List<FileInfo> _currentFiles;
 
-		public PluginDiscoverer()
+		public PluginDiscoverer( string rootAssemblyDir )
 		{
-            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += ( o, args ) => { return Assembly.ReflectionOnlyLoad( args.Name ); };
+            AppDomain curDomain = AppDomain.CurrentDomain;
+            curDomain.ReflectionOnlyAssemblyResolve += ( o, args ) =>
+            {
+                AssemblyName name = new AssemblyName( args.Name );
+                string asmToCheck = _rootAssemblyDir + "\\" + name.Name + ".dll";
 
+                if( File.Exists( asmToCheck ) )
+                    return Assembly.ReflectionOnlyLoadFrom( asmToCheck );
+
+                return Assembly.ReflectionOnlyLoad( args.Name );
+            };
 			_filesProcessed = new Dictionary<string, PluginAssemblyInfo>();
             _assembliesByName = new Dictionary<string, PluginAssemblyInfo>();
             _pluginsById = new Dictionary<Guid, PluginInfo>();
@@ -68,8 +77,11 @@ namespace CK.Plugin.Discoverer.Runner
 			_currentFiles = new List<FileInfo>();
         }
 
+        internal string _rootAssemblyDir;
+
 		public RunnerDataHolder Discover( DirectoryInfo dir, Predicate<FileInfo> filter )
 		{
+            _rootAssemblyDir = dir.FullName;
             List<FileInfo> files = new List<FileInfo>();
             foreach( FileInfo f in dir.GetFiles( "*.dll" ) )
                 if( filter( f ) ) files.Add( f );
@@ -83,9 +95,12 @@ namespace CK.Plugin.Discoverer.Runner
         /// </summary>
         public RunnerDataHolder Discover( IEnumerable<FileInfo> files )
 		{
+            _rootAssemblyDir = Path.GetDirectoryName( files.First().FullName );
+
             // Transforms FileInfo into PluginAssemblyInfo.
             foreach( FileInfo f in files )
             {
+                
                 PluginAssemblyInfo a;
                 string fName = f.FullName;
                 if( !_filesProcessed.TryGetValue( fName, out a ) )
@@ -107,7 +122,7 @@ namespace CK.Plugin.Discoverer.Runner
             }
             foreach( var e in _assembliesByName )
             {
-                e.Value.LoadDependencies();
+                e.Value.LoadDependencies( _rootAssemblyDir );
             }
             foreach( var e in _assembliesByName )
             {
