@@ -1,6 +1,6 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
-* This file (CK.Windows.Interop\Properties\AssemblyInfo.cs) is part of CiviKey. 
+* This file (SharedAssemblyInfo.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -21,10 +21,20 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle( "CK.Windows.Interop" )]
-[assembly: ComVisible( false )]
-[assembly: Guid( "ef4e9505-e4bb-4841-b1e1-84bd06fbd05e" )]
+[assembly: AssemblyCompany( "Invenietis" )]
+[assembly: AssemblyProduct( "Civikey" )]
+[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2013" )]
+[assembly: AssemblyTrademark( "" )]
+
+[assembly: AssemblyVersion( "2.9.14" )]
+[assembly: AssemblyFileVersion( "2.9.14" )]
+[assembly: AssemblyInformationalVersion( "2.9.14" )]
+
+#if DEBUG
+    [assembly: AssemblyConfiguration("Debug")]
+#else
+    [assembly: AssemblyConfiguration( "Release" )]
+#endif

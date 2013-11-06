@@ -47,7 +47,7 @@
     </ProjectReference>
     <ProjectReference Include="..\ServiceC.Model\ServiceC.Model.csproj">
       <Project>{5DA9DFAE-44F8-43BE-A22C-65A25D93EE59}</Project>
-      <Name>ServiceC.Model %28_Tests\Discoverer.Tests.Plugins\ServiceC.Model%29</Name>
+      <Name>ServiceC.Model</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="EventArgs\ApplicationExitEventArgs.cs" />
     <Compile Include="EventArgs\ContextEventArgs.cs" />
     <Compile Include="EventArgs\ContextProfileRequiredEventArgs.cs" />
@@ -73,6 +76,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.resx</DependentUpon>
     </Compile>
+    <Compile Include="SemVer\SemVersion20.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Res\R.resx">

@@ -127,21 +127,18 @@ namespace CK.Windows.App
     {
         static Common.Logging.ILog _log = Common.Logging.LogManager.GetLogger<CrashLogWindowViewModel>();
 
-        const string _defaultUploadUrl = "http://releases.civikey.invenietis.com/crash/log/add/";
-        //const string _defaultUploadUrl = "http://localhost:55243/crash/log/add/";
-
         WebClient _webClient;
         int _progressPercentage;
         Uri _uploadUri;
         string _errorMessage;
         bool _success;
 
-        public CrashLogWindowViewModel( string crashPath )
+        public CrashLogWindowViewModel( string crashPath, string crashUploadUrl )
         {
             _log.Info( "Starting CrashUploader" );
             DirectoryInfo c = new DirectoryInfo( crashPath );
             Files = new ObservableCollection<FileInfo>( c.GetFiles( "*.log" ) );
-            _uploadUri = new Uri( _defaultUploadUrl );
+            _uploadUri = new Uri( crashUploadUrl );
             _progressPercentage = -1;
 			ViewFileCommand = new SimpleCommand<FileInfo>( ViewFile, f => IsNotUploading );
             DeleteFileCommand = new SimpleCommand<FileInfo>( DeleteFile, f => IsNotUploading );

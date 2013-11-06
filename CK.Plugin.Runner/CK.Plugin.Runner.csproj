@@ -50,6 +50,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Planner\ConfigurationSolver\ConfigurationSolverResult.cs" />
     <Compile Include="Planner\ConfigurationSolver\IAlternative.cs" />
     <Compile Include="Planner\ConfigurationSolver\PluginData.Dynamic.cs" />

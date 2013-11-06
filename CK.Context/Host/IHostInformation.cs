@@ -27,10 +27,10 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using CK.Plugin.Config;
+using CK.Context.SemVer;
 
 namespace CK.Context
 {
-    
     /// <summary>
     /// Exposes standard host information.
     /// </summary>
@@ -67,7 +67,7 @@ namespace CK.Context
         /// <summary>
         /// Gets the current application version.
         /// </summary>
-        Version AppVersion { get; }
+        SemanticVersion20 AppVersion { get; }
 
         /// <summary>
         /// Gets the full path of application-specific data repository for the current user if 

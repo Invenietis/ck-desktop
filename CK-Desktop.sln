@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Tests", "_Tests", "{A87208F3-D73C-4AD4-9FF5-0314968EDD74}"
 	ProjectSection(SolutionItems) = preProject
 		CK-Desktop.Tests.nunit = CK-Desktop.Tests.nunit
@@ -130,6 +132,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMaster", "Tests\TestMaster\TestMaster.csproj", "{E0DF60D3-74C3-48C8-80D7-B6DEE01C6FDA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Windows.Tests", "CK.Windows.Tests\CK.Windows.Tests.csproj", "{C2AA97C1-7566-437E-92B3-60749F7C8FE0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shared Items", "_Shared Items", "{70E90860-0CA4-4CE5-9595-D51561CA8875}"
+	ProjectSection(SolutionItems) = preProject
+		SharedKey.snk = SharedKey.snk
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

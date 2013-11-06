@@ -130,7 +130,7 @@ namespace CK.Plugin.Config
         object this[string key] { get; set; }
 
         /// <summary>
-        /// Gets or sets the object associated to a given key just as the indexer but 
+        /// Sets the object associated to a given key just as the indexer but 
         /// returns whether the entry has actually been updated or not.
         /// </summary>
         /// <param name="k">The key for which a configuration must be set.</param>

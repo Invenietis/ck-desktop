@@ -58,7 +58,7 @@ namespace CK.Windows.App
             Debug.Assert( _params.ApplicationDataPath.EndsWith( @"\" ) );
                 
             // This call also initializes the CrashLogManager subsystem.
-            AppRecoveryManager.Initialize( _params.ApplicationDataPath + @"CrashLogs\" );
+            AppRecoveryManager.Initialize( _params.ApplicationDataPath + @"CrashLogs\", _params.CrashUploadUrl );
             try
             {
                 // Here is where handling any existing CrashLogDirectory must be processed.

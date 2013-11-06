@@ -33,7 +33,6 @@ namespace CK.Windows.App
     {
         string _commonAppData;
         string _appDataPath;
-        string _updaterPath;
 
         /// <summary>
         /// Initializes a new <see cref="CKAppParameters"/> with an application name and an optional subordinated name. 
@@ -46,7 +45,7 @@ namespace CK.Windows.App
         /// Must be an indentifier (no /, \ or other special characters in it: see <see cref="Path.GetInvalidPathChars"/>).
         /// </param>
         /// <param name="distribName">Distribution name (can not be null nor empty). It must be an identifier just like <paramref name="appName"/>.</param>
-        public CKAppParameters( string appName, string distribName = "Standard" )
+        public CKAppParameters( string appName, string distribName = "Standard", string crashUploadUrl = "http://api.civikey.invenietis.com/v2/crash/" )
         {
             char[] illegal = Path.GetInvalidPathChars();
             if( String.IsNullOrEmpty( appName ) ) throw new ArgumentNullException( "appName" );
@@ -63,6 +62,9 @@ namespace CK.Windows.App
                 }
             }
             if( appName.Any( c => illegal.Contains( c ) ) ) throw new ArgumentException( "appName" );
+
+            CrashUploadUrl = crashUploadUrl;
+            if( !CrashUploadUrl.EndsWith( "/" ) ) CrashUploadUrl += "/";
 
             AppName = appName;
             DistribName = distribName;
@@ -120,6 +122,11 @@ namespace CK.Windows.App
         /// It is an identifier just like <see cref="AppName"/>.
         /// </summary>
         public string DistribName { get; private set; }
+
+        /// <summary>
+        /// Gets the url of the web service that can receive crash logs.
+        /// </summary>
+        public string CrashUploadUrl { get; private set; }
 
         /// <summary>
         /// Unique name (Global\Install-AppName-DistribName) that identifies the application and that can be 

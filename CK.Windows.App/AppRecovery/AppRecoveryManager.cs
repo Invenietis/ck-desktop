@@ -98,9 +98,9 @@ namespace CK.Windows.App
         /// This method also initializes the <see cref="CurrentCrashCount"/> from the <see cref="Environment.GetCommandLineArgs"/> (if any).
         /// </para>
         /// </remarks>
-        public static bool Initialize( string crashLogDirectory )
+        public static bool Initialize( string crashLogDirectory, string crashUploadUrl )
         {
-            CrashLogManager.Initialize( crashLogDirectory );
+            CrashLogManager.Initialize( crashLogDirectory, crashUploadUrl );
             Debug.Assert( _registeredExceptions == null, "Since CrashLogManager.Initialize above is called once and only once." );
             try
             {

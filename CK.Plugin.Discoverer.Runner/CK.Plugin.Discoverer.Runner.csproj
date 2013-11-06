@@ -63,6 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ServiceRefInfo.cs" />
     <Compile Include="DiscoveredInfo.cs" />
     <Compile Include="R.Designer.cs">

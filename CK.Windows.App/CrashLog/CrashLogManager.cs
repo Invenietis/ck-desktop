@@ -34,16 +34,22 @@ namespace CK.Windows.App
     static public class CrashLogManager
     {
         static string _dir;
+        static string _crashUploadUrl;
 
         /// <summary>
         /// Must be called once and only once at the very beginning of the application.
         /// </summary>
         /// <param name="crashLogDirectory">The crash log directory to use.</param>
-        public static void Initialize( string crashLogDirectory )
+        /// <param name="crashUploadUrl">The end point url to the web service that can receive crash logs</param>
+        public static void Initialize( string crashLogDirectory, string crashUploadUrl )
         {
-            if( String.IsNullOrWhiteSpace( crashLogDirectory ) ) throw new ArgumentException( "crashLogDirectory" ); 
+            if( String.IsNullOrWhiteSpace( crashLogDirectory ) ) throw new ArgumentException( "crashLogDirectory" );
             if( _dir != null ) throw new InvalidOperationException();
+            if( String.IsNullOrWhiteSpace( crashUploadUrl ) ) throw new ArgumentException( "crashUploadUrl" );
+            if( _crashUploadUrl != null ) throw new InvalidOperationException();
+            
             _dir = crashLogDirectory;
+            _crashUploadUrl = crashUploadUrl;
         }
 
         /// <summary>
@@ -60,7 +66,7 @@ namespace CK.Windows.App
             string crashPath = CrashLogDirectory;
             if( !Directory.Exists( _dir ) ) return;
 
-            CrashLogWindow w = new CrashLogWindow( new CrashLogWindowViewModel( crashPath ) );
+            CrashLogWindow w = new CrashLogWindow( new CrashLogWindowViewModel( crashPath, _crashUploadUrl ) );
             w.ShowDialog();
 
             if( Directory.GetFiles( crashPath ).Length == 0 )
