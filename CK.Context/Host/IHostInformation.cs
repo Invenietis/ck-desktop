@@ -28,6 +28,7 @@ using System.Text;
 using System.IO;
 using CK.Plugin.Config;
 using CK.Context.SemVer;
+using CK.Core;
 
 namespace CK.Context
 {
@@ -43,7 +44,7 @@ namespace CK.Context
 
         /// <summary>
         /// Gets the host configuration associated to the system.
-        /// <remarks>
+        /// </summary>
         IObjectPluginConfig SystemConfig { get; }
 
         /// <summary>
@@ -68,6 +69,12 @@ namespace CK.Context
         /// Gets the current application version.
         /// </summary>
         SemanticVersion20 AppVersion { get; }
+
+        /// <summary>
+        /// Gets the application unique identifier.
+        /// Can be useful to identify a particular instance of the application in crashlogs for example.
+        /// </summary>
+        IUniqueId ApplicationUniqueId { get; }
 
         /// <summary>
         /// Gets the full path of application-specific data repository for the current user if 
