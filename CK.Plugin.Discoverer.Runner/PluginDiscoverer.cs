@@ -35,7 +35,7 @@ using System.Collections;
 namespace CK.Plugin.Discoverer.Runner
 {
     public sealed class PluginDiscoverer : MarshalByRefObject
-	{
+    {
         //Collections used to insert items and to be converted 
         //into an ICKReadOnlyList after (for properties)
         //Assemblies
@@ -50,11 +50,11 @@ namespace CK.Plugin.Discoverer.Runner
         IList<ServiceInfo> _services;
         IList<ServiceInfo> _notFoundServices;
 
-		// Dynamic state : valid only while discovering.
-		List<FileInfo> _currentFiles;
+        // Dynamic state : valid only while discovering.
+        List<FileInfo> _currentFiles;
 
-		public PluginDiscoverer( string rootAssemblyDir )
-		{
+        public PluginDiscoverer( string rootAssemblyDir )
+        {
             AppDomain curDomain = AppDomain.CurrentDomain;
             curDomain.ReflectionOnlyAssemblyResolve += ( o, args ) =>
             {
@@ -66,7 +66,7 @@ namespace CK.Plugin.Discoverer.Runner
 
                 return Assembly.ReflectionOnlyLoad( args.Name );
             };
-			_filesProcessed = new Dictionary<string, PluginAssemblyInfo>();
+            _filesProcessed = new Dictionary<string, PluginAssemblyInfo>();
             _assembliesByName = new Dictionary<string, PluginAssemblyInfo>();
             _pluginsById = new Dictionary<Guid, PluginInfo>();
             _existingPlugins = new List<PluginInfo>();
@@ -74,19 +74,19 @@ namespace CK.Plugin.Discoverer.Runner
             _dicAllServices = new Dictionary<string, ServiceInfo>();
             _notFoundServices = new List<ServiceInfo>();
             _services = new List<ServiceInfo>();
-			_currentFiles = new List<FileInfo>();
+            _currentFiles = new List<FileInfo>();
         }
 
         internal string _rootAssemblyDir;
 
-		public RunnerDataHolder Discover( DirectoryInfo dir, Predicate<FileInfo> filter )
-		{
+        public RunnerDataHolder Discover( DirectoryInfo dir, Predicate<FileInfo> filter )
+        {
             _rootAssemblyDir = dir.FullName;
             List<FileInfo> files = new List<FileInfo>();
             foreach( FileInfo f in dir.GetFiles( "*.dll" ) )
                 if( filter( f ) ) files.Add( f );
             return Discover( files );
-		}
+        }
 
         /// <summary>
         /// For each FileInfo in _currentFiles, Process will try to create a new PluginAssemblyInfo
@@ -94,13 +94,14 @@ namespace CK.Plugin.Discoverer.Runner
         /// After that, this method fill properties collections with IPluginInfo or IServiceInfo.
         /// </summary>
         public RunnerDataHolder Discover( IEnumerable<FileInfo> files )
-		{
-            _rootAssemblyDir = Path.GetDirectoryName( files.First().FullName );
+        {
+            if( files.Any() )
+                _rootAssemblyDir = Path.GetDirectoryName( files.First().FullName );
 
             // Transforms FileInfo into PluginAssemblyInfo.
             foreach( FileInfo f in files )
             {
-                
+
                 PluginAssemblyInfo a;
                 string fName = f.FullName;
                 if( !_filesProcessed.TryGetValue( fName, out a ) )
@@ -140,7 +141,7 @@ namespace CK.Plugin.Discoverer.Runner
                     }
                 }
             }
-            
+
             // Consider DynamicService without any definition assembly as an error.
             foreach( ServiceInfo serviceInfo in _dicAllServices.Values )
             {
@@ -231,11 +232,11 @@ namespace CK.Plugin.Discoverer.Runner
             Array.Sort( notFoundServices );
 
             return new RunnerDataHolder(
-                allAssemblies, 
-                oldPlugins, 
-                notFoundServices 
+                allAssemblies,
+                oldPlugins,
+                notFoundServices
             );
-		}
+        }
 
         // When a IServiceInfo (ex : interface ICommonTimer) is found in an assembly.
         ServiceInfo RegisterServiceInfo( PluginAssemblyInfo a, Type t )
@@ -294,7 +295,7 @@ namespace CK.Plugin.Discoverer.Runner
             }
             return new ServiceRefInfo( serv, isIServiceWrapper, isGeneric, isIDynamicService );
         }
-       
+
         private ServiceInfo EnsureNotFoundService( Type t )
         {
             ServiceInfo serv;
