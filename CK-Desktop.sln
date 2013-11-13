@@ -135,6 +135,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Windows.Tests", "CK.Wind
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shared Items", "_Shared Items", "{70E90860-0CA4-4CE5-9595-D51561CA8875}"
 	ProjectSection(SolutionItems) = preProject
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 		SharedKey.snk = SharedKey.snk
 	EndProjectSection
 EndProject

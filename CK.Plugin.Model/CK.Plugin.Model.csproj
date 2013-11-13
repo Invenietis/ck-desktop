@@ -133,7 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedKey.snk">
-      <Link>SharedKey.snk</Link>
+      <Link>Properties\SharedKey.snk</Link>
     </None>
     <None Include="Discoverer\Discoverer.cd" />
     <None Include="packages.config" />
