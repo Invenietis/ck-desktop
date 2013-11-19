@@ -60,7 +60,7 @@ namespace CK.Windows.Demo
             PropertyChangedMockupClass mockup = new PropertyChangedMockupClass();
             group.AddProperty( mockup, m => m.InjectedCallerName );
             group.AddProperty( mockup, m => m.Value );
-
+            
             group.AddAction( "Change values", () =>
             {
                 mockup.InjectedCallerName = "CallerMemberNameAttribute works !";

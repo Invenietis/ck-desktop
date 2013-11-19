@@ -1,6 +1,6 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
-* This file (SharedAssemblyInfo.cs) is part of CiviKey. 
+* This file (CK.Windows.Demo\DemoVms\SubViewModel.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -22,19 +22,30 @@
 #endregion
 
 using System;
-using System.Reflection;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Caliburn.Micro;
+using CK.Windows.Config;
+using System.Windows;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
-[assembly: AssemblyCompany( "Invenietis" )]
-[assembly: AssemblyProduct( "Civikey" )]
-[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2013" )]
-[assembly: AssemblyTrademark( "" )]
+namespace CK.Windows.Demo
+{
+    internal class VeryLongViewModel : ConfigPage
+    {
+        public VeryLongViewModel( AppViewModel app, ConfigManager configManager )
+            : base( configManager )
+        {
+            DisplayName = "Very long view model";
 
-[assembly: AssemblyVersion( "2.10.1" )]
-[assembly: AssemblyFileVersion( "2.10.1" )]
-[assembly: AssemblyInformationalVersion( "2.10.1" )]
+            System.Action dumbAction = () => MessageBox.Show( "Powow" );
 
-#if DEBUG
-    [assembly: AssemblyConfiguration("Debug")]
-#else
-    [assembly: AssemblyConfiguration( "Release" )]
-#endif
+            for( int i = 0; i < 30; i++ )
+            {
+                this.AddAction( string.Format( "Action {0}", i ), dumbAction );
+            }
+        }
+    }
+}

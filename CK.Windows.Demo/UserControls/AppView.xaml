@@ -5,5 +5,14 @@
              xmlns:ck="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
              MinWidth="300" MinHeight="300" ResizeMode="CanResizeWithGrip" d:DesignWidth="423.224" d:DesignHeight="426.044" BorderThickness="0" Width="300" Height="300" WindowStartupLocation="Manual">
-    <ContentControl Content="{Binding ActiveItem}"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" FontSize="20" Margin="10" TextWrapping="Wrap" FontWeight="Bold" FontStyle="Italic">
+            CK-Windows App Demo !
+        </TextBlock>
+        <ContentControl Grid.Row="1" VerticalAlignment="Stretch" Content="{Binding ActiveItem}"/>
+    </Grid>
 </Window>

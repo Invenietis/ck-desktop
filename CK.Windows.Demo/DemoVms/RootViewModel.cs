@@ -37,6 +37,7 @@ namespace CK.Windows.Demo
     internal class RootViewModel : ConfigPage
     {
         SubViewModel _subvm;
+        VeryLongViewModel _vlVm;
         WindowTestsViewModel _windowTestsVm;
 
         public RootViewModel( AppViewModel app, ConfigManager configManager )
@@ -51,8 +52,9 @@ namespace CK.Windows.Demo
 
             this.AddAction( "Simple MessageBox.", () => MessageBox.Show( "Another Pow!" ) );
             this.AddAction( "Dialog from ModalViewModel", ShowCustomMessageBox );
-            this.AddLink( _subvm ?? ( _subvm = new SubViewModel( app, configManager ) ) );
-            this.AddLink( _windowTestsVm ?? ( _windowTestsVm = new WindowTestsViewModel( app, configManager ) ) );
+            this.AddLink( _subvm ?? (_subvm = new SubViewModel( app, configManager )) );
+            this.AddLink( _vlVm ?? (_vlVm = new VeryLongViewModel( app, configManager )) );
+            this.AddLink( _windowTestsVm ?? (_windowTestsVm = new WindowTestsViewModel( app, configManager )) );
         }
 
         /// <summary>

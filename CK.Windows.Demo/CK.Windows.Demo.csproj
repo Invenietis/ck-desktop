@@ -103,6 +103,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DemoVms\ConfigCurrentItemTestsViewModel.cs" />
+    <Compile Include="DemoVms\VeryLongViewModel.cs" />
     <Compile Include="DemoVms\WindowTestsViewModel.cs" />
     <Compile Include="DemoVms\FocusWindows\PseudoSendStringService.cs" />
     <Compile Include="DemoVms\FocusWindows\StandardWindow.xaml.cs">

@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>CK.Context</id>
-    <version>2.10.0-develop</version>
+    <version>2.10.1-develop</version>
     <authors>Invenietis</authors>
     <owners>Invenietis</owners>
     <licenseUrl>http://civikey.codeplex.com/license</licenseUrl>
@@ -11,7 +11,7 @@
     <description>Contains CK.Context.dll.</description>
     <language>en-US</language>
     <dependencies>
-      <dependency id="CK.Plugin.Config" version="2.10.0-develop" />
+      <dependency id="CK.Plugin.Config" version="2.10.1-develop" />
       <dependency id="Common.Logging" version="2.1.2" />
     </dependencies>
   </metadata>
