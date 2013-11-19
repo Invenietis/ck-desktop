@@ -35,23 +35,23 @@
 
         </StackPanel>
         <StackPanel Margin="10">
-            <ListBox Background="Transparent" ItemsSource="{Binding Buttons}" BorderBrush="Transparent" Grid.IsSharedSizeScope="True"  x:Name="buttongrid">
-                <ListBox.ItemsPanel>
+            <ItemsControl Background="Transparent" ItemsSource="{Binding Buttons}" BorderBrush="Transparent" Grid.IsSharedSizeScope="True"  x:Name="buttongrid">
+                <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel HorizontalAlignment="Right" Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid HorizontalAlignment="Right">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition SharedSizeGroup="ButtonGroup"/>
                             </Grid.ColumnDefinitions>
-                            <Button Content="{Binding Label}" Command="{Binding ButtonClickCommand}" Margin="5 0 0 0" MinWidth="50" />
+                            <Button Content="{Binding Label}" Command="{Binding ButtonClickCommand}" Padding="5" Margin="5 0 0 0" MinWidth="50" />
                         </Grid>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
             <StackPanel.Resources>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Focusable" Value="False" />
