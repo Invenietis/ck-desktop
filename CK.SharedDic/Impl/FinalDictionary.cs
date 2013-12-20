@@ -38,6 +38,8 @@ namespace CK.SharedDic
         readonly INamedVersionedUniqueId _pluginId;
         int _count;
 
+        const string PluginDataVersionKey = "[PluginDataVersion]";
+
         internal FinalDictionary( SharedDictionaryImpl dic, object obj, INamedVersionedUniqueId p )
         {
             _dic = dic;
@@ -109,7 +111,7 @@ namespace CK.SharedDic
         [Obsolete( "Use GetOrSet instead", true )]
         public void TryAdd( string key, object value )
         {
-            if ( this[key] == null )
+            if( this[key] == null )
                 Add( key, value );
         }
 
@@ -125,31 +127,36 @@ namespace CK.SharedDic
 
         static void WriteElementObject( IStructuredWriter sw, string key, object o )
         {
+            if( key == PluginDataVersionKey ) return;
+
             sw.Xml.WriteStartElement( "data" );
             sw.Xml.WriteAttributeString( "key", key );
             sw.WriteInlineObject( o );
-        }         
+        }
 
         internal void ReadData( SharedDictionaryReader reader )
         {
+            Debug.Assert( _dic.Contains( _obj, _pluginId, PluginDataVersionKey ) == false );
+            _dic.Add( _obj, _pluginId, PluginDataVersionKey, reader.ReadPluginInfo.Version.ToString() );
+
             XmlReader r = reader.StructuredReader.Xml;
-			while( r.MoveToContent() == XmlNodeType.Element && r.Name == "data" )
-			{
+            while( r.MoveToContent() == XmlNodeType.Element && r.Name == "data" )
+            {
                 ReadElementObjectInfo info = reader.PreProcessReadInfo( _obj, _pluginId, ReadObjectInfo( reader.StructuredReader.Current ) );
-				if( info != null )
-				{
-					if( info.HasError )
-					{
-						if( reader.ErrorCollector != null )
+                if( info != null )
+                {
+                    if( info.HasError )
+                    {
+                        if( reader.ErrorCollector != null )
                             reader.ErrorCollector.Add( info );
-					}
-					else
-					{
+                    }
+                    else
+                    {
                         _dic.ImportValue( new SharedDictionaryEntry( _obj, _pluginId, info.Key, info.ReadObject ), reader.MergeMode );
-					}
-				}
-			}
-		}
+                    }
+                }
+            }
+        }
 
         static ReadElementObjectInfo ReadObjectInfo( IStructuredReader sr )
         {
@@ -180,7 +187,7 @@ namespace CK.SharedDic
                     }
                 }
             }
-            if( (status & ReadElementObjectInfo.ReadStatus.ErrorMask) == 0 )
+            if( ( status & ReadElementObjectInfo.ReadStatus.ErrorMask ) == 0 )
             {
                 return new ReadElementObjectInfo( status, key, o );
             }
@@ -189,14 +196,14 @@ namespace CK.SharedDic
         }
 
         INamedVersionedUniqueId IObjectPluginAssociation.PluginId
-		{
-			get { return _pluginId; }
-		}
+        {
+            get { return _pluginId; }
+        }
 
-		object IObjectPluginAssociation.Obj
-		{
-			get { return _obj; }
-		}
+        object IObjectPluginAssociation.Obj
+        {
+            get { return _obj; }
+        }
 
-	}
+    }
 }
