@@ -21,14 +21,12 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CK.Plugin;
-using System.Diagnostics;
 using CK.Core;
 using Common.Logging;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace CK.Plugin.Hosting
 {

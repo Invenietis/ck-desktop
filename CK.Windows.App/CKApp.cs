@@ -105,6 +105,5 @@ namespace CK.Windows.App
             }
             app.Run();
         }
-
     }
 }

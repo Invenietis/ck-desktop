@@ -38,6 +38,14 @@ namespace CK.Windows
             _interopHelper = new WindowInteropHelper( this );
         }
 
+        /// <summary>
+        /// Virtual method, can be overriden in a derived class to handle the call th Hide on the CKWindow.
+        /// </summary>
+        public new virtual void Hide()
+        {
+            base.Hide();
+        }
+
         IntPtr WndProcWinDefault( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
             switch( msg )

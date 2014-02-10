@@ -136,7 +136,7 @@ namespace CK.SharedDic
 
         internal void ReadData( SharedDictionaryReader reader )
         {
-            Debug.Assert( _dic.Contains( _obj, _pluginId, PluginDataVersionKey ) == false );
+            Debug.Assert( !_dic.Contains( _obj, _pluginId, PluginDataVersionKey ) );
             _dic.Add( _obj, _pluginId, PluginDataVersionKey, reader.ReadPluginInfo.Version.ToString() );
 
             XmlReader r = reader.StructuredReader.Xml;
