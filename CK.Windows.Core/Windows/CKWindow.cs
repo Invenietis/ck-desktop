@@ -71,22 +71,25 @@ namespace CK.Windows
 
         Point PointFromLParam( IntPtr lParam )
         {
-            return new Point( lParam.ToInt32() & 0xFFFF, lParam.ToInt32() >> 16 );
+            return new Point( (short)(lParam.ToInt32() & 0x0000FFFF), (short)((lParam.ToInt32() & 0xFFFF0000) >> 16) );
         }
 
+        List<DependencyObject> hitResultsList = new List<DependencyObject>();
         void CKNCHitTest( Point p, ref int htCode )
         {
             var point = PointFromScreen( p );
-            HitTestResult result = VisualTreeHelper.HitTest( this, point );
+            hitResultsList.Clear();
+            VisualTreeHelper.HitTest( this, HitTestFilter, d => HitTestResult( d ), new PointHitTestParameters( point ) );
+            DependencyObject result = hitResultsList.FirstOrDefault();
             if( result != null )
             {
-                if( IsDraggableVisual( result.VisualHit ) )
+                if( IsDraggableVisual( result ) )
                 {
                     htCode = Win.HTCAPTION;
                 }
                 else if( ResizeMode == System.Windows.ResizeMode.CanResizeWithGrip )
                 {
-                    if( TreeHelper.FindParentInVisualTree( result.VisualHit, d => d is System.Windows.Controls.Primitives.ResizeGrip ) != null )
+                    if( TreeHelper.FindParentInVisualTree( result, d => d is System.Windows.Controls.Primitives.ResizeGrip ) != null )
                     {
                         if( FlowDirection == FlowDirection.RightToLeft )
                             htCode = Win.HTBOTTOMLEFT;
@@ -99,6 +102,23 @@ namespace CK.Windows
                 // Nothing was hit. Assume the extended frame.
                 htCode = Win.HTCAPTION;
             }
+        }
+
+        // Return the result of the hit test to the callback.
+        HitTestResultBehavior HitTestResult( HitTestResult result )
+        {
+            // Add the hit test result to the list that will be processed after the enumeration.
+            hitResultsList.Add( result.VisualHit );
+
+            // Set the behavior to return visuals at all z-order levels.
+            return HitTestResultBehavior.Continue;
+        }
+
+        HitTestFilterBehavior HitTestFilter( DependencyObject d )
+        {
+            return ((Visibility)d.GetValue( FrameworkElement.VisibilityProperty ) != Visibility.Visible)
+                ? HitTestFilterBehavior.ContinueSkipSelfAndChildren
+                : HitTestFilterBehavior.Continue;
         }
 
         /// <summary>

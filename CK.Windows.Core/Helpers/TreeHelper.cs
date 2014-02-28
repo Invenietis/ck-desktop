@@ -91,9 +91,9 @@ namespace CK.Windows
                     // Visual/Visual3D to get us back to Visual Land.
                     current = LogicalTreeHelper.GetParent( current );
                 }
-                if( parentPredicate != null )
+                if( parentPredicate != null && current != null )
                 {
-                    if( parentPredicate( result ) ) return result;
+                    if( parentPredicate( current ) ) return current;
                 }
             }
             return parentPredicate == null ? result : null;
