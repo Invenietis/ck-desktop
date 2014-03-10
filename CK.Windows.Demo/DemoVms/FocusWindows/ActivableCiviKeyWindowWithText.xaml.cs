@@ -18,7 +18,8 @@ namespace CK.Windows.Demo.DemoVms
     /// </summary>
     public partial class ActivableCiviKeyWindowWithText : CKNoFocusWindow
     {
-        public ActivableCiviKeyWindowWithText()
+        public ActivableCiviKeyWindowWithText( NoFocusManager noFocusManager )
+            : base( noFocusManager )
         {
             InitializeComponent();
         }

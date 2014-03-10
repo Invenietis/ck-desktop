@@ -38,23 +38,26 @@ namespace CK.Windows.Demo
     internal class WindowTestsViewModel : ConfigPage
     {
         WPFThread _secondThread;
+        NoFocusManager _noFocusManager;
 
         public WindowTestsViewModel( AppViewModel app, ConfigManager configManager )
             : base( configManager )
         {
             DisplayName = "Not activable windows";
 
+            _noFocusManager = new NoFocusManager();
+
             // Using extension methods.
-            this.AddAction( "CiviKey window, not Activable.", () => new DemoVms.NonActivableCiviKeyWindow().Show() );
+            this.AddAction( "CiviKey window, not Activable.", () => new DemoVms.NonActivableCiviKeyWindow( _noFocusManager ).Show() );
             this.AddAction( "CiviKey window, truly not Activable (secondary thread).", SecondThread );
-            this.AddAction( "CiviKey window, Activable.", () => new DemoVms.ActivableCiviKeyWindowWithText().Show() );
+            this.AddAction( "CiviKey window, Activable.", () => new DemoVms.ActivableCiviKeyWindowWithText( _noFocusManager ).Show() );
             this.AddAction( "Standard WPF window, Activable.", () => new DemoVms.StandardWindow().Show() );
         }
 
         void SecondThread()
         {
             if( _secondThread == null ) _secondThread = new WPFThread( "CK-Certified second thread" );
-            _secondThread.Dispatcher.BeginInvoke( (System.Action)( () => new DemoVms.NonActivableCiviKeyWindow().Show() ), null );
+            _secondThread.Dispatcher.BeginInvoke( (System.Action)(() => new DemoVms.NonActivableCiviKeyWindow( _noFocusManager ).Show()), null );
         }
 
         /// <summary>

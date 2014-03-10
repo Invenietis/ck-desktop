@@ -38,6 +38,7 @@ using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Diagnostics;
 using CK.Windows.Helpers;
+using System.Threading;
 
 
 namespace CK.Windows
@@ -55,9 +56,13 @@ namespace CK.Windows
         /// <summary>
         /// Default constructor of a <see cref="CKNoFocusWindow"/>
         /// </summary>
-        public CKNoFocusWindow()
+        public CKNoFocusWindow( NoFocusManager noFocusManager )
             : base()
         {
+            if( Thread.CurrentThread != noFocusManager.NoFocusDispatcher.Thread )
+            {
+                throw new InvalidOperationException( "The CKwindow must be instanciate in the noFocusManagerDispatcher" );
+            }
         }
 
         IntPtr WndProcWinNoFocusDefault( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
