@@ -105,6 +105,7 @@ namespace CK.Windows
 
         protected override void OnStateChanged( EventArgs e )
         {
+            base.OnStateChanged( e );
             if( WindowState == System.Windows.WindowState.Maximized )
             {
                 WindowState = System.Windows.WindowState.Normal;
