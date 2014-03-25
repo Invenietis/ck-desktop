@@ -86,7 +86,7 @@ namespace CK.SharedDic
             XmlWriter w = StructuredWriter.Xml;
             bool mustEndElement = false;
             PluginConfigByObject c;
-            if( _dic.TryGetPluginConfigByObject( o, out c ) && c.Count > 0 )
+            if( _dic.TryGetPluginConfigByObject( o, out c ) && c.Count > 0 && !(c.Count == 1 && c[0].Key == "[PluginDataVersion]") )
             {
                 HashSet<FinalDictionary> done = new HashSet<FinalDictionary>();
                 foreach( SharedDictionaryEntry e in c )
@@ -106,12 +106,12 @@ namespace CK.SharedDic
 
                         if( e.PluginId.Version != null )
                             w.WriteAttributeString( "version", e.PluginId.Version.ToString() );
-                        
+
                         if( e.PluginId.PublicName.Length > 0 ) w.WriteAttributeString( "name", e.PluginId.PublicName );
                         ++writeCount;
 
                         SharedDictionaryWriterEventArgs ev = null;
-                        if( BeforePluginsData != null ) BeforePluginsData( this, ( ev = new SharedDictionaryWriterEventArgs( this, f ) ) );
+                        if( BeforePluginsData != null ) BeforePluginsData( this, (ev = new SharedDictionaryWriterEventArgs( this, f )) );
 
                         f.WriteData( this );
 
