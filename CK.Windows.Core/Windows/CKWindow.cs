@@ -38,6 +38,37 @@ namespace CK.Windows
             _interopHelper = new WindowInteropHelper( this );
         }
 
+        public new bool ShowInTaskbar
+        {
+            get { return base.ShowInTaskbar; }
+            set
+            {
+                if( base.ShowInTaskbar != value )
+                {
+                    base.ShowInTaskbar = value;
+                    SetToolWindowFlag( value );
+                }
+            }
+        }   
+
+        internal void SetToolWindowFlag( bool set )
+        {
+            if( set )
+            {
+                Win.Functions.SetWindowLong(
+                            Hwnd,
+                            Win.WindowLongIndex.GWL_EXSTYLE,
+                            (uint)Win.Functions.GetWindowLong( Hwnd, Win.WindowLongIndex.GWL_EXSTYLE ) | Win.WS_EX_TOOLWINDOW );
+            }
+            else
+            {
+                Win.Functions.SetWindowLong(
+                            Hwnd,
+                            Win.WindowLongIndex.GWL_EXSTYLE,
+                            (uint)Win.Functions.GetWindowLong( Hwnd, Win.WindowLongIndex.GWL_EXSTYLE ) & ~Win.WS_EX_TOOLWINDOW );
+            }
+        }
+
         /// <summary>
         /// Virtual method, can be overriden in a derived class to handle the call th Hide on the CKWindow.
         /// </summary>
@@ -148,6 +179,11 @@ namespace CK.Windows
             IsFrameExtended = TryExtendFrame();
 
             base.OnSourceInitialized( e );
+
+            if( !ShowInTaskbar )
+            {
+                SetToolWindowFlag( true );
+            }
         }
 
         /// <summary>
