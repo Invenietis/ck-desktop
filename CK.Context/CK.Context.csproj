@@ -66,6 +66,7 @@
     <Compile Include="EventArgs\ContextEventArgs.cs" />
     <Compile Include="EventArgs\ContextProfileRequiredEventArgs.cs" />
     <Compile Include="EventArgs\ApplicationExitingEventArgs.cs" />
+    <Compile Include="Host\IContextSaver.cs" />
     <Compile Include="IContext.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Host\AbstractContextHost.cs" />
