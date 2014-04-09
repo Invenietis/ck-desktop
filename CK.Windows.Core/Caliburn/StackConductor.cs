@@ -39,6 +39,8 @@ namespace Caliburn.Micro
     {
         List<T> _stack;
 
+        protected List<T> Stack { get { return _stack; } }
+
         /// <summary>
         /// Ctor
         /// </summary>
@@ -197,7 +199,7 @@ namespace Caliburn.Micro
             }
         }
 
-        private void Push( T item )
+        protected void Push( T item )
         {
             Debug.Assert( _stack.Count == 0 || _stack[_stack.Count - 1] != item );
             _stack.Add( item );
@@ -205,7 +207,7 @@ namespace Caliburn.Micro
             if( _stack.Count == 2 ) GoBackCmd.RaiseCanExecuteChanged( _goBackCommand );
         }
 
-        private void Pop()
+        protected void Pop()
         {
             Debug.Assert( _stack.Count > 1, "We never pop the root page." );
             _stack.RemoveAt( _stack.Count - 1 );

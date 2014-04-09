@@ -79,7 +79,10 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Caliburn\IWizardNavigable.cs" />
     <Compile Include="Caliburn\StackConductor.cs" />
+    <Compile Include="Caliburn\StackConductorNavigable.cs" />
+    <Compile Include="Caliburn\WizardNavigableEventArgs.cs" />
     <Compile Include="Helpers\RegionHelper.cs" />
     <Compile Include="NoFocusManager.cs" />
     <Compile Include="Windows\CKWindow.cs" />
