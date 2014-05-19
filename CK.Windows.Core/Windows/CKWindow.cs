@@ -25,7 +25,7 @@ namespace CK.Windows
         /// Gets whether this window has the Aero "glossy effect".
         /// Can be false if the desktop compoisiton has been disabled.
         /// </summary>
-        protected bool IsFrameExtended { get; set; }
+        //protected bool IsFrameExtended { get; set; }
 
         WindowInteropHelper _interopHelper;
 
@@ -93,7 +93,7 @@ namespace CK.Windows
                     }
                 case Win.WM_DWMCOMPOSITIONCHANGED:
                     {
-                        IsFrameExtended = TryExtendFrame();
+                        //IsFrameExtended = TryExtendFrame();
                         return IntPtr.Zero;
                     }
             }
@@ -176,7 +176,7 @@ namespace CK.Windows
             HwndSource hSource = HwndSource.FromHwnd( Hwnd );
             hSource.AddHook( WndProcWinDefault );
 
-            IsFrameExtended = TryExtendFrame();
+            //IsFrameExtended = TryExtendFrame();
 
             base.OnSourceInitialized( e );
 
@@ -190,35 +190,35 @@ namespace CK.Windows
         /// Adds the Aero "glossy-effect" to a WPF Window.
         /// </summary>
         /// <returns>whether or not the effect has been applicated. returns false if the desktop composition is </returns>
-        public bool TryExtendFrame()
-        {
-            bool isExtendedFrame = false;
-            if( CK.Core.OSVersionInfo.OSLevel > CK.Core.OSVersionInfo.SimpleOSLevel.WindowsXP )
-            {
-                isExtendedFrame = Dwm.Functions.IsCompositionEnabled();
+        //public bool TryExtendFrame()
+        //{
+        //    bool isExtendedFrame = false;
+        //    if( CK.Core.OSVersionInfo.OSLevel > CK.Core.OSVersionInfo.SimpleOSLevel.WindowsXP )
+        //    {
+        //        isExtendedFrame = Dwm.Functions.IsCompositionEnabled();
 
-                try
-                {
-                    if( isExtendedFrame )
-                    {
-                        // Negative margins have special meaning to DwmExtendFrameIntoClientArea.
-                        // Negative margins create the "sheet of glass" effect, where the client 
-                        // area is rendered as a solid surface without a window border.
-                        Win.Margins m = new CK.Windows.Interop.Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
-                        Dwm.Functions.ExtendFrameIntoClientArea( Hwnd, ref m );
+        //        try
+        //        {
+        //            if( isExtendedFrame )
+        //            {
+        //                // Negative margins have special meaning to DwmExtendFrameIntoClientArea.
+        //                // Negative margins create the "sheet of glass" effect, where the client 
+        //                // area is rendered as a solid surface without a window border.
+        //                Win.Margins m = new CK.Windows.Interop.Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
+        //                Dwm.Functions.ExtendFrameIntoClientArea( Hwnd, ref m );
 
-                        Background = Brushes.Transparent;
-                        HwndSource.FromHwnd( Hwnd ).CompositionTarget.BackgroundColor = Colors.Transparent;
-                    }
-                }
-                catch
-                {
-                    isExtendedFrame = false;
-                    Background = new SolidColorBrush( Colors.WhiteSmoke );
-                }
-            }
-            return isExtendedFrame;
-        }
+        //                Background = Brushes.Transparent;
+        //                HwndSource.FromHwnd( Hwnd ).CompositionTarget.BackgroundColor = Colors.Transparent;
+        //            }
+        //        }
+        //        catch
+        //        {
+        //            isExtendedFrame = false;
+        //            Background = new SolidColorBrush( Colors.WhiteSmoke );
+        //        }
+        //    }
+        //    return isExtendedFrame;
+        //}
 
         #endregion
     }
