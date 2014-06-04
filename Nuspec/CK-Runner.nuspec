@@ -17,20 +17,20 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\CK.Plugin.Discoverer\bin\Debug\CK.Plugin.Discoverer.dll" target="lib\net40" />
-    <file src="..\CK.Plugin.Discoverer\bin\Debug\CK.Plugin.Discoverer.pdb" target="lib\net40" />
-    <file src="..\CK.Plugin.Discoverer\bin\Debug\CK.Plugin.Discoverer.xml" target="lib\net40" />
+    <file src="..\CK.Plugin.Discoverer\bin\Release\CK.Plugin.Discoverer.dll" target="lib\net40" />
+    <file src="..\CK.Plugin.Discoverer\bin\Release\CK.Plugin.Discoverer.pdb" target="lib\net40" />
+    <file src="..\CK.Plugin.Discoverer\bin\Release\CK.Plugin.Discoverer.xml" target="lib\net40" />
 
-    <file src="..\CK.Plugin.Discoverer.Runner\bin\Debug\CK.Plugin.Discoverer.Runner.dll" target="lib\net40" />
-    <file src="..\CK.Plugin.Discoverer.Runner\bin\Debug\CK.Plugin.Discoverer.Runner.pdb" target="lib\net40" />
-    <file src="..\CK.Plugin.Discoverer.Runner\bin\Debug\CK.Plugin.Discoverer.Runner.xml" target="lib\net40" />
+    <file src="..\CK.Plugin.Discoverer.Runner\bin\Release\CK.Plugin.Discoverer.Runner.dll" target="lib\net40" />
+    <file src="..\CK.Plugin.Discoverer.Runner\bin\Release\CK.Plugin.Discoverer.Runner.pdb" target="lib\net40" />
+    <file src="..\CK.Plugin.Discoverer.Runner\bin\Release\CK.Plugin.Discoverer.Runner.xml" target="lib\net40" />
 
-    <file src="..\CK.Plugin.Host\bin\Debug\CK.Plugin.Host.dll" target="lib\net40" />
-    <file src="..\CK.Plugin.Host\bin\Debug\CK.Plugin.Host.pdb" target="lib\net40" />
-    <file src="..\CK.Plugin.Host\bin\Debug\CK.Plugin.Host.xml" target="lib\net40" />
+    <file src="..\CK.Plugin.Host\bin\Release\CK.Plugin.Host.dll" target="lib\net40" />
+    <file src="..\CK.Plugin.Host\bin\Release\CK.Plugin.Host.pdb" target="lib\net40" />
+    <file src="..\CK.Plugin.Host\bin\Release\CK.Plugin.Host.xml" target="lib\net40" />
 
-    <file src="..\CK.Plugin.Runner\bin\Debug\CK.Plugin.Runner.dll" target="lib\net40" />
-    <file src="..\CK.Plugin.Runner\bin\Debug\CK.Plugin.Runner.pdb" target="lib\net40" />
-    <file src="..\CK.Plugin.Runner\bin\Debug\CK.Plugin.Runner.xml" target="lib\net40" />
+    <file src="..\CK.Plugin.Runner\bin\Release\CK.Plugin.Runner.dll" target="lib\net40" />
+    <file src="..\CK.Plugin.Runner\bin\Release\CK.Plugin.Runner.pdb" target="lib\net40" />
+    <file src="..\CK.Plugin.Runner\bin\Release\CK.Plugin.Runner.xml" target="lib\net40" />
   </files>
 </package>

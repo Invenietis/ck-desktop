@@ -17,8 +17,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\CK.SharedDic\bin\Debug\CK.SharedDic.dll" target="lib\net40" />
-    <file src="..\CK.SharedDic\bin\Debug\CK.SharedDic.pdb" target="lib\net40" />
-    <file src="..\CK.SharedDic\bin\Debug\CK.SharedDic.xml" target="lib\net40" />
+    <file src="..\CK.SharedDic\bin\Release\CK.SharedDic.dll" target="lib\net40" />
+    <file src="..\CK.SharedDic\bin\Release\CK.SharedDic.pdb" target="lib\net40" />
+    <file src="..\CK.SharedDic\bin\Release\CK.SharedDic.xml" target="lib\net40" />
   </files>
 </package>

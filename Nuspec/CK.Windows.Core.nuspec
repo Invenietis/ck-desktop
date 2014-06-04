@@ -17,8 +17,8 @@
     </dependencies> 
   </metadata>
   <files>
-	<file src="..\CK.Windows.Core\bin\Debug\CK.Windows.Core.pdb" target="lib\net40" />
-	<file src="..\CK.Windows.Core\bin\Debug\CK.Windows.Core.dll" target="lib\net40" />
-	<file src="..\CK.Windows.Core\bin\Debug\CK.Windows.Core.xml" target="lib\net40" />
+	<file src="..\CK.Windows.Core\bin\Release\CK.Windows.Core.pdb" target="lib\net40" />
+	<file src="..\CK.Windows.Core\bin\Release\CK.Windows.Core.dll" target="lib\net40" />
+	<file src="..\CK.Windows.Core\bin\Release\CK.Windows.Core.xml" target="lib\net40" />
   </files>
 </package>

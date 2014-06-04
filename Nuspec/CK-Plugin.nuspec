@@ -15,12 +15,12 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\CK.Plugin.Config.Model\bin\Debug\CK.Plugin.Config.Model.dll" target="lib\net40" />
-    <file src="..\CK.Plugin.Config.Model\bin\Debug\CK.Plugin.Config.Model.pdb" target="lib\net40" />
-    <file src="..\CK.Plugin.Config.Model\bin\Debug\CK.Plugin.Config.Model.xml" target="lib\net40" />
+    <file src="..\CK.Plugin.Config.Model\bin\Release\CK.Plugin.Config.Model.dll" target="lib\net40" />
+    <file src="..\CK.Plugin.Config.Model\bin\Release\CK.Plugin.Config.Model.pdb" target="lib\net40" />
+    <file src="..\CK.Plugin.Config.Model\bin\Release\CK.Plugin.Config.Model.xml" target="lib\net40" />
 
-    <file src="..\CK.Plugin.Model\bin\Debug\CK.Plugin.Model.dll" target="lib\net40" />
-    <file src="..\CK.Plugin.Model\bin\Debug\CK.Plugin.Model.pdb" target="lib\net40" />
-    <file src="..\CK.Plugin.Model\bin\Debug\CK.Plugin.Model.xml" target="lib\net40" />
+    <file src="..\CK.Plugin.Model\bin\Release\CK.Plugin.Model.dll" target="lib\net40" />
+    <file src="..\CK.Plugin.Model\bin\Release\CK.Plugin.Model.pdb" target="lib\net40" />
+    <file src="..\CK.Plugin.Model\bin\Release\CK.Plugin.Model.xml" target="lib\net40" />
   </files>
 </package>

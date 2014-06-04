@@ -15,9 +15,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\CK.Windows.App\bin\Debug\CK.Windows.App.dll" target="lib\net40" />
-    <file src="..\CK.Windows.App\bin\Debug\CK.Windows.App.pdb" target="lib\net40" />
-    <file src="..\CK.Windows.App\bin\Debug\CK.Windows.App.xml" target="lib\net40" />
-    <file src="..\CK.Windows.App\bin\Debug\**\CK.Windows.App.resources.dll" target="lib\net40" />
+    <file src="..\CK.Windows.App\bin\Release\CK.Windows.App.dll" target="lib\net40" />
+    <file src="..\CK.Windows.App\bin\Release\CK.Windows.App.pdb" target="lib\net40" />
+    <file src="..\CK.Windows.App\bin\Release\CK.Windows.App.xml" target="lib\net40" />
+    <file src="..\CK.Windows.App\bin\Release\**\CK.Windows.App.resources.dll" target="lib\net40" />
   </files>
 </package>

@@ -16,8 +16,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\CK.Context\bin\Debug\CK.Context.dll" target="lib\net40" />
-    <file src="..\CK.Context\bin\Debug\CK.Context.pdb" target="lib\net40" />
-    <file src="..\CK.Context\bin\Debug\CK.Context.xml" target="lib\net40" />
+    <file src="..\CK.Context\bin\Release\CK.Context.dll" target="lib\net40" />
+    <file src="..\CK.Context\bin\Release\CK.Context.pdb" target="lib\net40" />
+    <file src="..\CK.Context\bin\Release\CK.Context.xml" target="lib\net40" />
   </files>
 </package>

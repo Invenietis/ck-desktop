@@ -15,9 +15,9 @@
     </dependencies> 
   </metadata>
   <files>
-	<file src="..\CK.Windows.Config\bin\Debug\CK.Windows.Config.pdb" target="lib\net40" />
-	<file src="..\CK.Windows.Config\bin\Debug\CK.Windows.Config.dll" target="lib\net40" />
-	<file src="..\CK.Windows.Config\bin\Debug\CK.Windows.Config.xml" target="lib\net40" />
-	<file src="..\CK.Windows.Config\bin\Debug\**\CK.Windows.Config.resources.dll" target="lib\net40" />
+	<file src="..\CK.Windows.Config\bin\Release\CK.Windows.Config.pdb" target="lib\net40" />
+	<file src="..\CK.Windows.Config\bin\Release\CK.Windows.Config.dll" target="lib\net40" />
+	<file src="..\CK.Windows.Config\bin\Release\CK.Windows.Config.xml" target="lib\net40" />
+	<file src="..\CK.Windows.Config\bin\Release\**\CK.Windows.Config.resources.dll" target="lib\net40" />
   </files>
 </package>

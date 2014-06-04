@@ -16,8 +16,8 @@
     </dependencies>
   </metadata>
   <files>
-	<file src="..\CK.Plugin.Config\bin\Debug\CK.Plugin.Config.dll" target="lib\net40" />
-    <file src="..\CK.Plugin.Config\bin\Debug\CK.Plugin.Config.pdb" target="lib\net40" />
-    <file src="..\CK.Plugin.Config\bin\Debug\CK.Plugin.Config.xml" target="lib\net40" />
+	<file src="..\CK.Plugin.Config\bin\Release\CK.Plugin.Config.dll" target="lib\net40" />
+    <file src="..\CK.Plugin.Config\bin\Release\CK.Plugin.Config.pdb" target="lib\net40" />
+    <file src="..\CK.Plugin.Config\bin\Release\CK.Plugin.Config.xml" target="lib\net40" />
   </files>
 </package>
