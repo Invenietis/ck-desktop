@@ -27,6 +27,7 @@ using System.Linq;
 using CK.Core;
 using System.Diagnostics;
 using System.Xml;
+using System.Collections.Specialized;
 
 namespace CK.Plugin
 {
@@ -43,7 +44,7 @@ namespace CK.Plugin
 
         public event EventHandler<ServiceRequirementCollectionChangedEventArgs> Changed;
 
-        internal bool CanChange( ChangeStatus action, string serviceAssemblyQualifiedName, RunningRequirement requirement )
+        internal bool CanChange( NotifyCollectionChangedAction action, string serviceAssemblyQualifiedName, RunningRequirement requirement )
         {
             if( Changing != null )
             {
@@ -54,7 +55,7 @@ namespace CK.Plugin
             return true;
         }
 
-        internal void Change( ChangeStatus action, string serviceAssemblyQualifiedName, RunningRequirement requirement )
+        internal void Change( NotifyCollectionChangedAction action, string serviceAssemblyQualifiedName, RunningRequirement requirement )
         {
             if( Changed != null )
             {
@@ -68,19 +69,19 @@ namespace CK.Plugin
             ServiceRequirement req = this.FirstOrDefault( r => r.AssemblyQualifiedName == serviceAssemblyQualifiedName );
             if( req != null )
             {
-                if( req.Requirement != requirement && CanChange( ChangeStatus.Update, serviceAssemblyQualifiedName, requirement ) )
+                if( req.Requirement != requirement && CanChange( NotifyCollectionChangedAction.Replace, serviceAssemblyQualifiedName, requirement ) )
                 {
                     req.Requirement = requirement;
-                    Change( ChangeStatus.Update, serviceAssemblyQualifiedName, requirement );
+                    Change( NotifyCollectionChangedAction.Replace, serviceAssemblyQualifiedName, requirement );
                 }
             }
-            else if ( CanChange( ChangeStatus.Add, serviceAssemblyQualifiedName, requirement ) )
+            else if( CanChange( NotifyCollectionChangedAction.Add, serviceAssemblyQualifiedName, requirement ) )
             {
                 req = new ServiceRequirement( this, serviceAssemblyQualifiedName, requirement );
                 req.NextElement = _first;
                 _first = req;
                 _count++;
-                Change( ChangeStatus.Add, serviceAssemblyQualifiedName, requirement );
+                Change( NotifyCollectionChangedAction.Add, serviceAssemblyQualifiedName, requirement );
             }
             return req;
         }
@@ -96,23 +97,23 @@ namespace CK.Plugin
             if( req != null )
             {
                 Debug.Assert( req.Holder == this );
-                if( !CanChange( ChangeStatus.Delete, req.AssemblyQualifiedName, req.Requirement ) ) return false;
+                if( !CanChange( NotifyCollectionChangedAction.Remove, req.AssemblyQualifiedName, req.Requirement ) ) return false;
                 if( _first == req ) _first = req.NextElement;
                 else this.First( r => r.NextElement == req ).NextElement = req.NextElement;
                 req.Holder = null;
                 --_count;
-                Change( ChangeStatus.Delete, req.AssemblyQualifiedName, req.Requirement );
+                Change( NotifyCollectionChangedAction.Remove, req.AssemblyQualifiedName, req.Requirement );
             }
             return true;
         }
 
         public bool Clear()
         {
-            if( !CanChange( ChangeStatus.ContainerClear, string.Empty, RunningRequirement.Optional ) ) return false;
+            if( !CanChange( NotifyCollectionChangedAction.Reset, string.Empty, RunningRequirement.Optional ) ) return false;
             foreach( ServiceRequirement r in this ) r.Holder = null;
             _first = null;
             _count = 0;
-            Change( ChangeStatus.ContainerClear, string.Empty, RunningRequirement.Optional );
+            Change( NotifyCollectionChangedAction.Reset, string.Empty, RunningRequirement.Optional );
             return true;
         }
 

@@ -28,6 +28,7 @@ using System.Text;
 using CK.Plugin;
 using System.ComponentModel;
 using CK.Core;
+using System.Collections.Specialized;
 
 namespace CK.Plugin
 {
@@ -39,7 +40,7 @@ namespace CK.Plugin
         /// <summary>
         /// The <see cref="ChangeStatus"/> that synthetizes the change.
         /// </summary>
-        public ChangeStatus Action { get; private set; }
+        public NotifyCollectionChangedAction Action { get; private set; }
 
         /// <summary>
         /// The source <see cref="IServiceRequirementCollection"/> that changed.
@@ -65,7 +66,7 @@ namespace CK.Plugin
         /// <param name="action">The <see cref="ChangeStatus"/>.</param>
         /// <param name="assemblyQualifiedName">The service identifier concerned.</param>
         /// <param name="requirement">The <see cref="RunningRequirement"/> of the changed service.</param>
-        public ServiceRequirementCollectionChangedEventArgs( IServiceRequirementCollection c, ChangeStatus action, string assemblyQualifiedName, RunningRequirement requirement )
+        public ServiceRequirementCollectionChangedEventArgs( IServiceRequirementCollection c, NotifyCollectionChangedAction action, string assemblyQualifiedName, RunningRequirement requirement )
         {
             Collection = c;
             Action = action;

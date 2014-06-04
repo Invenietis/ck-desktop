@@ -28,6 +28,7 @@ using CK.Plugin.Config;
 using CK.Storage;
 using NUnit.Framework;
 using System.Collections.Specialized;
+using CK.Plugin.Config.Model;
 
 namespace PluginConfig
 {
@@ -52,8 +53,8 @@ namespace PluginConfig
             collection.SetStatus( Guid.Empty, ConfigPluginStatus.Manual );
 
             Assert.That( changingCount == 1 && changedCount == 1 );
-            Assert.That( lastChanging.Action == CK.Core.ChangeStatus.Add );
-            Assert.That( lastChanged.Action == CK.Core.ChangeStatus.Add );
+            Assert.That( lastChanging.Action == ChangeStatus.Add );
+            Assert.That( lastChanged.Action == ChangeStatus.Add );
             Assert.That( lastChanging.Collection == collection );
             Assert.That( lastChanged.Collection == collection );
             Assert.That( lastChanging.PluginID == Guid.Empty );
@@ -67,8 +68,8 @@ namespace PluginConfig
             collection.SetStatus( Guid.Empty, ConfigPluginStatus.Disabled );
 
             Assert.That( changingCount == 1 && changedCount == 1 );
-            Assert.That( lastChanging.Action == CK.Core.ChangeStatus.Update );
-            Assert.That( lastChanged.Action == CK.Core.ChangeStatus.Update );
+            Assert.That( lastChanging.Action == ChangeStatus.Update );
+            Assert.That( lastChanged.Action == ChangeStatus.Update );
             Assert.That( lastChanging.Collection == collection );
             Assert.That( lastChanged.Collection == collection );
             Assert.That( lastChanging.PluginID == Guid.Empty );
@@ -83,8 +84,8 @@ namespace PluginConfig
             status.Destroy();
 
             Assert.That( changingCount == 1 && changedCount == 1 );
-            Assert.That( lastChanging.Action == CK.Core.ChangeStatus.Delete );
-            Assert.That( lastChanged.Action == CK.Core.ChangeStatus.Delete );
+            Assert.That( lastChanging.Action == ChangeStatus.Delete );
+            Assert.That( lastChanged.Action == ChangeStatus.Delete );
             Assert.That( lastChanging.Collection == collection );
             Assert.That( lastChanged.Collection == collection );
             Assert.That( lastChanging.PluginID == Guid.Empty );
@@ -98,8 +99,8 @@ namespace PluginConfig
             collection.Clear();
 
             Assert.That( changingCount == 1 && changedCount == 1 );
-            Assert.That( lastChanging.Action == CK.Core.ChangeStatus.ContainerClear );
-            Assert.That( lastChanged.Action == CK.Core.ChangeStatus.ContainerClear );
+            Assert.That( lastChanging.Action == ChangeStatus.ContainerClear );
+            Assert.That( lastChanged.Action == ChangeStatus.ContainerClear );
             Assert.That( lastChanging.Collection == collection );
             Assert.That( lastChanged.Collection == collection );
             Assert.That( lastChanging.PluginID == Guid.Empty );
@@ -154,7 +155,7 @@ namespace PluginConfig
             // Check event count & args 
             Assert.That( changingCount == 0 && changedCount == 1 );
             Assert.That( lastChanging == null );
-            Assert.That( lastChanged.Action == CK.Core.ChangeStatus.ContainerUpdate );
+            Assert.That( lastChanged.Action == ChangeStatus.ContainerUpdate );
             Assert.That( lastChanged.Collection == collection );
             Assert.That( lastChanged.PluginID == Guid.Empty );
             Assert.That( lastChanged.Status == 0 );
@@ -188,8 +189,8 @@ namespace PluginConfig
             PluginRequirement req = collection.AddOrSet( id, RunningRequirement.MustExistAndRun );
 
             Assert.That( changedCount == 1 && changingCount == 1 );
-            Assert.That( lastChanging.Action == CK.Core.ChangeStatus.Add );
-            Assert.That( lastChanged.Action == CK.Core.ChangeStatus.Add );
+            Assert.That( lastChanging.Action == NotifyCollectionChangedAction.Add );
+            Assert.That( lastChanged.Action == NotifyCollectionChangedAction.Add );
             Assert.That( lastChanging.Collection == collection );
             Assert.That( lastChanged.Collection == collection );
             Assert.That( lastChanging.PluginId == id );
@@ -203,8 +204,8 @@ namespace PluginConfig
             collection.Remove( id );
 
             Assert.That( changedCount == 1 && changingCount == 1 );
-            Assert.That( lastChanging.Action == CK.Core.ChangeStatus.Delete );
-            Assert.That( lastChanged.Action == CK.Core.ChangeStatus.Delete );
+            Assert.That( lastChanging.Action == NotifyCollectionChangedAction.Remove );
+            Assert.That( lastChanged.Action == NotifyCollectionChangedAction.Remove );
             Assert.That( lastChanging.Collection == collection );
             Assert.That( lastChanged.Collection == collection );
             Assert.That( lastChanging.PluginId == id );
@@ -218,8 +219,8 @@ namespace PluginConfig
             collection.Clear();
 
             Assert.That( changedCount == 1 && changingCount == 1 );
-            Assert.That( lastChanging.Action == CK.Core.ChangeStatus.ContainerClear );
-            Assert.That( lastChanged.Action == CK.Core.ChangeStatus.ContainerClear );
+            Assert.That( lastChanging.Action == NotifyCollectionChangedAction.Reset );
+            Assert.That( lastChanged.Action == NotifyCollectionChangedAction.Reset );
             Assert.That( lastChanging.Collection == collection );
             Assert.That( lastChanged.Collection == collection );
             Assert.That( lastChanging.PluginId == Guid.Empty );
@@ -250,8 +251,8 @@ namespace PluginConfig
             ServiceRequirement req = collection.AddOrSet( id, RunningRequirement.MustExistAndRun );
 
             Assert.That( changedCount == 1 && changingCount == 1 );
-            Assert.That( lastChanging.Action == CK.Core.ChangeStatus.Add );
-            Assert.That( lastChanged.Action == CK.Core.ChangeStatus.Add );
+            Assert.That( lastChanging.Action == NotifyCollectionChangedAction.Add );
+            Assert.That( lastChanged.Action == NotifyCollectionChangedAction.Add );
             Assert.That( lastChanging.Collection == collection );
             Assert.That( lastChanged.Collection == collection );
             Assert.That( lastChanging.AssemblyQualifiedName == id );
@@ -265,8 +266,8 @@ namespace PluginConfig
             collection.Remove( id );
 
             Assert.That( changedCount == 1 && changingCount == 1 );
-            Assert.That( lastChanging.Action == CK.Core.ChangeStatus.Delete );
-            Assert.That( lastChanged.Action == CK.Core.ChangeStatus.Delete );
+            Assert.That( lastChanging.Action == NotifyCollectionChangedAction.Remove );
+            Assert.That( lastChanged.Action == NotifyCollectionChangedAction.Remove );
             Assert.That( lastChanging.Collection == collection );
             Assert.That( lastChanged.Collection == collection );
             Assert.That( lastChanging.AssemblyQualifiedName == id );
@@ -280,8 +281,8 @@ namespace PluginConfig
             collection.Clear();
 
             Assert.That( changedCount == 1 && changingCount == 1 );
-            Assert.That( lastChanging.Action == CK.Core.ChangeStatus.ContainerClear );
-            Assert.That( lastChanged.Action == CK.Core.ChangeStatus.ContainerClear );
+            Assert.That( lastChanging.Action == NotifyCollectionChangedAction.Reset );
+            Assert.That( lastChanged.Action == NotifyCollectionChangedAction.Reset );
             Assert.That( lastChanging.Collection == collection );
             Assert.That( lastChanged.Collection == collection );
             Assert.That( lastChanging.AssemblyQualifiedName == string.Empty );

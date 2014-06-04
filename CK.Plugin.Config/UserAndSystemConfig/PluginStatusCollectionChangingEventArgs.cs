@@ -24,6 +24,7 @@
 using System;
 using System.ComponentModel;
 using CK.Core;
+using CK.Plugin.Config.Model;
 
 namespace CK.Plugin.Config
 {

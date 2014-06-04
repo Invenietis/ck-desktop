@@ -27,6 +27,7 @@ using System.IO;
 using System.Linq;
 using CK.Core;
 using CK.Plugin.Config;
+using CK.Plugin.Config.Model;
 using CK.SharedDic;
 using CK.Storage;
 using NUnit.Framework;

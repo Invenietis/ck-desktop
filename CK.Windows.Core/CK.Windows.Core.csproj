@@ -94,6 +94,7 @@
     <Compile Include="Caliburn\WizardNavigableEventArgs.cs" />
     <Compile Include="Helpers\RegionHelper.cs" />
     <Compile Include="NoFocusManager.cs" />
+    <Compile Include="OSVersionInfo.cs" />
     <Compile Include="Windows\CKWindow.cs" />
     <Compile Include="Windows\CKWindowTools.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />

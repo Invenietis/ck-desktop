@@ -28,6 +28,7 @@ using System.Text;
 using CK.Plugin;
 using CK.Core;
 using System.ComponentModel;
+using System.Collections.Specialized;
 
 namespace CK.Plugin
 {
@@ -39,7 +40,7 @@ namespace CK.Plugin
         /// <summary>
         /// The <see cref="ChangeStatus"/> that synthetizes the change.
         /// </summary>
-        public ChangeStatus Action { get; private set; }
+        public NotifyCollectionChangedAction Action { get; private set; }
 
         /// <summary>
         /// The source <see cref="IPluginRequirementCollection"/> that is changing.
@@ -65,7 +66,7 @@ namespace CK.Plugin
         /// <param name="action">The <see cref="ChangeStatus"/>.</param>
         /// <param name="pluginId">The plugin identifier concerned.</param>
         /// <param name="requirement">The <see cref="RunningRequirement"/> of the changed <paramref name="pluginId"/>.</param>
-        public PluginRequirementCollectionChangingEventArgs( IPluginRequirementCollection c, ChangeStatus action, Guid pluginId, RunningRequirement requirement )
+        public PluginRequirementCollectionChangingEventArgs( IPluginRequirementCollection c, NotifyCollectionChangedAction action, Guid pluginId, RunningRequirement requirement )
         {
             Collection = c;
             Action = action;

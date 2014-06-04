@@ -44,16 +44,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
-      <Project>{96D1DD2E-9E76-40EA-A943-1E85B44AB862}</Project>
-      <Name>CK.Plugin.Config.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\CK.Plugin.Model\CK.Plugin.Model.csproj">
-      <Project>{D6E4A9FE-F9B9-4FDC-A21A-E3E7109128C6}</Project>
-      <Name>CK.Plugin.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
@@ -62,6 +52,16 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
+      <Project>{96d1dd2e-9e76-40ea-a943-1e85b44ab862}</Project>
+      <Name>CK.Plugin.Config.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\CK.Plugin.Model\CK.Plugin.Model.csproj">
+      <Project>{d6e4a9fe-f9b9-4fdc-a21a-e3e7109128c6}</Project>
+      <Name>CK.Plugin.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

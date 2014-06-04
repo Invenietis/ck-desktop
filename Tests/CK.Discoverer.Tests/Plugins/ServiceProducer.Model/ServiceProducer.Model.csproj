@@ -37,14 +37,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\CK.Plugin.Model\CK.Plugin.Model.csproj">
-      <Project>{D6E4A9FE-F9B9-4FDC-A21A-E3E7109128C6}</Project>
-      <Name>CK.Plugin.Model</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <ProjectReference Include="..\..\..\..\CK.Plugin.Model\CK.Plugin.Model.csproj">
+      <Project>{d6e4a9fe-f9b9-4fdc-a21a-e3e7109128c6}</Project>
+      <Name>CK.Plugin.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
