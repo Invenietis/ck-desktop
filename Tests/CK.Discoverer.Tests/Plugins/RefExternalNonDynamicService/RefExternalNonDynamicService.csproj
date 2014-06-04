@@ -46,6 +46,9 @@
       <Name>ServiceC.Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>md "$(SolutionDir)Output\Tests\$(ConfigurationName)\Discoverer.Tests.Plugins"
