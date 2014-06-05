@@ -43,12 +43,13 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Core">
-      <HintPath>..\packages\CK.Core.3.0.21\lib\net40\CK.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="CK.Storage, Version=3.0.21.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Core, Version=3.0.22.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Storage.3.0.21\lib\net40\CK.Storage.dll</HintPath>
+      <HintPath>..\packages\CK.Core.3.0.22\lib\net40\CK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Storage, Version=3.0.22.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Storage.3.0.22\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

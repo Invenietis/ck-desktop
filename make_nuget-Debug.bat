@@ -1,9 +1,0 @@
-"./.nuget/nuget.exe" pack Nuspec/CK-Runner.nuspec -OutputDirectory Output
-"./.nuget/nuget.exe" pack Nuspec/CK-Plugin.nuspec -OutputDirectory Output
-"./.nuget/nuget.exe" pack Nuspec/CK.Windows.Interop.nuspec -OutputDirectory Output
-"./.nuget/nuget.exe" pack Nuspec/CK.Windows.Core.nuspec -OutputDirectory Output
-"./.nuget/nuget.exe" pack Nuspec/CK.Windows.Config.nuspec -OutputDirectory Output
-"./.nuget/nuget.exe" pack Nuspec/CK.Windows.App.nuspec -OutputDirectory Output
-"./.nuget/nuget.exe" pack Nuspec/CK.SharedDic.nuspec -OutputDirectory Output
-"./.nuget/nuget.exe" pack Nuspec/CK.Plugin.Config.nuspec -OutputDirectory Output
-"./.nuget/nuget.exe" pack Nuspec/CK.Context.nuspec -OutputDirectory Output
