@@ -27,7 +27,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -147,7 +146,7 @@ namespace CK.Context.SemVer
                 semver = Parse( version, strict );
                 return true;
             }
-            catch( Exception ex )
+            catch( Exception )
             {
                 semver = null;
                 return false;

@@ -145,13 +145,13 @@ namespace Caliburn.Micro
                 if( h != null ) h( this, EventArgs.Empty );
             }
 
-            static public void RaiseCanExecuteChanged( WeakReference<GoBackCmd> cmdRef )
+            static public void RaiseCanExecuteChanged( WeakRef<GoBackCmd> cmdRef )
             {
                 GoBackCmd cmd;
                 if( cmdRef != null && (cmd = cmdRef.Target) != null ) cmd.RaiseCanExecuteChanged();
             }
 
-            static public GoBackCmd Ensure( NavigableConductor<T> holder, ref WeakReference<GoBackCmd> cmdRef )
+            static public GoBackCmd Ensure( NavigableConductor<T> holder, ref WeakRef<GoBackCmd> cmdRef )
             {
                 GoBackCmd cmd;
                 if( cmdRef == null ) cmdRef = cmd = new GoBackCmd( holder );
@@ -160,7 +160,7 @@ namespace Caliburn.Micro
             }
         }
 
-        WeakReference<GoBackCmd> _goBackCommand;
+        WeakRef<GoBackCmd> _goBackCommand;
 
         public new ICommand GoBackCommand { get { return GoBackCmd.Ensure( this, ref _goBackCommand ); } }
 
@@ -191,13 +191,13 @@ namespace Caliburn.Micro
                 if( h != null ) h( this, EventArgs.Empty );
             }
 
-            static public void RaiseCanExecuteChanged( WeakReference<GoFurtherCmd> cmdRef )
+            static public void RaiseCanExecuteChanged( WeakRef<GoFurtherCmd> cmdRef )
             {
                 GoFurtherCmd cmd;
                 if( cmdRef != null && (cmd = cmdRef.Target) != null ) cmd.RaiseCanExecuteChanged();
             }
 
-            static public GoFurtherCmd Ensure( NavigableConductor<T> holder, ref WeakReference<GoFurtherCmd> cmdRef )
+            static public GoFurtherCmd Ensure( NavigableConductor<T> holder, ref WeakRef<GoFurtherCmd> cmdRef )
             {
                 GoFurtherCmd cmd;
                 if( cmdRef == null ) cmdRef = cmd = new GoFurtherCmd( holder );
@@ -206,7 +206,7 @@ namespace Caliburn.Micro
             }
         }
 
-        WeakReference<GoFurtherCmd> _goFurtherCommand;
+        WeakRef<GoFurtherCmd> _goFurtherCommand;
 
         public ICommand GoFurtherCommand { get { return GoFurtherCmd.Ensure( this, ref _goFurtherCommand ); } }
 

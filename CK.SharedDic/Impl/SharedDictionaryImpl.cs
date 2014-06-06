@@ -29,6 +29,7 @@ using CK.Core;
 using CK.Plugin.Config;
 using CK.Storage;
 using System.Linq;
+using CK.Plugin.Config.Model;
 
 namespace CK.SharedDic
 {

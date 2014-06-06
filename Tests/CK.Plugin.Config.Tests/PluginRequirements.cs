@@ -28,6 +28,7 @@ using System.Text;
 using NUnit.Framework;
 using CK.Plugin;
 using CK.Plugin.Config;
+using System.Collections.Specialized;
 
 namespace PluginConfig
 {
@@ -61,18 +62,18 @@ namespace PluginConfig
             {
                 switch( args.Action )
                 {
-                    case CK.Core.ChangeStatus.Update:
+                    case NotifyCollectionChangedAction.Replace:
                         updatingEventFired++;
                         if( !cancel )                        
                             previousRequirement = args.Collection.Find( args.PluginId ).Requirement;                                                
                         break;
-                    case CK.Core.ChangeStatus.Add:
+                    case NotifyCollectionChangedAction.Add:
                         creatingEventFired++;
                         break;
-                    case CK.Core.ChangeStatus.Delete:
+                    case NotifyCollectionChangedAction.Remove:
                         removingEventFired++;
                         break;
-                    case CK.Core.ChangeStatus.ContainerClear:
+                    case NotifyCollectionChangedAction.Reset:
                         clearingEventFired++;
                         break;                       
                 }
@@ -84,19 +85,19 @@ namespace PluginConfig
             {
                 switch( args.Action )
                 {
-                    case CK.Core.ChangeStatus.Update:
+                    case NotifyCollectionChangedAction.Replace:
                         updatedEventFired++;
                         newRequirement = args.Requirement;
                         break;
-                    case CK.Core.ChangeStatus.Add:
+                    case NotifyCollectionChangedAction.Add:
                         lastRequirementCreated = args.Collection.Find( args.PluginId );
                         createdEventFired++;
                         break;
-                    case CK.Core.ChangeStatus.Delete:
+                    case NotifyCollectionChangedAction.Remove:
                         lastRequirementRemoved = args.Collection.Find( args.PluginId );
                         removedEventFired++;
                         break;
-                    case CK.Core.ChangeStatus.ContainerClear:
+                    case NotifyCollectionChangedAction.Reset:
                         clearedEventFired++;
                         break;
                 }
@@ -206,9 +207,10 @@ namespace PluginConfig
             Guid guid3 = Guid.NewGuid();
 
             IPluginRequirementCollection reqs = new PluginRequirementCollection( );
-            reqs.Changed += ( o, e ) =>  {if (e.Action == CK.Core.ChangeStatus.Update)
-                                                        updated = true;
-                                                    };
+            reqs.Changed += ( o, e ) =>
+                {
+                    if( e.Action == NotifyCollectionChangedAction .Replace) updated = true;
+                };
 
             PluginRequirement req = reqs.AddOrSet( guid1, RunningRequirement.MustExistAndRun );
             Assert.That( reqs.Count == 1 );

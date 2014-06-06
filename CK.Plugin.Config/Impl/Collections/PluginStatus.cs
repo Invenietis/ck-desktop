@@ -23,6 +23,7 @@
 
 using System;
 using CK.Core;
+using CK.Plugin.Config.Model;
 
 namespace CK.Plugin.Config
 {

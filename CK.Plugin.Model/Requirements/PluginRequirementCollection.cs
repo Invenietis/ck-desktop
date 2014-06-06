@@ -28,6 +28,7 @@ using System.Xml;
 using CK.Core;
 using System.Diagnostics;
 using System.ComponentModel;
+using System.Collections.Specialized;
 
 namespace CK.Plugin
 {
@@ -43,8 +44,8 @@ namespace CK.Plugin
         public event EventHandler<PluginRequirementCollectionChangingEventArgs>  Changing;
         
         public event EventHandler<PluginRequirementCollectionChangedEventArgs>  Changed;
-        
-        internal bool CanChange( ChangeStatus action, Guid pluginID, RunningRequirement requirement )
+
+        internal bool CanChange( NotifyCollectionChangedAction action, Guid pluginID, RunningRequirement requirement )
         {
             if( Changing != null )
             {
@@ -55,7 +56,7 @@ namespace CK.Plugin
             return true;
         }
 
-        internal void Change( ChangeStatus action, Guid pluginID, RunningRequirement requirement )
+        internal void Change( NotifyCollectionChangedAction action, Guid pluginID, RunningRequirement requirement )
         {
             if( Changed != null )
             {
@@ -69,19 +70,19 @@ namespace CK.Plugin
             PluginRequirement req = this.FirstOrDefault( r => r.PluginId == pluginID );
             if( req != null ) 
             {
-                if( req.Requirement != requirement && CanChange( ChangeStatus.Update, pluginID, requirement ) )
+                if( req.Requirement != requirement && CanChange( NotifyCollectionChangedAction.Replace, pluginID, requirement ) )
                 {
                     req.Requirement = requirement;
-                    Change( ChangeStatus.Update, pluginID, requirement );
+                    Change( NotifyCollectionChangedAction.Replace, pluginID, requirement );
                 }
             }
-            else if( CanChange( ChangeStatus.Add, pluginID, requirement ) )
+            else if( CanChange( NotifyCollectionChangedAction.Add, pluginID, requirement ) )
             {
                 req = new PluginRequirement( this, pluginID, requirement );
                 req.NextElement = _first;
                 _first = req;
                 _count++;
-                Change( ChangeStatus.Add, pluginID, requirement );
+                Change( NotifyCollectionChangedAction.Add, pluginID, requirement );
             }
             return req;
         }
@@ -97,23 +98,23 @@ namespace CK.Plugin
             if( req != null )
             {
                 Debug.Assert( req.Holder == this );
-                if( !CanChange( ChangeStatus.Delete, req.PluginId, req.Requirement ) ) return false;
+                if( !CanChange( NotifyCollectionChangedAction.Remove, req.PluginId, req.Requirement ) ) return false;
                 if( _first == req ) _first = req.NextElement;
                 else this.First( r => r.NextElement == req ).NextElement = req.NextElement;
                 req.Holder = null;
                 --_count;
-                Change( ChangeStatus.Delete, req.PluginId, req.Requirement );
+                Change( NotifyCollectionChangedAction.Remove, req.PluginId, req.Requirement );
             }
             return true;
         }
 
         public bool Clear()
         {
-            if( !CanChange( ChangeStatus.ContainerClear, Guid.Empty, RunningRequirement.Optional ) ) return false;
+            if( !CanChange( NotifyCollectionChangedAction.Reset, Guid.Empty, RunningRequirement.Optional ) ) return false;
             foreach( PluginRequirement r in this ) r.Holder = null;
             _first = null;
             _count = 0;
-            Change( ChangeStatus.ContainerClear, Guid.Empty, RunningRequirement.Optional );
+            Change( NotifyCollectionChangedAction.Reset, Guid.Empty, RunningRequirement.Optional );
             return true;
         }
 

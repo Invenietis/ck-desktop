@@ -141,13 +141,13 @@ namespace Caliburn.Micro
                 if( h != null ) h( this, EventArgs.Empty );
             }
 
-            static public void RaiseCanExecuteChanged( WeakReference<GoBackCmd> cmdRef )
+            static public void RaiseCanExecuteChanged( WeakRef<GoBackCmd> cmdRef )
             {
                 GoBackCmd cmd;
                 if( cmdRef != null && ( cmd = cmdRef.Target ) != null ) cmd.RaiseCanExecuteChanged();
             }
 
-            static public GoBackCmd Ensure( StackConductor<T> holder, ref WeakReference<GoBackCmd> cmdRef )
+            static public GoBackCmd Ensure( StackConductor<T> holder, ref WeakRef<GoBackCmd> cmdRef )
             {
                 GoBackCmd cmd;
                 if( cmdRef == null ) cmdRef = cmd = new GoBackCmd( holder );
@@ -157,7 +157,7 @@ namespace Caliburn.Micro
 
         }
 
-        WeakReference<GoBackCmd> _goBackCommand;
+        WeakRef<GoBackCmd> _goBackCommand;
 
         public ICommand GoBackCommand { get { return GoBackCmd.Ensure( this, ref _goBackCommand ); } }
 

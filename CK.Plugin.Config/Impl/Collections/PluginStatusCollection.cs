@@ -28,6 +28,8 @@ using CK.Storage;
 using CK.Core;
 using System.Xml;
 using System.Diagnostics;
+using System.Collections.Specialized;
+using CK.Plugin.Config.Model;
 
 namespace CK.Plugin.Config
 {
@@ -76,7 +78,7 @@ namespace CK.Plugin.Config
             {
                 currentPluginStatus.Status = status;
             }
-            else if ( CanChange( ChangeStatus.Add, pluginId, status ) )
+            else if( CanChange( ChangeStatus.Add, pluginId, status ) )
             {
                 PluginStatus newStatus = new PluginStatus( this, pluginId, status );
                 _pluginStatusDic.Add( pluginId, newStatus );

@@ -26,6 +26,7 @@ using System.Diagnostics;
 using CK.Core;
 using CK.Storage;
 using System.ComponentModel;
+using CK.Plugin.Config.Model;
 
 namespace CK.Plugin.Config
 {

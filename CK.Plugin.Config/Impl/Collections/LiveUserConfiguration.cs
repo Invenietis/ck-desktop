@@ -25,6 +25,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CK.Core;
+using CK.Plugin.Config.Model;
 
 namespace CK.Plugin.Config
 {
