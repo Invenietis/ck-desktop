@@ -46,7 +46,7 @@ namespace CK.Plugin.Hosting
 
         public event EventHandler<ApplyDoneEventArgs> ApplyDone;
 
-        public PluginRunner( IServiceProvider externalServiceProvider, IConfigManager cfg )
+        public PluginRunner( IServiceProvider externalServiceProvider, IConfigManager cfg, IActivityMonitor monitor = null )
         {
             _externalServiceProvider = externalServiceProvider;
             _config = cfg;
@@ -56,7 +56,7 @@ namespace CK.Plugin.Hosting
             _runningConfig = new RunningConfiguration( this );
             _requirements = new RunnerRequirements( this );
 
-            _host = new PluginHost();
+            _host = new PluginHost( monitor );
             // 0 - For creation.
             _host.PluginCreator = CreatePlugin;
             // 1 - Before Setup call: plugin is configured.

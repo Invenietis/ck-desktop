@@ -75,6 +75,7 @@ namespace CK.Context
     public abstract class AbstractContextHost
     {
         IContext _ctx;
+        IActivityMonitor _monitor;
 
         /// <summary>
         /// Initializes a new ContextHost instance. 
@@ -113,6 +114,22 @@ namespace CK.Context
             get { return _ctx.ConfigManager.Extended.HostSystemConfig; }
         }
 
+        public IActivityMonitor Monitor
+        {
+            get 
+            {
+                if( _monitor == null ) _monitor = new ActivityMonitor( "Context Host" );
+                return _monitor; 
+            }
+            protected set
+            {
+                if( value != _monitor )
+                {
+                    _monitor = value;
+                }
+            }
+        }
+
         /// <summary>
         /// Initializes a new <see cref="IContext"/>: one and only one context can be created by a host.
         /// Context events are associated to the abstract methods <see cref="LoadSystemConfig"/>/<see cref="SaveSystemConfig"/>, 
@@ -124,7 +141,7 @@ namespace CK.Context
         {
             if( Context != null ) throw new InvalidOperationException( Res.R.HostAlreadyOwnsContext );
 
-            _ctx = CK.Context.Context.CreateInstance();
+            _ctx = CK.Context.Context.CreateInstance( _monitor );
 
             IConfigManagerExtended cfg = _ctx.ConfigManager.Extended;
             cfg.LoadSystemConfigRequired += ( o, e ) => LoadSystemConfig();

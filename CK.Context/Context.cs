@@ -40,6 +40,7 @@ namespace CK.Context
     {
         ISharedDictionary _dic;
         IConfigManagerExtended _configManager;
+        IActivityMonitor _monitor;
 
         class ContextServiceContainer : SimpleServiceContainer
         {
@@ -71,27 +72,27 @@ namespace CK.Context
         /// <summary>
         /// Initializes a new context that is proxified by default.
         /// </summary>
-        public static IContext CreateInstance()
+        public static IContext CreateInstance( IActivityMonitor monitor = null )
         {
-            return CreateInstance( true );
+            return CreateInstance( true, monitor );
         }
 
         /// <summary>
         /// Initializes a new context.
         /// </summary>
-        public static IContext CreateInstance( bool proxified )
+        public static IContext CreateInstance( bool proxified, IActivityMonitor monitor = null )
         {
-            return new Context( proxified ).ProxifiedContext;
+            return new Context( proxified, monitor ).ProxifiedContext;
         }
 
-        private Context( bool proxified )
+        private Context( bool proxified, IActivityMonitor monitor = null )
         {
             _serviceContainer = new ContextServiceContainer( this );
             _dic = SharedDictionary.Create( _serviceContainer );
             _configManager = ConfigurationManager.Create( _dic );
             _reqLayer = new RequirementLayer( "Context" );
 
-            _pluginRunner = new PluginRunner( _serviceContainer, _configManager.ConfigManager );
+            _pluginRunner = new PluginRunner( _serviceContainer, _configManager.ConfigManager, monitor );
             _serviceContainer.Add( RequirementLayerSerializer.Instance );
             _serviceContainer.Add( SimpleTypeFinder.Default );
 
@@ -106,10 +107,14 @@ namespace CK.Context
             }
             _pluginRunner.Initialize( _proxifiedContext );
 
+            _monitor = monitor ?? new ActivityMonitor( "Context" );
+
             //TODO remove this //WORKAROUND
             //The SharedDictionary is added here in order for the ContextEditor plugin to be able to write/read pluginsdata.
             //Remember to find another way to do this.
             ServiceContainer.Add<ISharedDictionary>( _dic );
+
+            this.ServiceContainer.Add( _monitor );
        }
 
         public IContext ProxifiedContext
