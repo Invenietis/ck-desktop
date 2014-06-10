@@ -22,7 +22,6 @@
 #endregion
 
 using CK.Core;
-using Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

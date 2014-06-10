@@ -84,7 +84,6 @@ namespace CK.Windows.App
 
             NameValueCollection properties = new NameValueCollection();
             properties["configType"] = "EXTERNAL";
-            Common.Logging.LogManager.Adapter = new Common.Logging.Log4Net.Log4NetLoggerFactoryAdapter( properties );
 
             // Registers to inject last application logs into crash logs.
             AppRecoveryManager.ApplicationCrashed += new System.EventHandler<ApplicationCrashedEventArgs>(OnApplicationCrash);

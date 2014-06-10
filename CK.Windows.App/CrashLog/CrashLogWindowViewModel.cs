@@ -35,6 +35,7 @@ using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using CK.Reflection;
 using System.Windows.Input;
+using CK.Core;
 
 namespace CK.Windows.App
 {
@@ -125,7 +126,7 @@ namespace CK.Windows.App
 
     internal class CrashLogWindowViewModel : CachedPropertyVM
     {
-        static Common.Logging.ILog _log = Common.Logging.LogManager.GetLogger<CrashLogWindowViewModel>();
+        IActivityMonitor _log;
 
         WebClient _webClient;
         int _progressPercentage;
@@ -135,9 +136,20 @@ namespace CK.Windows.App
 
         public CrashLogWindowViewModel( string crashPath, string crashUploadUrl )
         {
-            _log.Info( "Starting CrashUploader" );
+            _log = new ActivityMonitor( "CrashLogManager" );
+            _log.Info().Send( "Starting CrashUploader" );
+
+            MultiLogReader.ActivityMap activityMap;
+
+            using( MultiLogReader r = new MultiLogReader() )
+            {
+                r.Add( _filesToLoad );
+
+                activityMap = r.GetActivityMap();
+            }
+
             DirectoryInfo c = new DirectoryInfo( crashPath );
-            Files = new ObservableCollection<FileInfo>( c.GetFiles( "*.log" ) );
+            Files = new ObservableCollection<FileInfo>( c.GetFiles( "*.ckmon" ) );
             _uploadUri = new Uri( crashUploadUrl );
             _progressPercentage = -1;
 			ViewFileCommand = new SimpleCommand<FileInfo>( ViewFile, f => IsNotUploading );
@@ -225,7 +237,7 @@ namespace CK.Windows.App
                 }
                 catch( Exception ex )
                 {
-                    _log.Error( "While uploading", ex );
+                    _log.Error().Send( ex, "While uploading" );
                     OnUploadError( ex );
                 }
             }
@@ -302,7 +314,7 @@ namespace CK.Windows.App
 				}
 				catch( Exception ex )
 				{
-					_log.Error( "While deleting crash log.", ex );
+					_log.Error().Send( ex, "While deleting crash log." );
 				}
 				Files.Remove( f );
 			}

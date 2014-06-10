@@ -63,7 +63,6 @@ namespace CK.Windows
                     //CompositeDataTemplateSelector.Log.Debug( log => log( "Covariant type {0} match: {1} for type {2}.", Type.Name, success, itemType ) );
                 }
             }
-            else CompositeDataTemplateSelector.Log.Debug( log => log( "Unitialized rule (no Type nor TypeDescriptor set). Rule failed." ) );
             return success;
         }
     }

@@ -69,7 +69,7 @@ namespace CK.Windows
         /// <returns>True if the data object matches any constraint that this selector may implement.</returns>
         protected virtual bool Match( object item, DependencyObject container )
         {
-            CompositeDataTemplateSelector.Log.Debug( log => log( "TemplatedDataTemplateSelector default match for {0}.", item ) );
+            //CompositeDataTemplateSelector.Log.Debug( log => log( "TemplatedDataTemplateSelector default match for {0}.", item ) );
             return true;
         }
     }

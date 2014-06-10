@@ -30,7 +30,6 @@ using CK.Plugin;
 using CK.Storage;
 using CK.Core;
 using CK.Plugin.Hosting;
-using Common.Logging;
 using CK.Plugin.Config.Model;
 
 namespace CK.Context

@@ -26,6 +26,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System;
+using CK.Core;
 
 namespace CK.Windows
 {
@@ -37,12 +38,12 @@ namespace CK.Windows
     [ContentProperty( "Selectors" )]
     public class CompositeDataTemplateSelector : DataTemplateSelector
     {
-        static Common.Logging.ILog _log;
-        static internal Common.Logging.ILog Log
+        static IActivityMonitor _log = new ActivityMonitor( "DataTemplateSelector" );
+        static internal IActivityMonitor Log
         {
             get
             {
-                return _log ?? (_log = Common.Logging.LogManager.GetLogger<CompositeDataTemplateSelector>());
+                return _log ?? (_log = new ActivityMonitor( "DataTemplateSelector" ));
             }
         }
 
