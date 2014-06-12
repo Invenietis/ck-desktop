@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Shapes;
+using CK.Windows.Core;
 
 namespace CK.Windows
 {
@@ -108,6 +110,7 @@ namespace CK.Windows
         List<DependencyObject> hitResultsList = new List<DependencyObject>();
         void CKNCHitTest( Point p, ref int htCode )
         {
+            DependencyObject specialElement;
             var point = PointFromScreen( p );
             hitResultsList.Clear();
             VisualTreeHelper.HitTest( this, HitTestFilter, d => HitTestResult( d ), new PointHitTestParameters( point ) );
@@ -125,6 +128,23 @@ namespace CK.Windows
                         if( FlowDirection == FlowDirection.RightToLeft )
                             htCode = Win.HTBOTTOMLEFT;
                         else htCode = Win.HTBOTTOMRIGHT;
+                    }
+                }
+                else if( EnableSpecialElementHitTest( result, p, htCode, out specialElement ) ) // test if the window allow this test, by default is false
+                {
+                    //we need call GetHitTestResult 
+                    if( specialElement is ISpecialElementHitTest )
+                    {
+                        htCode = ((ISpecialElementHitTest)specialElement).GetHitTestResult( p, htCode, result );
+                    }
+                    else
+                    {
+                        // if the special element isn't a ISpecialElementHitTest, we find a ISpecialElementHitTest parent.
+                        var parent = specialElement.FindParent( d => d is ISpecialElementHitTest );
+                        if( parent != null )
+                        {
+                            htCode = ((ISpecialElementHitTest)parent).GetHitTestResult( p, htCode, result );
+                        }
                     }
                 }
             }
@@ -160,6 +180,24 @@ namespace CK.Windows
         /// <returns>True if the element must drag the window.</returns>
         protected virtual bool IsDraggableVisual( DependencyObject visualElement )
         {
+            return false;
+        }
+
+        /// <summary>
+        /// By default, the HitTest don't test if the visualElement is a <see cref="ISpecialElementHitTest"/>.
+        /// By overriding this method, we can enable the ISpecialElementHitTest feature to override the current htCode.
+        /// </summary>
+        /// <param name="visualElement">The element that matchs with hit test</param>
+        /// <param name="p">The point to test</param>
+        /// <param name="currentHTCode">The current htCode</param>
+        /// <param name="specialElement">
+        /// By default, the specialElement is the visualElement, but we can another element. The HitTest ISpecialElementHitTest feature on this.
+        /// If this element don't implement <see cref="ISpecialElementHitTest"/>, the HitTest try find a ISpecialElementHitTest parent.
+        /// </param>
+        /// <returns></returns>
+        protected virtual bool EnableSpecialElementHitTest( DependencyObject visualElement, Point p, int currentHTCode, out DependencyObject specialElement )
+        {
+            specialElement = visualElement;
             return false;
         }
 
