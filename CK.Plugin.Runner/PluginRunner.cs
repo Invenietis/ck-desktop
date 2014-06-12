@@ -44,10 +44,14 @@ namespace CK.Plugin.Hosting
         object _contextObject;
         ConfigurationSolver _cs;
 
+        IActivityMonitor _log;
+
         public event EventHandler<ApplyDoneEventArgs> ApplyDone;
 
         public PluginRunner( IServiceProvider externalServiceProvider, IConfigManager cfg, IActivityMonitor monitor = null )
         {
+            _log = monitor ?? new ActivityMonitor( "PluginRunner" );
+
             _externalServiceProvider = externalServiceProvider;
             _config = cfg;
             _configAccessors = new Dictionary<INamedVersionedUniqueId, PluginConfigAccessor>();
@@ -134,7 +138,7 @@ namespace CK.Plugin.Hosting
             if( _runningConfig.IsDirty )
             {
                 // Allocates a new PlanCalculator and reuses it as long as reapplying is needed.
-                _cs = new ConfigurationSolver( _host.IsPluginRunning );
+                _cs = new ConfigurationSolver( _host.IsPluginRunning, _log );
                 try
                 {
                     do

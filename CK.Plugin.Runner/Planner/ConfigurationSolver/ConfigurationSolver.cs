@@ -12,12 +12,14 @@ namespace CK.Plugin.Hosting
     {
         readonly Predicate<IPluginInfo> _isPluginRunning;
 
+        IActivityMonitor _log;
         Dictionary<IServiceInfo,ServiceData> _services;
         List<ServiceRootData> _serviceRoots;
         Dictionary<IPluginInfo,PluginData> _plugins;
 
-        public ConfigurationSolver( Predicate<IPluginInfo> isPluginRunning )
+        public ConfigurationSolver( Predicate<IPluginInfo> isPluginRunning, IActivityMonitor monitor = null )
         {
+            _log = monitor ?? new ActivityMonitor( "ConfigurationSolver" );
             _isPluginRunning = isPluginRunning;
             _services = new Dictionary<IServiceInfo, ServiceData>();
             _serviceRoots = new List<ServiceRootData>();
@@ -273,13 +275,13 @@ namespace CK.Plugin.Hosting
             Debug.Assert( (s.Generalization == null) == (dataGen == null) );
             if( dataGen == null )
             {
-                var dataRoot = new ServiceRootData( _services, s, serviceStatus, externalService => true );
+                var dataRoot = new ServiceRootData( _services, s, serviceStatus, externalService => true, _log );
                 _serviceRoots.Add( dataRoot );
                 data = dataRoot;
             }
             else
             {
-                data = new ServiceData( _services, s, dataGen, serviceStatus, externalService => true );
+                data = new ServiceData( _services, s, dataGen, serviceStatus, externalService => true, _log );
             }
             _services.Add( s, data );
             return data;

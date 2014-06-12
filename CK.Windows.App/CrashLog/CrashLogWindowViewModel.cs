@@ -44,12 +44,12 @@ namespace CK.Windows.App
         CachedProperty _first;
         Delayed _delay;
 
-		internal void Updated( string propertyName )
+        internal void Updated( string propertyName )
         {
             NotifyOfPropertyChange( propertyName );
         }
 
-		
+
         class Delayed : IDisposable
         {
             public CachedPropertyVM Holder;
@@ -136,26 +136,16 @@ namespace CK.Windows.App
 
         public CrashLogWindowViewModel( string crashPath, string crashUploadUrl )
         {
-            _log = new ActivityMonitor( "CrashLogManager" );
+            _log = new ActivityMonitor( "CrashLog" );
             _log.Info().Send( "Starting CrashUploader" );
-
-            MultiLogReader.ActivityMap activityMap;
-
-            using( MultiLogReader r = new MultiLogReader() )
-            {
-                r.Add( _filesToLoad );
-
-                activityMap = r.GetActivityMap();
-            }
-
             DirectoryInfo c = new DirectoryInfo( crashPath );
-            Files = new ObservableCollection<FileInfo>( c.GetFiles( "*.ckmon" ) );
+            Files = new ObservableCollection<FileInfo>( c.GetFiles( "*.log" ) );
             _uploadUri = new Uri( crashUploadUrl );
             _progressPercentage = -1;
-			ViewFileCommand = new SimpleCommand<FileInfo>( ViewFile, f => IsNotUploading );
+            ViewFileCommand = new SimpleCommand<FileInfo>( ViewFile, f => IsNotUploading );
             DeleteFileCommand = new SimpleCommand<FileInfo>( DeleteFile, f => IsNotUploading );
 
-			
+
             AddProperty( this, t => t.DisplayProgress );
             AddProperty( this, t => t.ProgressPercentage );
             AddProperty( this, t => t.CanSend );
@@ -167,10 +157,10 @@ namespace CK.Windows.App
             AddProperty( this, t => t.OkButtonText );
         }
 
-		public ICommand ViewFileCommand { get; private set; }
+        public ICommand ViewFileCommand { get; private set; }
 
         public ICommand DeleteFileCommand { get; private set; }
-		
+
         public ObservableCollection<FileInfo> Files { get; private set; }
 
         public Visibility DisplayProgress
@@ -306,18 +296,18 @@ namespace CK.Windows.App
 
         private void DoDeleteFile( FileInfo f )
         {
-			using( DelayedPropertyChanged() )
-			{
-				try
-				{
-					f.Delete();
-				}
-				catch( Exception ex )
-				{
-					_log.Error().Send( ex, "While deleting crash log." );
-				}
-				Files.Remove( f );
-			}
+            using( DelayedPropertyChanged() )
+            {
+                try
+                {
+                    f.Delete();
+                }
+                catch( Exception ex )
+                {
+                    _log.Error().Send( ex, "While deleting crash log." );
+                }
+                Files.Remove( f );
+            }
         }
 
         private void OnUploadCompleted()

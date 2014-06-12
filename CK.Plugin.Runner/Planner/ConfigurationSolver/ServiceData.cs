@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using CK.Core;
 
 namespace CK.Plugin.Hosting
 {
@@ -16,9 +17,11 @@ namespace CK.Plugin.Hosting
         ServiceData _mustExistSpecialization;
         ServiceData _directMustExistSpecialization;
         List<PluginData> _mustExistReferencer;
+        IActivityMonitor _log;
 
-        internal ServiceData( Dictionary<IServiceInfo, ServiceData> allServices, IServiceInfo s, ServiceData generalization, SolvedConfigStatus serviceStatus, Func<IServiceInfo,bool> isExternalServiceAvailable )
+        internal ServiceData( Dictionary<IServiceInfo, ServiceData> allServices, IServiceInfo s, ServiceData generalization, SolvedConfigStatus serviceStatus, Func<IServiceInfo,bool> isExternalServiceAvailable, IActivityMonitor monitor = null )
         {
+            _log = monitor ?? new ActivityMonitor( "ServiceData" );
             _allServices = allServices;
             ServiceInfo = s;
             if( (Generalization = generalization) != null )
@@ -124,6 +127,7 @@ namespace CK.Plugin.Hosting
             Debug.Assert( _disabledReason == ServiceDisabledReason.None );
             Debug.Assert( !GeneralizationRoot.Disabled, "A root is necessarily not disabled if one of its specialization is not disabled." );
             _disabledReason = r;
+            _log.Info().Send( "Disable : {0} - Reason : {1} - MinimalRequirement : {2} - AvailablePlugins : {3}", ServiceInfo.ServiceFullName, DisabledReason.ToString(), MinimalRunningRequirement, TotalAvailablePluginCount );
             ServiceData spec = FirstSpecialization;
             while( spec != null )
             {

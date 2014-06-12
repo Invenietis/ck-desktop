@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using CK.Core;
 
 namespace CK.Plugin.Hosting
 {
@@ -11,8 +12,8 @@ namespace CK.Plugin.Hosting
         ServiceData _mustExistService;
         PluginData _mustExistPluginByConfig;
 
-        internal ServiceRootData( Dictionary<IServiceInfo, ServiceData> allServices, IServiceInfo s, SolvedConfigStatus serviceStatus, Func<IServiceInfo,bool> isExternalServiceAvailable )
-            : base( allServices, s, null, serviceStatus, isExternalServiceAvailable )
+        internal ServiceRootData( Dictionary<IServiceInfo, ServiceData> allServices, IServiceInfo s, SolvedConfigStatus serviceStatus, Func<IServiceInfo,bool> isExternalServiceAvailable, IActivityMonitor monitor = null )
+            : base( allServices, s, null, serviceStatus, isExternalServiceAvailable, monitor )
         {
         }
 
