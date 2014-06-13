@@ -112,7 +112,7 @@
     <Compile Include="DataTemplateSelector\CompositeDataTemplateSelector.cs" />
     <Compile Include="DataTemplateSelector\TypeDataTemplateSelector.cs" />
     <Compile Include="SimpleCommand.cs" />
-    <Compile Include="Windows\ISpecialElementHitTest.cs" />
+    <Compile Include="Windows\IHitTestElementController.cs" />
     <Compile Include="WPFThread.cs" />
   </ItemGroup>
   <ItemGroup>

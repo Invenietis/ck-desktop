@@ -110,7 +110,7 @@ namespace CK.Windows
         List<DependencyObject> hitResultsList = new List<DependencyObject>();
         void CKNCHitTest( Point p, ref int htCode )
         {
-            DependencyObject specialElement;
+            IHitTestElementController specialElement;
             var point = PointFromScreen( p );
             hitResultsList.Clear();
             VisualTreeHelper.HitTest( this, HitTestFilter, d => HitTestResult( d ), new PointHitTestParameters( point ) );
@@ -130,21 +130,12 @@ namespace CK.Windows
                         else htCode = Win.HTBOTTOMRIGHT;
                     }
                 }
-                else if( EnableSpecialElementHitTest( result, p, htCode, out specialElement ) ) // test if the window allow this test, by default is false
+                else if( EnableHitTestElementController( result, p, htCode, out specialElement ) ) // test if the window allow this test, by default is false
                 {
                     //we need call GetHitTestResult 
-                    if( specialElement is ISpecialElementHitTest )
+                    if( specialElement != null )
                     {
-                        htCode = ((ISpecialElementHitTest)specialElement).GetHitTestResult( p, htCode, result );
-                    }
-                    else
-                    {
-                        // if the special element isn't a ISpecialElementHitTest, we find a ISpecialElementHitTest parent.
-                        var parent = specialElement.FindParent( d => d is ISpecialElementHitTest );
-                        if( parent != null )
-                        {
-                            htCode = ((ISpecialElementHitTest)parent).GetHitTestResult( p, htCode, result );
-                        }
+                        htCode = specialElement.GetHitTestResult( p, htCode, result );
                     }
                 }
             }
@@ -153,6 +144,11 @@ namespace CK.Windows
                 // Nothing was hit. Assume the extended frame.
                 htCode = Win.HTCAPTION;
             }
+        }
+
+        protected override System.Windows.Media.HitTestResult HitTestCore( System.Windows.Media.PointHitTestParameters hitTestParameters )
+        {
+            return new PointHitTestResult( this, hitTestParameters.HitPoint );
         }
 
         // Return the result of the hit test to the callback.
@@ -165,6 +161,7 @@ namespace CK.Windows
             return HitTestResultBehavior.Continue;
         }
 
+        static int i = 0;
         HitTestFilterBehavior HitTestFilter( DependencyObject d )
         {
             return ((Visibility)d.GetValue( FrameworkElement.VisibilityProperty ) != Visibility.Visible)
@@ -184,20 +181,20 @@ namespace CK.Windows
         }
 
         /// <summary>
-        /// By default, the HitTest don't test if the visualElement is a <see cref="ISpecialElementHitTest"/>.
-        /// By overriding this method, we can enable the ISpecialElementHitTest feature to override the current htCode.
+        /// By default, the HitTest don't test if the visualElement is a <see cref="IHitTestElementController"/>.
+        /// By overriding this method, we can enable the IHitTestElementController feature to override the current htCode.
         /// </summary>
         /// <param name="visualElement">The element that matchs with hit test</param>
         /// <param name="p">The point to test</param>
         /// <param name="currentHTCode">The current htCode</param>
         /// <param name="specialElement">
-        /// By default, the specialElement is the visualElement, but we can another element. The HitTest ISpecialElementHitTest feature on this.
-        /// If this element don't implement <see cref="ISpecialElementHitTest"/>, the HitTest try find a ISpecialElementHitTest parent.
+        /// By default, the controller is null, but we can set another element. The HitTest IHitTestElementController feature on this.
+        /// If this element don't implement <see cref="IHitTestElementController"/>, the HitTest try find a IHitTestElementController parent.
         /// </param>
         /// <returns></returns>
-        protected virtual bool EnableSpecialElementHitTest( DependencyObject visualElement, Point p, int currentHTCode, out DependencyObject specialElement )
+        protected virtual bool EnableHitTestElementController( DependencyObject visualElement, Point p, int currentHTCode, out IHitTestElementController specialElement )
         {
-            specialElement = visualElement;
+            specialElement = null;
             return false;
         }
 

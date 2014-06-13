@@ -6,11 +6,11 @@ using System.Windows;
 
 namespace CK.Windows.Core
 {
-    public interface ISpecialElementHitTest
+    public interface IHitTestElementController
     {
         /// <summary>
         /// Allows to change the current HTCode.
-        /// This method is called when the window where is the element returns true with <see cref="CKWindow.EnableSpecialElementHitTest"/>
+        /// This method is called when the window where is the element returns true with <see cref="CKWindow.EnableHitTestElementController"/>
         /// </summary>
         /// <param name="p">The point used for HitTest</param>
         /// <param name="HTCode">The current HTCode</param>
