@@ -1970,7 +1970,10 @@ namespace CK.Windows.Interop
             [CK.Interop.DllImport]
             bool GetWindowRect( IntPtr hwnd, out Rect r );
 
-
+            [CK.Interop.DllImport( SetLastError = true )]
+            bool RegisterHotKey( IntPtr hWnd, int id, uint fsModifiers, uint vk );
+            [CK.Interop.DllImport( SetLastError = true )]
+            bool UnregisterHotKey( IntPtr hWnd, int id );
         }
 
     }

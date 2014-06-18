@@ -74,7 +74,7 @@
     </ProjectReference>
     <ProjectReference Include="..\ServiceC.Model\ServiceC.Model.csproj">
       <Project>{7276329A-EAB1-4B95-9129-F155C2B5B3DB}</Project>
-      <Name>ServiceC.Model</Name>
+      <Name>ServiceC.Model %28_Tests\Plugin.Runner.Tests.Plugins\ServiceC.Model%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

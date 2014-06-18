@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Tests", "_Tests", "{A87208F3-D73C-4AD4-9FF5-0314968EDD74}"
 	ProjectSection(SolutionItems) = preProject
 		CK-Desktop.Tests.nunit = CK-Desktop.Tests.nunit
@@ -122,13 +120,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CK.Windows", "CK.Windows", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Windows.Core.Tests", "Tests\CK.Windows.Core.Tests\CK.Windows.Core.Tests.csproj", "{2533A7E9-BF25-454D-8604-2829C78EE29C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{064441FE-2707-424E-A7B4-2862A87568E0}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\nuget.exe = .nuget\nuget.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMaster", "Tests\TestMaster\TestMaster.csproj", "{E0DF60D3-74C3-48C8-80D7-B6DEE01C6FDA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Windows.Tests", "CK.Windows.Tests\CK.Windows.Tests.csproj", "{C2AA97C1-7566-437E-92B3-60749F7C8FE0}"
@@ -137,6 +128,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shared Items", "_Shared It
 	ProjectSection(SolutionItems) = preProject
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 		SharedKey.snk = SharedKey.snk
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A7989C56-174F-4107-9E10-1F062E082652}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Global

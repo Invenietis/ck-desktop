@@ -7,6 +7,9 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Forms;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace CK.Windows
 {
@@ -29,6 +32,12 @@ namespace CK.Windows
 
         WindowInteropHelper _interopHelper;
 
+        IntPtr hHook;
+        Win.HookProc lpfn;
+
+        [DllImport( "kernel32.dll", CharSet = CharSet.Auto, SetLastError = true )]
+        internal static extern IntPtr GetModuleHandle( string lpModuleName );
+
         /// <summary>
         /// Defautl constructor
         /// </summary>
@@ -36,6 +45,23 @@ namespace CK.Windows
             : base()
         {
             _interopHelper = new WindowInteropHelper( this );
+            CreateHook();
+        }
+
+        private int KeyboardHookProc( int code, IntPtr wParam, IntPtr lParam )
+        {
+            if( code >= 0 )
+                Console.WriteLine( (Keys)(wParam.ToInt32()) );
+            return Win.Functions.CallNextHookEx( hHook, code, wParam, lParam );
+        }
+
+        private void CreateHook()
+        {
+            lpfn = new Win.HookProc( KeyboardHookProc );
+            using( ProcessModule curModule = Process.GetCurrentProcess().MainModule )
+                hHook = Win.Functions.SetWindowsHookEx( Win.HookType.WH_KEYBOARD_LL, lpfn, GetModuleHandle( curModule.ModuleName ), 0 );
+            if( hHook == IntPtr.Zero )
+                throw new Exception( "could not start monitoring mouse events" );
         }
 
         public new bool ShowInTaskbar
@@ -122,9 +148,6 @@ namespace CK.Windows
                 {
                     if( TreeHelper.FindParentInVisualTree( result, d => d is System.Windows.Controls.Primitives.ResizeGrip ) != null )
                     {
-                        if( FlowDirection == FlowDirection.RightToLeft )
-                            htCode = Win.HTBOTTOMLEFT;
-                        else htCode = Win.HTBOTTOMRIGHT;
                     }
                 }
             }
