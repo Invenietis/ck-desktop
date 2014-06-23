@@ -199,6 +199,9 @@ namespace CK.Windows.App
         /// </summary>
         public string Description { get; private set; }
 
+        public object Content { get; set; }
+        public DataTemplate ContentTemplate { get; set; }
+
         /// <summary>
         /// Constructor of the ViewModel used by the WPF <see cref="CustomMsgBox"/>.
         /// </summary>
