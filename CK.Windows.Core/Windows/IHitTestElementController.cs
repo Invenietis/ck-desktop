@@ -9,12 +9,11 @@ namespace CK.Windows.Core
     public interface IHitTestElementController
     {
         /// <summary>
-        /// Allows to change the current HTCode.
-        /// This method is called when the window where is the element returns true with <see cref="CKWindow.EnableHitTestElementController"/>
+        /// Allows changing the current HTCode.
         /// </summary>
         /// <param name="p">The point used for HitTest</param>
         /// <param name="HTCode">The current HTCode</param>
-        /// <param name="hitObject">The current element hit by the current point</param>
+        /// <param name="hitObject">The element currently hit</param>
         /// <returns></returns>
         int GetHitTestResult( Point p, int HTCode, DependencyObject hitObject );
     }
