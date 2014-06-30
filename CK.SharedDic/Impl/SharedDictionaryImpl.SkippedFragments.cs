@@ -76,34 +76,49 @@ namespace CK.SharedDic
         {
             foreach( KeyValuePair<object,List<SkippedFragment>> s in source )
             {
-                List<SkippedFragment> mine = FindOrCreateFragments( s.Key );
-                if( mine != null )
+                ImportFragments( mergeMode, s.Key, s.Value, s.Key );
+            }
+        }
+
+        internal void ImportFragments( MergeMode mergeMode, object source, object target )
+        {
+            ImportFragments( mergeMode, source, FindOrCreateFragments( source ), target );
+        }
+
+        private void ImportFragments( MergeMode mergeMode, object source, List<SkippedFragment> sourceFragments, object target )
+        {
+            if( sourceFragments.Count > 0 )
+            {
+                List<SkippedFragment> targetFragments = FindOrCreateFragments( target );
+                if( targetFragments != null )
                 {
                     if( mergeMode == MergeMode.None )
                     {
-                        mine.Clear();
-                        foreach( SkippedFragment sF in s.Value )
+                        targetFragments.Clear();
+                        foreach( SkippedFragment sF in sourceFragments )
                         {
                             // If the imported fragment is for a live plugin,
                             // we must restore it.
                             if( !sF.TryRestore( this, mergeMode ) )
                             {
-                                mine.Add( sF.Clone() );
+                                SkippedFragment clone = new SkippedFragment( target, sF.PluginId, sF.Bookmark );
+                                targetFragments.Add( clone );
                             }
                         }
                     }
                     else
                     {
-                        foreach( SkippedFragment sF in s.Value )
+                        foreach( SkippedFragment sF in sourceFragments )
                         {
-                            int iMyFragment = IndexOf( mine, sF.PluginId );
+                            int iMyFragment = IndexOf( targetFragments, sF.PluginId );
                             if( iMyFragment < 0 )
                             {
                                 // We did not find the fragment here. It may be because the
                                 // plugin is alive: if this is the case, we must restore the fragment.
                                 if( !sF.TryRestore( this, mergeMode ) )
                                 {
-                                    mine.Add( sF.Clone() );
+                                    SkippedFragment clone = new SkippedFragment( target, sF.PluginId, sF.Bookmark );
+                                    targetFragments.Add( clone );
                                 }
                             }
                             else
@@ -111,15 +126,16 @@ namespace CK.SharedDic
                                 if( mergeMode == MergeMode.ErrorOnDuplicate ) throw new CKException( "Duplicate fragment." );
                                 if( mergeMode == MergeMode.ReplaceExisting )
                                 {
-                                    mine.RemoveAt( iMyFragment );
-                                    mine.Add( sF.Clone() );
+                                    targetFragments.RemoveAt( iMyFragment );
+                                    SkippedFragment clone = new SkippedFragment( target, sF.PluginId, sF.Bookmark );
+                                    targetFragments.Add( clone );
                                 }
                             }
                         }
                     }
 
                     // remove the skippedFragment if the list is empty
-                    if( mine.Count == 0 ) _fragments.Remove( s.Key );
+                    if( targetFragments.Count == 0 ) _fragments.Remove( target );
                 }
             }
         }

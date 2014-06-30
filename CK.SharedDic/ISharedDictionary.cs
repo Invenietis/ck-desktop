@@ -40,6 +40,14 @@ namespace CK.Plugin.Config
         void Import( ISharedDictionary source, MergeMode mergeMode );
 
         /// <summary>
+        /// Copies the PluginsData AND the SkippedFragments of the source onto the target.
+        /// </summary>
+        /// <param name="source">The object holding the data to be copied</param>
+        /// <param name="target">The object that is to hold the copied data</param>
+        /// <param name="mergeMode">The merge mode</param>
+        void CopyPluginsData( object source, object target, MergeMode mergeMode = MergeMode.ReplaceExisting );
+
+        /// <summary>
         /// Registers a reader. Enables reading the plugin datas of the objects that the <see cref="IStructuredReader"/> reads.
         /// </summary>
         /// <param name="reader">the reader</param>

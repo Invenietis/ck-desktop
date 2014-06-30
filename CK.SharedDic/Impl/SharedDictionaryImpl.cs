@@ -103,10 +103,10 @@ namespace CK.SharedDic
                     if( Changed != null )
                     {
                         bool allPluginsConcerned = pluginsTouched.Count == _byPlugin.Count;
-                        
+
                         ChangeStatus changeStatus;
-                        if ( definitive ) changeStatus = ChangeStatus.ContainerDestroy;
-                        else changeStatus= ChangeStatus.ContainerClear;
+                        if( definitive ) changeStatus = ChangeStatus.ContainerDestroy;
+                        else changeStatus = ChangeStatus.ContainerClear;
 
                         Changed( this, new ConfigChangedEventArgs( o, new CKReadOnlyCollectionOnISet<INamedVersionedUniqueId>( pluginsTouched ), allPluginsConcerned, changeStatus ) );
                     }
@@ -123,7 +123,7 @@ namespace CK.SharedDic
             if( _byPlugin.TryGetValue( pluginIdentifier, out cp ) ) return cp.PluginId;
             return null;
         }
-        
+
         public bool Contains( INamedVersionedUniqueId p )
         {
             if( p == null ) throw new ArgumentNullException( "p" );
@@ -176,7 +176,7 @@ namespace CK.SharedDic
                         bool allObjectsConcerned = objectsTouched.Count == _byObject.Count;
 
                         ChangeStatus changeStatus;
-                        if ( definitive ) changeStatus = ChangeStatus.ContainerDestroy;
+                        if( definitive ) changeStatus = ChangeStatus.ContainerDestroy;
                         else changeStatus = ChangeStatus.ContainerClear;
 
                         Changed( this, new ConfigChangedEventArgs( new CKReadOnlyCollectionOnISet<object>( objectsTouched ), allObjectsConcerned, p, changeStatus ) );
@@ -230,19 +230,29 @@ namespace CK.SharedDic
             }
         }
 
+        public void CopyPluginsData( object source, object target, MergeMode mergeMode = MergeMode.ReplaceExisting )
+        {
+            foreach( SharedDictionaryEntry s in _byObject[source] )
+            {
+                ImportValue( new SharedDictionaryEntry( target, s.PluginId, s.Key, s.Value ), mergeMode );
+            }
+
+            ImportFragments( mergeMode, source, target );
+        }
+
         public void ClearAll()
         {
             var previousByObject = _byObject;
             var previousByPlugin = _byPlugin;
 
-            for( int i = _values.Keys.Count - 1; i >= 0; i-- ) _values.Remove( _values.ElementAt( i ).Key );                         
-            foreach ( var key in _byObject.Keys ) _byObject[key].Clear();
-            foreach ( var key in _byPlugin.Keys ) _byPlugin[key].Clear();            
-            foreach ( var key in _finalDictionary.Keys ) _finalDictionary[key].Clear();
-            
+            for( int i = _values.Keys.Count - 1; i >= 0; i-- ) _values.Remove( _values.ElementAt( i ).Key );
+            foreach( var key in _byObject.Keys ) _byObject[key].Clear();
+            foreach( var key in _byPlugin.Keys ) _byPlugin[key].Clear();
+            foreach( var key in _finalDictionary.Keys ) _finalDictionary[key].Clear();
+
             _fragments.Clear();
 
-            if ( Changed != null )
+            if( Changed != null )
             {
                 var pluginsWrapper = new CKReadOnlyCollectionTypeConverter<INamedVersionedUniqueId, Guid>( previousByPlugin.Keys, g => previousByPlugin[g].PluginId, uid => uid.UniqueId );
                 Changed( this, new ConfigChangedEventArgs( new CKReadOnlyCollectionOnICollection<object>( previousByObject.Keys ), true, pluginsWrapper, true, ChangeStatus.ContainerClear ) );
@@ -308,7 +318,7 @@ namespace CK.SharedDic
         {
             PluginConfigByPlugin cp = new PluginConfigByPlugin( p );
             _byPlugin.Add( p.UniqueId, cp );
-            var entriesToRemove = ClearFragments( _fragments.ToReadOnlyCollection(),  f =>
+            var entriesToRemove = ClearFragments( _fragments.ToReadOnlyCollection(), f =>
             {
                 if( f.PluginId == p.UniqueId )
                 {
@@ -368,9 +378,9 @@ namespace CK.SharedDic
                 SharedDictionaryEntry result;
                 return _values.TryGetValue( e, out result ) ? result.Value : null;
             }
-            set 
-            { 
-                Set( o, p, k, value ); 
+            set
+            {
+                Set( o, p, k, value );
             }
         }
 
@@ -420,7 +430,7 @@ namespace CK.SharedDic
             if( p == null ) throw new ArgumentNullException( "p" );
             if( k == null ) throw new ArgumentNullException( "k" );
             if( converter == null ) throw new ArgumentNullException( "converter" );
-            
+
             SharedDictionaryEntry e = new SharedDictionaryEntry( o, p, k );
             SharedDictionaryEntry result;
             if( _values.TryGetValue( e, out result ) )
@@ -438,7 +448,7 @@ namespace CK.SharedDic
 
         internal void ImportValue( SharedDictionaryEntry entryWithValue, MergeMode mergeMode )
         {
-            if( mergeMode == MergeMode.None || mergeMode == MergeMode.ReplaceExisting ) this[entryWithValue.Obj,entryWithValue.PluginId,entryWithValue.Key] = entryWithValue.Value;
+            if( mergeMode == MergeMode.None || mergeMode == MergeMode.ReplaceExisting ) this[entryWithValue.Obj, entryWithValue.PluginId, entryWithValue.Key] = entryWithValue.Value;
             else if( mergeMode == MergeMode.ErrorOnDuplicate ) Add( entryWithValue );
             else if( mergeMode == MergeMode.PreserveExisting )
             {
@@ -467,7 +477,7 @@ namespace CK.SharedDic
             if( o == null ) throw new ArgumentNullException( "o" );
             if( p == null ) throw new ArgumentNullException( "p" );
             if( k == null ) throw new ArgumentNullException( "k" );
-            
+
             SharedDictionaryEntry e = new SharedDictionaryEntry( o, p, k );
             SharedDictionaryEntry result;
             if( _values.TryGetValue( e, out result ) )
@@ -485,7 +495,7 @@ namespace CK.SharedDic
             if( o == null ) throw new ArgumentNullException( "o" );
             if( p == null ) throw new ArgumentNullException( "p" );
             if( k == null ) throw new ArgumentNullException( "k" );
-            
+
             if( converter == null ) throw new ArgumentNullException( "converter" );
             SharedDictionaryEntry e = new SharedDictionaryEntry( o, p, k );
             SharedDictionaryEntry result;
@@ -530,7 +540,7 @@ namespace CK.SharedDic
         {
             if( o == null ) throw new ArgumentNullException( "o" );
             if( p == null ) throw new ArgumentNullException( "p" );
-            
+
             FinalDictionary d;
             if( !_finalDictionary.TryGetValue( new SharedDictionaryEntry( o, p, null ), out d ) || d.Count == 0 ) return;
             PluginConfigByObject co = _byObject[o];

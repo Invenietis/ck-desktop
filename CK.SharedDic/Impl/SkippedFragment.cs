@@ -49,20 +49,26 @@ namespace CK.SharedDic
 		/// </summary>
 		public IStructuredReaderBookmark Bookmark;
 
-        internal SkippedFragment( object o, Guid p, Version version, IStructuredReaderBookmark bookmark )
-		{
-			Obj = o;
-			PluginId = p;
-            // It is currently useless to store the Version (since the bookmark is the outer xml element, it contains the version attribute).
-            // If needed, the code is ready.
-            // Version = version;
-			Bookmark = bookmark;
-		}
-
-        internal SkippedFragment Clone()
+        internal SkippedFragment( object o, Guid p, IStructuredReaderBookmark bookmark )
+            : this( o, p, null, bookmark )
         {
-            return (SkippedFragment)MemberwiseClone();
+           
         }
+
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="p"></param>
+        /// <param name="version">It is currently useless to store the Version (since the bookmark is the outer xml element, it contains the version attribute). If needed, the code is ready.</param>
+        /// <param name="bookmark"></param>
+        internal SkippedFragment( object o, Guid p, Version version, IStructuredReaderBookmark bookmark )
+        {
+            Obj = o;
+            PluginId = p;
+            // Version = version;
+            Bookmark = bookmark;
+		}
 
         internal void Restore( SharedDictionaryImpl dic, MergeMode mergeMode )
         {

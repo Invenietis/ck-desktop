@@ -102,6 +102,51 @@ namespace SharedDic
             INamedVersionedUniqueId uid1 = SharedDicTestContext.Plugins[0];
             INamedVersionedUniqueId uid2 = SharedDicTestContext.Plugins[1];
 
+            object dataHolder = new object();
+
+            string path = TestBase.GetTestFilePath( "SharedDic", "ImportSkippedFragments" );
+            #region Creates actual fragments
+
+            // Creates a dummy dictionnary and writes it.
+            SharedDictionaryImpl dic = CreateDummySharedDic( dataHolder, uid1, uid2 );
+            SharedDicTestContext.Write( "Test", path, dic, dataHolder );
+
+            // Creates a second dictionnary to load previous data (with skippedFragments)           
+            IList<ReadElementObjectInfo> errors;
+            SharedDictionaryImpl dicFrag = (SharedDictionaryImpl)SharedDicTestContext.Read( "Test", path, dataHolder, d => d.Ensure( uid1 ), out errors );
+            Assert.IsTrue( new FileInfo( path ).Length > 0, "File must exist and be not empty." );
+
+            Assert.That( errors.Count, Is.EqualTo( 0 ) );
+            Assert.That( dicFrag.GetSkippedFragments( dataHolder ).Count == 1 );
+            Assert.That( dicFrag[dataHolder, uid2, "key1"], Is.Null );
+            Assert.That( dicFrag[dataHolder, uid2, "key2"], Is.Null );
+
+            #endregion
+
+            ISharedDictionary dic2 = SharedDictionary.Create( SharedDicTestContext.ServiceProvider );
+            dic2[dataHolder, uid1, "key1"] = "value1";
+            dic2[dataHolder, uid1, "key2"] = "value2";
+            Assert.That( dic2[dataHolder, uid2, "key1"], Is.Null );
+            Assert.That( dic2[dataHolder, uid2, "key2"], Is.Null );
+
+            SharedDictionaryImpl implDic2 = (SharedDictionaryImpl)dic2;
+            implDic2.ImportFragments( dicFrag.Fragments, MergeMode.None );
+            Assert.That( implDic2.GetSkippedFragments( dataHolder ) != null );
+
+            dic2.Ensure( uid2 );
+
+            Assert.That( dic2[dataHolder, uid2, "key1"], Is.EqualTo( "value1" ) );
+            Assert.That( dic2[dataHolder, uid2, "key2"], Is.EqualTo( "value2" ) );
+        }
+
+        [Test]
+        public void ImportSkippedFragmentsFromOneObjectToAnother()
+        {
+            INamedVersionedUniqueId uid1 = SharedDicTestContext.Plugins[0];
+            INamedVersionedUniqueId uid2 = SharedDicTestContext.Plugins[1];
+
+            object target = new object();
+
             string path = TestBase.GetTestFilePath( "SharedDic", "ImportSkippedFragments" );
             #region Creates actual fragments
 
@@ -121,20 +166,15 @@ namespace SharedDic
 
             #endregion
 
-            ISharedDictionary dic2 = SharedDictionary.Create( SharedDicTestContext.ServiceProvider );
-            dic2[this, uid1, "key1"] = "value1";
-            dic2[this, uid1, "key2"] = "value2";
-            Assert.That( dic2[this, uid2, "key1"], Is.Null );
-            Assert.That( dic2[this, uid2, "key2"], Is.Null );
+            dicFrag.Add( target, uid1, "Test", "Test" );
 
-            SharedDictionaryImpl implDic2 = (SharedDictionaryImpl)dic2;
-            implDic2.ImportFragments( dicFrag.Fragments, MergeMode.None );
-            Assert.That( implDic2.GetSkippedFragments( this ) != null );
+            dicFrag.ImportFragments( MergeMode.None, this, target );
+            Assert.That( dicFrag.GetSkippedFragments( target ) != null );
 
-            dic2.Ensure( uid2 );
+            dicFrag.Ensure( uid2 );
 
-            Assert.That( dic2[this, uid2, "key1"], Is.EqualTo( "value1" ) );
-            Assert.That( dic2[this, uid2, "key2"], Is.EqualTo( "value2" ) );
+            Assert.That( dicFrag[target, uid2, "key1"], Is.EqualTo( "value1" ) );
+            Assert.That( dicFrag[target, uid2, "key2"], Is.EqualTo( "value2" ) );
         }
 
         [Test]
