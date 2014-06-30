@@ -102,6 +102,7 @@
     <Compile Include="CrashLog\View\CrashLogWindow.xaml.cs">
       <DependentUpon>CrashLogWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MsgBox\NotNullConverter.cs" />
     <Compile Include="MsgBox\BitmapToIconConverter.cs" />
     <Compile Include="MsgBox\CustomMsgBox.xaml.cs">
       <DependentUpon>CustomMsgBox.xaml</DependentUpon>

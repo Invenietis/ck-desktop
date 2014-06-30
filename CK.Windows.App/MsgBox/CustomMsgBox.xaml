@@ -16,6 +16,7 @@
     <Window.Resources>
         <ckcore:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConv" />
         <local:IconToBitmapConverter x:Key="IconToBitmapConverter" />
+        <local:NotNullConverter x:Key="NotNullConverter" />
     </Window.Resources>
     <StackPanel Background="#ececec">
         <StackPanel Background="White">
@@ -31,23 +32,40 @@
                 <Image Grid.Column="0" Width="50" Height="50" Source="{Binding Icon, Converter={StaticResource IconToBitmapConverter}}" Stretch="None" Margin="10" />
                 <TextBlock Grid.Column="1" Margin="0 20 20 15" TextWrapping="Wrap" Text="{Binding Description}" MaxWidth="{Binding ActualWidth, ElementName=page}"/>
                 <CheckBox Grid.Column="1" Grid.Row="1" Margin="0 0 10 10" Visibility="{Binding ShowCheckBox, Converter={StaticResource BooleanToVisibilityConv}}" IsChecked="{Binding IsCheckboxChecked}" Content="{Binding CheckBoxLabel}"></CheckBox>
+
             </Grid>
 
+            <!-- ContentControl that enables providing a Content togzther with its template -->
+            <!-- Hidden if Content is null -->
+            <ContentControl Focusable="False" ContentTemplate="{Binding ContentTemplate}" Content="{Binding}" Margin="10 5">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Content, Converter={StaticResource NotNullConverter}}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
         </StackPanel>
-        <StackPanel Margin="10">
-            <ItemsControl Background="Transparent" ItemsSource="{Binding Buttons}" BorderBrush="Transparent" Grid.IsSharedSizeScope="True"  x:Name="buttongrid">
+
+        <!--Footer : Buttons-->
+        <StackPanel Focusable="False" Margin="10">
+            <ItemsControl Focusable="False" Background="Transparent" ItemsSource="{Binding Buttons}" BorderBrush="Transparent" Grid.IsSharedSizeScope="True"  x:Name="buttongrid">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel HorizontalAlignment="Right" Orientation="Horizontal"/>
+                        <WrapPanel Focusable="False" HorizontalAlignment="Right" Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid HorizontalAlignment="Right">
+                        <Grid Focusable="False" HorizontalAlignment="Right">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition SharedSizeGroup="ButtonGroup"/>
                             </Grid.ColumnDefinitions>
-                            <Button Content="{Binding Label}" Command="{Binding ButtonClickCommand}" Padding="5" Margin="5 0 0 0" MinWidth="50" />
+                            <Button IsTabStop="True" Content="{Binding Label}" Command="{Binding ButtonClickCommand}" Padding="5" Margin="5 0 0 0" MinWidth="50" />
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
