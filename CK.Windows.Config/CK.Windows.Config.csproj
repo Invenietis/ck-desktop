@@ -118,7 +118,7 @@
     <ProjectReference Include="..\CK.Windows.Core\CK.Windows.Core.csproj">
       <Project>{9F3F9332-6CAD-413D-BF7C-580228D62FCD}</Project>
       <Name>CK.Windows.Core</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

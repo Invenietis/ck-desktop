@@ -105,7 +105,7 @@
     <ProjectReference Include="..\CK.Plugin.Config.Model\CK.Plugin.Config.Model.csproj">
       <Project>{96D1DD2E-9E76-40EA-A943-1E85B44AB862}</Project>
       <Name>CK.Plugin.Config.Model</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

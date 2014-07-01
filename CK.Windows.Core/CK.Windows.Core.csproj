@@ -128,7 +128,7 @@
     <ProjectReference Include="..\CK.Windows.Interop\CK.Windows.Interop.csproj">
       <Project>{FC440A2D-A82E-4587-88C2-5484BD9AC2D2}</Project>
       <Name>CK.Windows.Interop</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
