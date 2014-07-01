@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Shapes;
+using CK.Windows.Core;
 
 namespace CK.Windows
 {
@@ -15,18 +17,6 @@ namespace CK.Windows
     /// </summary>
     public class CKWindow : Window
     {
-        /// <summary>
-        /// Gets the Win32 window handle of this <see cref="Window"/> object.
-        /// Available once <see cref="Window.SourceInitialized"/> has been raised.
-        /// </summary>
-        public IntPtr Hwnd { get; private set; }
-
-        /// <summary>
-        /// Gets whether this window has the Aero "glossy effect".
-        /// Can be false if the desktop compoisiton has been disabled.
-        /// </summary>
-        //protected bool IsFrameExtended { get; set; }
-
         WindowInteropHelper _interopHelper;
 
         /// <summary>
@@ -37,6 +27,12 @@ namespace CK.Windows
         {
             _interopHelper = new WindowInteropHelper( this );
         }
+
+        /// <summary>
+        /// Gets the Win32 window handle of this <see cref="Window"/> object.
+        /// Available once <see cref="Window.SourceInitialized"/> has been raised.
+        /// </summary>
+        public IntPtr Hwnd { get; private set; }
 
         public new bool ShowInTaskbar
         {
@@ -49,7 +45,7 @@ namespace CK.Windows
                     SetToolWindowFlag( value );
                 }
             }
-        }   
+        }
 
         internal void SetToolWindowFlag( bool set )
         {
@@ -70,7 +66,7 @@ namespace CK.Windows
         }
 
         /// <summary>
-        /// Virtual method, can be overriden in a derived class to handle the call th Hide on the CKWindow.
+        /// Virtual method, can be overriden in a derived class to handle the call to Hide on this CKWindow.
         /// </summary>
         public new virtual void Hide()
         {
@@ -81,7 +77,7 @@ namespace CK.Windows
         {
             switch( msg )
             {
-                case Win.WM_NCHITTEST:
+                case Win.WM_NCHITTEST: //Handling the HitTest in order to move & resize the window without having any NC Area
                     {
                         int hit = Win.Functions.DefWindowProc( Hwnd, msg, wParam, lParam ).ToInt32();
                         if( hit == Win.HTCLIENT )
@@ -90,11 +86,6 @@ namespace CK.Windows
                         }
                         handled = true;
                         return new IntPtr( hit );
-                    }
-                case Win.WM_DWMCOMPOSITIONCHANGED:
-                    {
-                        //IsFrameExtended = TryExtendFrame();
-                        return IntPtr.Zero;
                     }
             }
             return IntPtr.Zero;
@@ -108,13 +99,14 @@ namespace CK.Windows
         List<DependencyObject> hitResultsList = new List<DependencyObject>();
         void CKNCHitTest( Point p, ref int htCode )
         {
+            IHitTestElementController controllingElement;
             var point = PointFromScreen( p );
             hitResultsList.Clear();
             VisualTreeHelper.HitTest( this, HitTestFilter, d => HitTestResult( d ), new PointHitTestParameters( point ) );
             DependencyObject result = hitResultsList.FirstOrDefault();
             if( result != null )
             {
-                if( IsDraggableVisual( result ) )
+                if( IsDraggableVisual( result ) ) //Checking if the currently hit element is a draggable one.
                 {
                     htCode = Win.HTCAPTION;
                 }
@@ -127,12 +119,24 @@ namespace CK.Windows
                         else htCode = Win.HTBOTTOMRIGHT;
                     }
                 }
+                else if( EnableHitTestElementController( result, p, htCode, out controllingElement ) ) //Checking whether this window is configured to handle HitTests.
+                {
+                    if( controllingElement != null )
+                    {
+                        htCode = controllingElement.GetHitTestResult( p, htCode, result );
+                    }
+                }
             }
             else
             {
                 // Nothing was hit. Assume the extended frame.
                 htCode = Win.HTCAPTION;
             }
+        }
+
+        protected override System.Windows.Media.HitTestResult HitTestCore( System.Windows.Media.PointHitTestParameters hitTestParameters )
+        {
+            return new PointHitTestResult( this, hitTestParameters.HitPoint );
         }
 
         // Return the result of the hit test to the callback.
@@ -145,6 +149,7 @@ namespace CK.Windows
             return HitTestResultBehavior.Continue;
         }
 
+        static int i = 0;
         HitTestFilterBehavior HitTestFilter( DependencyObject d )
         {
             return ((Visibility)d.GetValue( FrameworkElement.VisibilityProperty ) != Visibility.Visible)
@@ -163,6 +168,23 @@ namespace CK.Windows
             return false;
         }
 
+        /// <summary>
+        /// By default, the HitTest doesn't test if the hit visualElement implements <see cref="IHitTestElementController"/>.
+        /// By overriding this method, we can enable the IHitTestElementController feature to override the current htCode.
+        /// </summary>
+        /// <param name="visualElement">The element that is hit by the HitTest</param>
+        /// <param name="p">The point to test</param>
+        /// <param name="currentHTCode">The current htCode</param>
+        /// <param name="specialElement">
+        /// Returns the <see cref="IHitTestElementController"/> element on which GetHitTestResult should be called.
+        /// </param>
+        /// <returns></returns>
+        protected virtual bool EnableHitTestElementController( DependencyObject visualElement, Point p, int currentHTCode, out IHitTestElementController specialElement )
+        {
+            specialElement = null;
+            return false;
+        }
+
         #region OnXXX
 
         /// <summary>
@@ -176,8 +198,6 @@ namespace CK.Windows
             HwndSource hSource = HwndSource.FromHwnd( Hwnd );
             hSource.AddHook( WndProcWinDefault );
 
-            //IsFrameExtended = TryExtendFrame();
-
             base.OnSourceInitialized( e );
 
             if( !ShowInTaskbar )
@@ -185,40 +205,6 @@ namespace CK.Windows
                 SetToolWindowFlag( true );
             }
         }
-
-        /// <summary>
-        /// Adds the Aero "glossy-effect" to a WPF Window.
-        /// </summary>
-        /// <returns>whether or not the effect has been applicated. returns false if the desktop composition is </returns>
-        //public bool TryExtendFrame()
-        //{
-        //    bool isExtendedFrame = false;
-        //    if( CK.Core.OSVersionInfo.OSLevel > CK.Core.OSVersionInfo.SimpleOSLevel.WindowsXP )
-        //    {
-        //        isExtendedFrame = Dwm.Functions.IsCompositionEnabled();
-
-        //        try
-        //        {
-        //            if( isExtendedFrame )
-        //            {
-        //                // Negative margins have special meaning to DwmExtendFrameIntoClientArea.
-        //                // Negative margins create the "sheet of glass" effect, where the client 
-        //                // area is rendered as a solid surface without a window border.
-        //                Win.Margins m = new CK.Windows.Interop.Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
-        //                Dwm.Functions.ExtendFrameIntoClientArea( Hwnd, ref m );
-
-        //                Background = Brushes.Transparent;
-        //                HwndSource.FromHwnd( Hwnd ).CompositionTarget.BackgroundColor = Colors.Transparent;
-        //            }
-        //        }
-        //        catch
-        //        {
-        //            isExtendedFrame = false;
-        //            Background = new SolidColorBrush( Colors.WhiteSmoke );
-        //        }
-        //    }
-        //    return isExtendedFrame;
-        //}
 
         #endregion
     }

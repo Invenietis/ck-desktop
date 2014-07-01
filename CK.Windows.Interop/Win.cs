@@ -139,6 +139,10 @@ namespace CK.Windows.Interop
         /// </summary>
         public const int HTNOWHERE = 0;
         /// <summary>
+        /// Return code for WM_NCHITTEST: In the left border of a resizable window (the user can click the mouse to resize the window horizontally).
+        /// </summary>
+        public const int HTLEFT = 10;
+        /// <summary>
         /// Return code for WM_NCHITTEST: In the right border of a resizable window (the user can click the mouse to resize the window horizontally).
         /// </summary>
         public const int HTRIGHT = 11;
