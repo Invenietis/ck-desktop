@@ -25,6 +25,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("CK.Context")]
-[assembly: ComVisible(false)]
-[assembly: Guid("184a84ee-bd35-43d7-8243-dd373c559c9c")]
+[assembly: AssemblyTitle( "CK.Context" )]
+[assembly: AssemblyDescription( "" )]
+[assembly: ComVisible( false )]
+[assembly: Guid( "184a84ee-bd35-43d7-8243-dd373c559c9c" )]

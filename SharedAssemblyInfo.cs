@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (SharedAssemblyInfo.cs) is part of CiviKey. 
 *  
@@ -25,8 +25,8 @@ using System;
 using System.Reflection;
 
 [assembly: AssemblyCompany( "Invenietis" )]
-[assembly: AssemblyProduct( "Civikey" )]
-[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2013" )]
+[assembly: AssemblyProduct( "CK-Desktop" )]
+[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2014" )]
 [assembly: AssemblyTrademark( "" )]
 
 [assembly: AssemblyVersion( "2.10.1" )]

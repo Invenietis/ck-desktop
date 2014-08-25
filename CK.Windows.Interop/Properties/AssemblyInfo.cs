@@ -26,5 +26,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle( "CK.Windows.Interop" )]
+[assembly: AssemblyDescription( "" )]
 [assembly: ComVisible( false )]
 [assembly: Guid( "ef4e9505-e4bb-4841-b1e1-84bd06fbd05e" )]

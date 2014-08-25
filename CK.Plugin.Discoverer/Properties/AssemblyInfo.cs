@@ -26,5 +26,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle( "CK.Plugin.Discoverer" )]
+[assembly: AssemblyDescription( "" )]
 [assembly: ComVisible( false )]
 [assembly: Guid( "b4549574-4517-44db-a819-938ae8b16477" )]

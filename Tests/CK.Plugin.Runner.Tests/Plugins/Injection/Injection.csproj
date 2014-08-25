@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="CircleReferences\Plugin03.cs" />
     <Compile Include="CircleReferences\Plugin02.cs" />
     <Compile Include="CircleReferences\Plugin01.cs" />

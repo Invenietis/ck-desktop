@@ -27,6 +27,7 @@ using System.Runtime.InteropServices;
 using System;
 
 [assembly: AssemblyTitle( "CK.SharedDic.Model" )]
+[assembly: AssemblyDescription( "" )]
 [assembly: ComVisible( false )]
 [assembly: Guid( "b9fafea1-7d81-4bd6-b541-9ac7afea0cf5" )]
 [assembly: CLSCompliant( true )]

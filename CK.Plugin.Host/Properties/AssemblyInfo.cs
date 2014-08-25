@@ -27,6 +27,7 @@ using System.Runtime.InteropServices;
 using System;
 
 [assembly: AssemblyTitle( "CK.Plugin.Host" )]
+[assembly: AssemblyDescription( "" )]
 [assembly: ComVisible( false )]
 [assembly: Guid( "f6208078-5cca-44ed-9ae4-1414643efce0" )]
 [assembly: CLSCompliant( true )]

@@ -27,6 +27,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle( "CK.Plugin.Model" )]
+[assembly: AssemblyDescription( "" )]
 [assembly: CLSCompliant( true )]
 [assembly: ComVisible( false )]
 [assembly: Guid( "c5031102-eda7-4846-a465-7247fb3b009f" )]

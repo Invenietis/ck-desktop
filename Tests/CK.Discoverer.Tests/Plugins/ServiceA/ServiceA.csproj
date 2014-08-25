@@ -44,6 +44,9 @@
     <AssemblyOriginatorKeyFile>..\..\..\..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Plugin01.cs" />
     <Compile Include="IServiceA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

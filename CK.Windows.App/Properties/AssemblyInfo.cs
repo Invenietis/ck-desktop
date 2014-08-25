@@ -26,5 +26,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle( "CK.Windows.App" )]
+[assembly: AssemblyDescription( "" )]
 [assembly: ComVisible( false )]
 [assembly: Guid( "5aca8378-40a9-4657-a4ee-b03d74c6989b" )]

@@ -43,6 +43,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\SharedKey.snk">
+      <Link>Properties\SharedKey.snk</Link>
+    </None>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

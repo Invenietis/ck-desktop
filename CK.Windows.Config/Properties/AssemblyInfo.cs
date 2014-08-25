@@ -26,5 +26,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle( "CK.Windows.Config" )]
+[assembly: AssemblyDescription( "" )]
 [assembly: ComVisible( false )]
 [assembly: Guid( "051fccec-a4e3-4bad-bb98-28833bfa5aed" )]

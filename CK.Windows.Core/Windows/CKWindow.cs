@@ -172,7 +172,6 @@ namespace CK.Windows
             return HitTestResultBehavior.Continue;
         }
 
-        static int i = 0;
         HitTestFilterBehavior HitTestFilter( DependencyObject d )
         {
             return ((Visibility)d.GetValue( FrameworkElement.VisibilityProperty ) != Visibility.Visible)

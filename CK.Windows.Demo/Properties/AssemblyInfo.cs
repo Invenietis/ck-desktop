@@ -28,6 +28,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 
 [assembly: AssemblyTitle( "CK.Windows.Demo" )]
+[assembly: AssemblyDescription( "" )]
 [assembly: ComVisible( false )]
 
 [assembly: ThemeInfo(

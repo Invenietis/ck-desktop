@@ -65,6 +65,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ConfigCollections.cs" />
     <Compile Include="HostConfiguration.cs" />
     <Compile Include="MiniContext.cs" />

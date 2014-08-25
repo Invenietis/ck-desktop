@@ -30,16 +30,6 @@ using System.Runtime.InteropServices;
 // associées à un assembly.
 [assembly: AssemblyTitle( "VersinnedPlugins" )]
 [assembly: AssemblyDescription( "" )]
-#if DEBUG
-[assembly: AssemblyConfiguration("Debug")]
-#else
-[assembly: AssemblyConfiguration("Release")]
-#endif
-[assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "VersinnedPlugins" )]
-[assembly: AssemblyCopyright( "Copyright ©  2010" )]
-[assembly: AssemblyTrademark( "" )]
-[assembly: AssemblyCulture( "" )]
 
 // L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly 
 // aux composants COM. Si vous devez accéder à un type dans cet assembly à partir de 
@@ -48,16 +38,3 @@ using System.Runtime.InteropServices;
 
 // Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
 [assembly: Guid( "e24fa55a-b83c-413d-b1ed-57fb9c5d8cc8" )]
-
-// Les informations de version pour un assembly se composent des quatre valeurs suivantes :
-//
-//      Version principale
-//      Version secondaire 
-//      Numéro de build
-//      Révision
-//
-// Vous pouvez spécifier toutes les valeurs ou indiquer les numéros de build et de révision par défaut 
-// en utilisant '*', comme indiqué ci-dessous :
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion( "1.0.0.0" )]
-[assembly: AssemblyFileVersion( "1.0.0.0" )]

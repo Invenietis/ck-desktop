@@ -40,6 +40,9 @@
     <AssemblyOriginatorKeyFile>..\..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Discoverer.ProducerConsumer.cs" />
     <Compile Include="Discoverer.cs" />
     <Compile Include="Discoverer.TestDiffs.cs" />
