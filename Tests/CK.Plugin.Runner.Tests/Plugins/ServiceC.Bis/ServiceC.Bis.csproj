@@ -69,8 +69,8 @@
       <Name>CK.Plugin.Model</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\CK.Discoverer.Tests\Plugins\ServiceC.Model\ServiceC.Model.csproj">
-      <Project>{5DA9DFAE-44F8-43BE-A22C-65A25D93EE59}</Project>
+    <ProjectReference Include="..\ServiceC.Model\ServiceC.Model.csproj">
+      <Project>{7276329a-eab1-4b95-9129-f155c2b5b3db}</Project>
       <Name>ServiceC.Model</Name>
     </ProjectReference>
   </ItemGroup>

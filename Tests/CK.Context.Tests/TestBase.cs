@@ -44,7 +44,7 @@ namespace CK.Context.Tests
         {
             get
             {
-                if (_appFolder == null) InitalizePaths();
+                if( _appFolder == null ) InitalizePaths();
                 return _appFolder;
             }
         }
@@ -53,7 +53,7 @@ namespace CK.Context.Tests
         {
             get
             {
-                if (_testFolder == null) InitalizePaths();
+                if( _testFolder == null ) InitalizePaths();
                 return _testFolder;
             }
         }
@@ -62,43 +62,43 @@ namespace CK.Context.Tests
         {
             get
             {
-                if (_pluginFolder == null) InitalizePaths();
+                if( _pluginFolder == null ) InitalizePaths();
                 return _pluginFolder;
             }
         }
 
         public static DirectoryInfo AppFolderDir
         {
-            get { return _appFolderDir ?? (_appFolderDir = new DirectoryInfo(AppFolder)); }
+            get { return _appFolderDir ?? (_appFolderDir = new DirectoryInfo( AppFolder )); }
         }
 
         public static DirectoryInfo TestFolderDir
         {
-            get { return _testFolderDir ?? (_testFolderDir = new DirectoryInfo(TestFolder)); }
+            get { return _testFolderDir ?? (_testFolderDir = new DirectoryInfo( TestFolder )); }
         }
 
         public static void CleanupTestDir()
         {
-            if(TestFolderDir.Exists)
-                TestFolderDir.Delete(true);
+            if( TestFolderDir.Exists )
+                TestFolderDir.Delete( true );
             TestFolderDir.Create();
         }
 
-        public static void CopyPluginToTestDir(params FileInfo[] files)
+        public static void CopyPluginToTestDir( params FileInfo[] files )
         {
-            if (_testFolder == null) InitalizePaths();
-            foreach (FileInfo f in files)
+            if( _testFolder == null ) InitalizePaths();
+            foreach( FileInfo f in files )
             {
-                File.Copy(f.FullName, Path.Combine(_testFolder, f.Name), true);
+                f.CopyTo( Path.Combine( TestFolderDir.FullName, f.Name ), true );
             }
         }
 
-        public static void CopyPluginToTestDir(params string[] fileNames)
+        public static void CopyPluginToTestDir( params string[] fileNames )
         {
-            if (_testFolder == null) InitalizePaths();
-            foreach (string f in fileNames)
+            if( _testFolder == null ) InitalizePaths();
+            foreach( string f in fileNames )
             {
-                File.Copy(Path.Combine(_pluginFolder, f), Path.Combine(_testFolder, f), true);
+                File.Copy( Path.Combine( TestFolderDir.FullName, f ), Path.Combine( TestFolderDir.FullName, f ), true );
             }
         }
 
@@ -106,18 +106,18 @@ namespace CK.Context.Tests
         {
             string p = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
             // Code base is like "file:///C:/Documents and Settings/Olivier Spinelli/Mes documents/Dev/CK/Output/Debug/App/CVKTests.DLL"
-            StringAssert.StartsWith("file:///", p, "Code base must start with file:/// protocol.");
+            StringAssert.StartsWith( "file:///", p, "Code base must start with file:/// protocol." );
 
-            p = p.Substring(8).Replace('/', System.IO.Path.DirectorySeparatorChar);
+            p = p.Substring( 8 ).Replace( '/', System.IO.Path.DirectorySeparatorChar );
 
             // => Debug/
-            p = Path.GetDirectoryName(p);
+            p = Path.GetDirectoryName( p );
             _appFolder = p;
 
             // ==> Debug/SubTestDir
-            _testFolder = Path.Combine(p, "SubTestDir");
-            if (Directory.Exists(_testFolder)) Directory.Delete(_testFolder, true);
-            Directory.CreateDirectory(_testFolder);
+            _testFolder = Path.Combine( p, "SubTestDir" );
+            if( Directory.Exists( _testFolder ) ) Directory.Delete( _testFolder, true );
+            Directory.CreateDirectory( _testFolder );
 
             // ==> Debug/Plugins
             _pluginFolder = Path.Combine( p, "Context.Tests.Plugins" );
