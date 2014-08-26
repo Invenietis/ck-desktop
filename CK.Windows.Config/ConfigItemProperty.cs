@@ -96,10 +96,15 @@ namespace CK.Windows.Config
                 if( OnSetValue( value ) )
                 {
                     _value.Set( value );
+                    OnValueChanged();
                     if( _monitor == null ) NotifyOfPropertyChange( "Value" );
                 }
             }
             get { return _value.Get(); }
+        }
+
+        protected virtual void OnValueChanged()
+        {
         }
 
         protected virtual bool OnSetValue( T value )
