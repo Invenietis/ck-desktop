@@ -232,12 +232,18 @@ namespace CK.SharedDic
 
         public void CopyPluginsData( object source, object target, MergeMode mergeMode = MergeMode.ReplaceExisting )
         {
-            foreach( SharedDictionaryEntry s in _byObject[source] )
+            if( _byObject.ContainsKey( source ) )
             {
-                ImportValue( new SharedDictionaryEntry( target, s.PluginId, s.Key, s.Value ), mergeMode );
+                foreach( SharedDictionaryEntry s in _byObject[source] )
+                {
+                    ImportValue( new SharedDictionaryEntry( target, s.PluginId, s.Key, s.Value ), mergeMode );
+                }
             }
 
-            ImportFragments( mergeMode, source, target );
+            if( _fragments.ContainsKey( source ) )
+            {
+                ImportFragments( mergeMode, source, target );
+            }
         }
 
         public void ClearAll()
