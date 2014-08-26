@@ -187,7 +187,7 @@
                 <Button HorizontalContentAlignment="Stretch" Command="{Binding GotoCommand}" Style="{StaticResource CK.Config.Link}">
                     <DockPanel LastChildFill="False">
                         <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding DisplayName}"/>
-                        <Image Name="image" DockPanel.Dock="Right" Stretch="None" >
+                        <Image RenderOptions.BitmapScalingMode="HighQuality" Name="image" DockPanel.Dock="Right" Stretch="None" >
                             <Image.Source>
                                 <Binding Path="ImagePath" Converter="{StaticResource stringemptytounsetconverter}">
                                     <Binding.FallbackValue>
