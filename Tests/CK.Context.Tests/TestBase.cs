@@ -98,7 +98,7 @@ namespace CK.Context.Tests
             if( _testFolder == null ) InitalizePaths();
             foreach( string f in fileNames )
             {
-                File.Copy( Path.Combine( TestFolderDir.FullName, f ), Path.Combine( TestFolderDir.FullName, f ), true );
+                File.Copy( Path.Combine( PluginFolder, f ), Path.Combine( TestFolderDir.FullName, f ), true );
             }
         }
 
